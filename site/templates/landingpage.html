@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+{% block styles %}
+    {{ super() }}
+    <link href="{{ url_for('static', filename='aos/aos.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <!-- <link rel="stylesheet" type="text/css" href="ps://httcdn.datatables.net/1.10.25/css/dataTables.bootstrap5.css"> -->
+    <style>
+        {% include "requerimento/req.css" %}
+        {% include "landingpage.css" %}
+    </style>
+{% endblock %}
+
+{% block content %}
+    {% if popups %}
+        {% for popup in popups %}
+            {% include 'popup/popup_modal.html' %}
+        {% endfor %}
+    {% endif %}
+
+    {% if resetform %}
+        {% include 'reset_pwd.html' %}
+    {% endif %}
+
+    {% if message %}
+        <div class="container mt-5">
+            <section class="text-center">
+                <h3>{{ message }}</h3>
+            </section>
+        </div>
+    {% else %}
+        <section id="hero" class="d-flex flex-column justify-content-center align-items-center">
+            <div class="container" data-aos="fade-in">
+                <!-- <h1>Tabelionato de Notas e Protesto de Títulos</h1>
+                <h2>Comarca de Novo Gama-GO</h2> -->
+            </div>
+        </section>
+        <!-- <section id="why-us" class="why-us">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-5" data-aos="fade-up">
+                        <div class="content text-center">
+                            <h3>REQUERIMENTOS ELETRÔNICOS</h3>
+                            <p>
+                                Solicite seu cadastro e tenha acesso ao atendimento digital exclusivo, é rápido e fácil!
+                            </p>
+                            <div class="text-center">
+                                <a class="more-btn" data-bs-toggle="modal" href="#requerimento" role="button">Solicitar &raquo;</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-8 col-lg-7 d-flex">
+                        <div class="icon-boxes d-flex flex-column justify-content-center">
+                            <div class="row">
+                                <div class="col-xl-5 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+                                    <div class="icon-box mt-4 mt-xl-0">
+                                        <i class="fab fa-whatsapp" style="color: #1b1185; font-weight:900;"></i>
+                                        <h4>Atendimento virtual</h4>
+                                        <p>
+                                            Tire suas dúvidas pelo WhatsApp 
+                                        </p>
+                                        <a href="https://api.whatsapp.com/send?phone=556136267942&text=Gostaria%20de%20iniciar%20um%20atendimento&lang=pt_br" class="btn btn-sm btn-outline-success" target="_blank">Conversar &raquo;</a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+                                    <div class="icon-box mt-4 mt-xl-0">
+                                        <i class="fas fa-search" style="color: #1b1185;"></i>
+                                        <h4>Consultar atendimento</h4>
+                                        <p>
+                                            Verifique o status do seu pedido
+                                        </p>
+                                        <a class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#auth_modal" role="button">Acessar &raquo;</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about" class="about">
+            <div class="container-fluid">
+      
+              <div class="row">
+                <div class="col-xl-5 col-lg-6 video-box d-flex justify-content-center align-items-stretch position-relative">
+                  <img style="filter: grayscale(1)" src="{{ url_for('static', filename='img/fachada.jpg') }}" class="img-fluid" alt="...">
+                </div>
+                <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+                    <h2>Bem-Vindo!</h2>
+                    <p style="text-align: justify;">
+                        É com grande satisfação que recebemos você em nosso site. Aqui, você encontrará todos os serviços cartoriais de forma prática e eficiente, além de informações úteis que facilitarão seu atendimento.
+                    ​</p>
+                    <p style="text-align: justify;">
+                        Nosso compromisso é oferecer um atendimento de qualidade, garantindo segurança e agilidade em todos os processos. Navegue pelo nosso site e descubra como podemos ajudar você.
+                    ​</p>
+                    <p style="text-align: justify;">
+                        Estamos prontos para atender suas necessidades com profissionalismo e cordialidade. Seja muito bem-vindo!
+                        
+                    ​</p>
+                    <p>
+                    Atenciosamente,
+                        <br>Equipe do Cartório do Descoberto
+                    </p>
+                </div>
+                <!-- <div class="col-xl-7 col-lg-6 icon-boxes d-flex flex-column align-items-stretch justify-content-center py-5 px-lg-5">
+      
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-user-lock"></i></i></div>
+                    <h4 class="title"><a href="">Abra sua empresa com segurança</a></h4>
+                    <p class="description">
+                      A contabilidade registra todas as transações financeiras da empresa, como compras, vendas, pagamentos, recebimentos, investimentos, empréstimos, entre outros. Esses dados são coletados e organizados em documentos contábeis, como faturas, recibos, notas fiscais, extratos bancários e contratos.
+                    </p>
+                  </div>
+      
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-street-view"></i></div>
+                    <h4 class="title"><a href="">Atendimento personalizado</a></h4>
+                    <p class="description">
+                      Ao abrir uma empresa, contar com um serviço de contabilidade que ofereça atendimento personalizado e consultoria em gestão de negócios pode ser extremamente benéfico. 
+                    </p>
+                  </div>
+      
+                  <div class="icon-box">
+                    <div class="icon"><i class="far fa-list-alt"></i></div>
+                    <h4 class="title"><a href="">Consultoria em gestão de negócios</a></h4>
+                    <p class="description">
+                      A consultoria em gestão de negócios é um serviço especializado que auxilia as empresas na melhoria de seus processos, na identificação de oportunidades de crescimento e na tomada de decisões estratégicas. A contabilidade desempenha um papel fundamental nesse contexto, fornecendo dados financeiros e contábeis relevantes para embasar as recomendações e orientações da consultoria. 
+                    </p>
+                  </div>
+      
+                </div> -->
+           <!--   </div>
+      
+            </div>
+        </section>
+        <section id="services" class="services">
+            <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Serviços</h2>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Procurações</a></h4>
+                        <p class="description">
+                            As procurações permitem que uma pessoa nomeie outra para representá-la em diferentes tipos de negócios e atos legais, conforme os poderes especificados no documento.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Escrituras</a></h4>
+                        <p class="description">
+                            As escrituras públicas formalizam diversos atos, como compra e venda de imóveis, doações e pactos antenupciais, garantindo segurança jurídica e validade pública.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Testamento</a></h4>
+                        <p class="description">
+                            O testamento é um documento que garante a manifestação da última vontade do testador, dispondo sobre a destinação de seus bens após o falecimento.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Reconhecimento de Firma</a></h4>
+                        <p class="description">
+                            O reconhecimento de firma atesta a autenticidade da assinatura de uma pessoa em documentos, trazendo mais confiança e validade legal.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Autenticações</a></h4>
+                        <p class="description">
+                            A autenticação de cópias confere fé pública à reprodução de um documento, garantindo que a cópia é fiel ao original apresentado. 
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Protestos de Títulos</a></h4>
+                        <p class="description">
+                            O protesto de títulos é o ato que comprova oficialmente a inadimplência de uma dívida, permitindo a cobrança judicial e extrajudicial.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Inventários</a></h4>
+                        <p class="description">
+                            O inventário extrajudicial é uma maneira rápida e consensual de dividir o patrimônio deixado por uma pessoa falecida, com a homologação de um tabelião.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Certificados digitias (E-notariado)</a></h4>
+                        <p class="description">
+                            O certificado digital do e-Notariado permite realizar atos notariais de forma eletrônica, com segurança jurídica e validade em todo o território nacional.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Atas Notariais</a></h4>
+                        <p class="description">
+                            Atas notariais são documentos que registram, de forma imparcial e com fé pública, fatos presenciados ou verificados pelo tabelião.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Apostilamentos</a></h4>
+                        <p class="description">
+                            O apostilamento de Haia confere validade internacional a documentos brasileiros para uso no exterior, facilitando o reconhecimento em países signatários da Convenção de Haia.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Divórcio</a></h4>
+                        <p class="description">
+                            A escritura de divórcio permite a dissolução do casamento de forma consensual, rápida e segura, sem necessidade de ação judicial, desde que não envolva filhos menores.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon-box">
+                        <div class="icon"><i class="fas fa-stamp"></i></div>
+                        <h4 class="title"><a>Emancipação</a></h4>
+                        <p class="description">
+                            A escritura de emancipação antecipa a maioridade civil, permitindo que menores, a partir dos 16 anos, possam praticar atos da vida civil sem a autorização dos pais.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section> -->
+        <!-- {% include 'contact.html'%} -->
+        
+        <a href="https://api.whatsapp.com/send?phone=+556195535937&text=Gostaria%20de%20iniciar%20um%20atendimento&lang=pt_br"
+        target="_blank"
+        style="font-size:24px;color:white;position:fixed;bottom:0px;left:13px;bottom: 15px;background: green;border-radius: 4px;padding: 2px 8px;">
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    {% endif %}
+
+{% endblock content %}
+
+
+{% block scripts %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='swiper/swiper-bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='aos/aos.js') }}"></script>
+    <script src="{{ url_for('static', filename='glightbox/js/glightbox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='isotope-layout/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        {% if not message %}
+            {% if current_user.is_authenticated %}
+                {% include 'booking/booking.js' %}
+            {% endif %}
+
+            {% include "landingpage.js" %}
+            {% include "contact.js" %}
+            // Reset pwd
+            {% if resetform %}
+                {% include 'auth/reset_pwd.js' %}
+            {% endif %}
+        {% endif %}
+    </script>
+    
+{% endblock %}

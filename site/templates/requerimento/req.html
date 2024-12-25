@@ -1,0 +1,138 @@
+<div class="modal fade" id="requerimento" aria-hidden="true" data-bs-backdrop="true" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div id="certificado-body" class="modal-body">
+                <div class="modal_cert_header">
+                    <div></div>
+                    <div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                    </div>
+                </div>
+                <div class="container">
+                    {% if not current_user.is_authenticated %}
+                                        
+                        <!-- <p>Para acessar o formulário, solicite seu cadastro na plataforma pelo nosso Whatsapp - <a href="https://api.whatsapp.com/send?phone=556136267942&text=Gostaria%20de%20iniciar%20um%20atendimento&lang=pt_br" class="btn btn-sm btn-outline-success" target="_blank">Clique aqui &raquo;</a></p> -->
+                        
+                        <p>Caso já tenha cadastro acesse sua conta - <a  class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#auth_modal" role="button">Acessar &raquo;</a> </p>
+                    {% else %}
+                    <h1>REQUERIMENTO DE PROCURAÇÃO ELETRÔNICA</h1>
+                    <h3>Tabelionato de Notas e Protesto de Santo Antônio do novogama-GO</h3>
+                    <div class="d-flex flex-column col-md-6 col-sm-12 justify-content-center mx-auto alert alert-danger" role="alert">
+                        <p class="mb-0">A procuração será validada junto ao outorgante por <b>videoconferência na plataforma e-notariado.</b></p>
+                        <hr>
+                        <p class="mb-0">O prazo de lavratura é até <b>24h.</b> </p>
+                        <hr>
+                        <p class="mb-0">Emolumentos <b>R$131,00.</b></p>
+                    </div>
+                    <div class="d-flex flex-column col-md-6 col-sm-12 justify-content-center mx-auto alert alert-success" role="alert">
+                        <p class="mb-0">
+                            Suporte técnico pelo WhatsApp: <a target="_blank" href="https://api.whatsapp.com/send?phone=5561999817663&text=Gostaria%20de%20iniciar%20um%20atendimento&lang=pt_br"><b>(61) 99981-7663</b></a>
+
+                        </p>
+                    </div>
+                    <form id="req_info_proc" class="">
+                        <div class="row g-2">
+                            <div>
+                                <b>Informações do Vendedor / Outorgante</b>
+                            </div>
+                            <div class="info_itm_endereco row g-2">
+                                <div class="form-floating col-md-6">
+                                    <input type="text" class="form-control form-control-sm" name="vend_name" placeholder="Nome completo / Razão Social" required>
+                                    <label for="vend_name">Nome completo / Razão Social</label>
+                                </div>
+                                <div class="form-floating col-md-4">
+                                    <input type="email" class="form-control form-control-sm" name="vend_email" placeholder="Email válido" required>
+                                    <label for="vend_email">Email</label>
+                                </div>
+                                <div class="form-floating col-md-2">
+                                    <input type="text" class="form-control form-control-sm" onkeypress="mask_tel(this, mtel)" onblur="mask_tel(this, mtel)" name="vend_tel" placeholder="Telefone" required>
+                                    <label for="vend_tel">Telefone</label>
+                                </div>
+                            </div>
+                            <div class="mx-auto col-md-6">
+                                <label for="vend_file" class="form-label "><b>CNH (Pessoa Física) / Certidão da Junta Comercial (Pessoa Júridica) - Anexar PDF</b></label>
+                                <input class="form-control form-control-sm" accept=".pdf" type="file" id="vend_file">
+                            </div>
+                            <hr>
+                            <div>
+                                <b>Informações do Comprador / Outorgado</b>
+                            </div>
+                            <div class="info_itm_endereco row g-2">
+                                <div class="form-floating col-md-6">
+                                    <input type="text" class="form-control form-control-sm" name="comp_name" placeholder="Nome completo / Razão Social" required>
+                                    <label for="comp_name">Nome completo / Razão Social</label>
+                                </div>
+                                <div class="form-floating col-md-4">
+                                    <input type="email" class="form-control form-control-sm" name="comp_email" placeholder="Email válido" required>
+                                    <label for="comp_email">Email</label>
+                                </div>
+                                <div class="form-floating col-md-2">
+                                    <input type="text" class="form-control form-control-sm" onkeypress="mask_tel(this, mtel)" onblur="mask_tel(this, mtel)" name="comp_tel" placeholder="Telefone" required>
+                                    <label for="comp_tel">Telefone</label>
+                                </div>
+                            </div>
+                            <div class="mx-auto col-md-6">
+                                <label for="comp_file" class="form-label "><b>CNH (Pessoa Física) / Certidão da Junta Comercial (Pessoa Júridica) - Anexar PDF</b></label>
+                                <input class="form-control form-control-sm" accept=".pdf" type="file" id="comp_file">
+                            </div>
+                            <hr>
+                            <div>
+                                <b>Dados da Procuração</b>
+                            </div>
+                            <div class="info_itm_endereco row g-2">
+                                <div class="form-floating col-md-3">
+                                    <input type="text" class="form-control form-control-sm" onkeyup="mask_placa(this, mplaca)" maxlength="8" name="placa" placeholder="Placa do Veículo" required>
+                                    <label for="placa">Placa do Veículo</label>
+                                </div>
+                                <div class="form-floating col-md-3">
+                                    <select class="form-select" id="proc_estab" aria-label="Floating label select example">
+                                      <option value="0" selected>Escolha uma opção</option>
+                                      <option value="1">Sim</option>
+                                      <option value="2">Não</option>
+                                    </select>
+                                    <label for="proc_estab">Pode Substalecer</label>
+                                </div>
+                                <div class="form-floating col-md-3">
+                                    <select class="form-select" id="proc_irrev" aria-label="Floating label select example">
+                                      <option value="0" selected>Escolha uma opção</option>
+                                      <option value="1">Sim</option>
+                                      <option value="2">Não</option>
+                                    </select>
+                                    <label for="proc_irrev">IRREVOGÉVEL/IRRETRATÁVEL</label>
+                                </div>
+                                <div class="form-floating col-md-3">
+                                    <select class="form-select" id="proc_valid" aria-label="Floating label select example">
+                                      <option value="0" selected>Escolha uma opção</option>
+                                      <option value="1">Indeterminado</option>
+                                      <option value="2">30 Dias</option>
+                                      <option value="3">90 Dias</option>
+                                      <option value="4">6 Meses</option>
+                                      <option value="5">1 Ano</option>
+                                    </select>
+                                    <label for="proc_valid">Prazo de Validade</label>
+                                </div>
+                            </div>
+                            <div class="mx-auto col-md-6">
+                                <label for="crlv_file" class="form-label "><b>CRLV-E - Anexar PDF</b></label>
+                                <input class="form-control form-control-sm" accept=".pdf" type="file" id="crlv_file">
+                            </div>
+                            <hr>
+                        </div>
+                    </form>
+                    <div class="modal_content_btn">
+                        <a class="btn col-xs-4 mb-4 btn-sm btn-outline-success" onclick="req_send_pedido(this)" role="button">Enviar &raquo;</a>
+                    </div>
+                    <div class="d-flex flex-column col-md-10 col-sm-12 justify-content-center mx-auto alert alert-info" role="alert">
+                        <p class="mb-0"> Os <b>dados pessoais coletados</b> através deste formulário serão utilizados exclusivamente para fins de atendimento e processamento de suas solicitações, em conformidade com a <b>Geral de Proteção de Dados (LGPD).</b></p>
+                        <hr>
+                        <p class="mb-0">Garantimos que suas informações serão tratadas <b>com segurança e confidencialidade, e não serão compartilhadas</b> com terceiros sem sua autorização.</p>
+                        <hr>
+                        <p class="mb-0">Ao preencher este formulário, você <b>concorda com o tratamento</b> dos seus dados conforme descrito. Para mais informações, consulte nossa <b>política de privacidade.</b></p>
+                    </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

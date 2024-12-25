@@ -1,0 +1,249 @@
+.attend .attend_content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin: 30px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    min-width: 560px;
+}
+
+.attend .list_attend {
+    flex-direction: column;
+}
+
+
+.attend .attend_home .filter_list_attend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin: 32px auto;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 512px;
+}
+
+.attend .attend_home .filter_list_attend > div {
+    margin: 10px;
+}
+
+
+
+.attend .attend_list {
+    display: inline-table;
+}
+
+
+.attend_booking_content .accordion .accordion-border {
+    border-radius: 0 0 16px 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin: 16px auto;
+}
+
+/* .attend_home {
+    max-width: 400px;
+    margin: auto;
+} */
+
+.attend_home .new_attend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0px;
+    margin: 12px auto;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 660px;
+}
+
+
+.attend .attend_amount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.attend .attend_amount .item {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--first-color);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+    width: 150px;
+}
+
+.attend .attend_amount .item:hover {
+    color: var(--first-color);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.attend .attend_amount .item:visited {
+    background-color: var(--first-color);
+    color: var(--first-color-light);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+
+
+label.capitalize {
+    text-transform: capitalize;
+}
+.cur_attend  {
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.cur_attend .cur_attend_hearder {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cur_attend .cur_attend_company {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.cur_attend .cur_attend_content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 3fr;
+    column-gap: 12px;
+    
+}
+
+.cur_attend .cur_attend_content > div {
+    /* max-height: 480px; */
+    overflow-x: hidden;
+    overflow-y: auto; 
+    /* border: 1px solid red; */
+}
+
+.cur_attend .cur_attend_content > div .row {
+    align-items: center;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #00000061;
+    padding: 2px;
+}
+
+
+.cur_attend .cur_attend_hearder .form-control {
+    width: 480px;
+}
+
+.cur_attend .cur_attend_content .select_service {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cur_attend .cur_attend_service {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.cur_attend .cur_attend_import {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.cur_attend .cur_attend_service_add .service_add_items {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--first-color);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+    width: 112px;
+}
+
+
+.cur_attend .cur_attend_service_add .service_add_items:hover {
+    color: var(--first-color);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.cur_attend .cur_attend_service_add .service_add_items:visited {
+    background-color: var(--first-color);
+    color: var(--first-color-light);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+
+.cur_attend .cur_attend_service_add {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cur_attend .cur_attend_payment {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.cur_attend .payment_header {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 36px;
+}
+
+.cur_attend .cur_attend_payment .cur_attend_payment_item {
+    border: 1.4px solid var(--first-color);
+    padding: 4px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+    width: 130px;
+}
+
+
+.cur_attend .cur_attend_payment .cur_attend_payment_item:hover {
+    color: var(--first-color);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.cur_attend .cur_attend_payment .payment_add {
+    display: flex;
+    align-items: center;
+    margin: 16px;
+}
+
+/* 
+.cur_attend .cur_attend_payment > ol {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 16px;
+} */
+
+.cur_attend .cur_attend_footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.cur_attend .cur_attend_footer > div > img {
+    margin: 16px;
+}
+

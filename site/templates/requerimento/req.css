@@ -1,0 +1,8 @@
+.modal_cert_header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal_cert_header > div > img {
+    max-width: 15%;
+}

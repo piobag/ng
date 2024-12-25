@@ -1,0 +1,14 @@
+**__pycache__
+.env
+
+cert.key
+cert.crt
+# cert
+
+# MongoDB Data
+db
+dump_*.tgz
+bkp
+ssl
+
+cartas.xlsx

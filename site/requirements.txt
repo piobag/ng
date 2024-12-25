@@ -1,0 +1,40 @@
+itsdangerous==2.1.1
+
+gunicorn
+
+flask-mail
+flask-login
+flask-mongoengine
+flask-babel==3.0.1
+flask-moment
+flask-cors
+
+werkzeug==2.*
+pyjwt
+requests
+
+### Sign PDF
+pymupdf
+pdfkit
+pyHanko[pkcs11,image-support,opentype,xmp]
+
+### Booking
+workalendar
+pandas
+
+### Calendar
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
+
+qrcode
+
+# S3
+boto3
+
+### PDF OCR
+pytesseract
+pdf2image
+
+# Import XLSX
+openpyxl

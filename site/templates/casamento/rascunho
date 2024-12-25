@@ -1,0 +1,106 @@
+1 Conjuge
+cpf
+nome
+data de nascimento
+idade
+sexo
+estado civil
+profissão
+nacionalidade
+pais de nascimento
+naturalidade
+uf
+emancipado
+tutor
+telefone
+cep
+enderço
+complemento
+bairro
+cidade
+uf
+pais endereço
+grupo sanguineo
+nome apos casamento
+email
+
+procurador
+consulado cartorio
+tabeliao
+nome
+cpf
+livro
+folha
+data
+
+avebação nascimento
+protocolo
+nome criança
+termo
+livro
+folha
+data reg
+
+
+documentos: rg
+
+
+
+Pais
+
+cpf
+nome
+data nascimento
+idade
+filiação
+num documento
+tipo(crc)
+serie
+uf
+emissor(crc)
+data emissão
+estado civil
+profissão
+nacionalidade
+cep
+endereço
+complemento
+cidade
+uf
+bairro
+naturalidade
+uf
+obito
+telefone
+email
+
+
+dados adicionais: pacto antinupicial
+
+Testemunhas
+
+tipo 
+cpf
+nome
+data nascimento
+idade
+num documento
+tipo(crc)
+serie
+uf
+emissor(crc)
+data emissão
+estado civil
+profissão
+nacionalidade
+cep
+endereço
+complemento
+cidade
+uf
+bairro
+naturalidade
+uf
+sexo
+telefone
+email

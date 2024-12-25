@@ -1,0 +1,30 @@
+/* .info_content .info_itm_print {
+    display: flex;
+    flex-direction: column;
+}
+
+.info_content .info_itm_print_header > blockquote {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.info_content .info_itm_print_header > blockquote > b {
+    font-size: 10px;
+}
+.info_content .info_itm_print .info_itm_print_content .itm_print_minu > p {
+    text-align: justify;
+}
+
+.info_content .info_itm_print .info_itm_print_header .blockquote > h5 ,
+.info_content .info_itm_print .info_itm_print_content .itm_print_sign > p {
+    width: 100%;
+    text-align: end;
+}
+.info_content .info_itm_print .info_itm_print_content .itm_print_sign > h4 {
+    text-align: center;
+}
+
+.info_content .info_itm_print .info_itm_print_verse {
+    page-break-before: always;  
+} */

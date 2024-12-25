@@ -1,0 +1,152 @@
+<h3>
+    <b>Resumo ${result.type === 'prot' ? 'do Protocolo' : result.type === 'cert' ? 'da Certidão' : result.type === 'repr' ? 'do Re-Protocolo' :  'do Exame/Cálculo'}
+        <br><h4><button tabindex="-1" type="button" onclick="open_prot_info('${prot.id}', 'prev=true')" class="btn btn-sm mx-2 btn-outline-dark"><i class="fas fa-sm fa-angle-double-left"></i></button> ${result['prot']} <button tabindex="-1" type="button" onclick="open_prot_info('${prot.id}', 'next=true')" class="btn btn-sm mx-2 btn-outline-dark"><i class="fas fa-sm fa-angle-double-right"></i></button></h4>
+    </b>
+</h3>
+
+<div class="prot_modal_hearder">
+    <div>
+        ${prot.user ? `
+            <div><b>${result.user['name']}</b></div>
+            ${result.user['cpfcnpj'] ? `<div>{{ _('CPF') }} | <b>${mask_cpfcnpj(result.user['cpfcnpj'])}</b></div>`  : ''}
+            ${result.user['email'] ? `<div>{{ _('Email') }} | <b>${result.user['email']}</b></div>`  : ''}
+            ${result.user['tel'] ? `<div>{{ _('Phone') }} | <b>${mtel(result.user['tel'])}</b></div>`  : ''}
+        ` : ''}
+    </div>
+    <div>
+        ${result['func'] ? `<div>{{ _('Asttendant') }} | <b>${result['func']}</b></div>`  : ''}
+        <div>{{ _('Date') }} | <b>${new Date(result['timestamp'] * 1000).toLocaleString('default', {dateStyle: 'short', timeZone: 'America/Sao_Paulo'})}</b></div>
+    </div>
+</div>
+<div>
+    ${result.itm ? `
+    <button type="button" name="btn" class="btn btn-success text-center m-3" onclick="open_itm_info('${result.itm}')">
+        Intimação
+    </button>
+    `
+    : `
+    <button type="button" name="btn" class="btn btn-success text-center m-3" onclick="prot_attend_info(this, '${result.attend}')">
+        Atendimento
+    </button>
+    `}
+</div>
+<div class="prot_modal_content">
+    <table class="table table-sm table-hover table-responsive">
+        <thead>
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Grupo</th>
+                <th scope="col">Natureza</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Pago</th>
+                <th scope="col">Diferença</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="col">
+                    {% if 'adm' in roles %}
+                        <div style="margin: 0 auto;width: ${result.type === 'prot' ? '70' : result.type === 'cert' ? '190' : result.type === 'repr' ? '70' :  '190'}px;">
+                            <input type="text" onkeydown="info_prot_change()" class="form-control form-control-sm text-center" ${result.type === 'prot' ? ' maxlength="5"' : result.type === 'cert' ? ' maxlength="17"' : result.type === 'repr' ? ' maxlength="5"' :  ' maxlength="17"'} name="prot_cod" value="${result['prot']}" placeholder="" required>
+                        </div>
+                    {% else %}
+                        ${result['prot']}
+                    {% endif %}
+                </td>
+                <td class="col">${result['nature_group'].toUpperCase()}</td>
+                <td class="col">${result['nature']}</td>
+                <td>
+                    <div style="margin: 0 auto;width: 120px;">
+                        <input type="text" onkeyup="mask_value(this);" onkeydown="info_prot_change()" class="form-control form-control-sm text-center" name="prot_value" value="${result['total'].toLocaleString('pt-BR', currency_br)}" placeholder="" required>
+                    </div>
+                </td>
+                <td>${result['paid'].toLocaleString('pt-BR', currency_br)}</td>
+                <td>${(result['total'] - result['paid']).toLocaleString('pt-BR', currency_br)}</td>
+                <td>
+                    <div class="btn-group btn-group-sm mx-2">
+                        <button id="prot_save_btn" tabindex="-1" type="button" onclick="prot_info_confirm_edit(this, '${result['id']}')" title="Alterar serviço" class="d-none btn btn-sm ms-2 btn-outline-success"
+                            name=""><i class="fas fa-sm fa-save"></i></button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <p> ${result['title'] ? `<b> Titulo: <br /> </b> ${result['title']}` : ''} </p>
+    <p> ${result['comment'] ? `<b> Anotações: <br /> </b> ${result['comment']}` : ''} </p>
+</div>
+<div>
+    <h4><b>Exigência</b></h4>
+    <div class="prot_content_exig">
+        <div>
+            <input onchange="exig_prot_attend_info_file(this, '${result.id}')" type="file" id="exig_prot_file" name="exig_prot_file" accept=".jpg,.jpeg,.png,.gif,.pdf,.p7s" style="display: none;">
+            <label title="Carregar exigência" tabindex="0" class="btn mx-4 btn-sm btn-outline-primary" for="exig_prot_file">
+                <i class="fas fa-sm fa-upload"></i>
+            </label>
+        </div>
+        <ol class="list-group list-group-numbered" id="exig_prot_file_list"></ol>
+    </div>
+</div>
+${doc_recebido.length > 0 ? `
+    <h4><b>Documentos entregues</b></h4>
+    <table style="font-size: 12px; width: 400px; margin: 16px auto;">
+        <thead>
+            <tr style="border-bottom: 0.8px solid black;">
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            ${doc_recebido.map(s => `
+                <tr style="border-bottom: 0.359px solid black;">
+                    <td>${new Date(s.timestamp * 1000).toLocaleString('default', {dateStyle: 'short', timeZone: 'America/Sao_Paulo'})}</td>
+                    <td>${s.name}</td>
+                    <td>${s.copia ? 'Cópia' : 'Original'}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+    `
+ : ''}
+ <div>
+    <button tabindex="-1" type="button" onclick="info_prot_add_docs(this, '${nature_id}')" title="Adicionar documento" class="btn btn-sm m-2 btn-outline-primary"><i class="fas fa-sm fa-plus"></i></button>
+    <a tabindex="-1" href="/digit/?prot=${prot.id}" target="_blank" rel="noopener noreferrer" title="Acessar imagens" class="btn btn-sm m-2 btn-outline-dark"><i class="far fa-sm fa-images"></i></a>
+</div>
+<div class="d-flex justify-content-center align-items-center form-floating info_docs_new">
+    <div class="col-md-8" id="info_attend_new_doc"></div>
+</div>
+ ${doc_faltante.length > 0 ? `
+    <h4><b>Documentos faltantes</b></h4>
+    <table style="font-size: 12px; width: 400px; margin: 16px auto;">
+        <thead>
+            <tr style="border-bottom: 0.8px solid black;">
+                <th>Descrição</th>
+            </tr>
+        </thead>
+        <tbody>
+            ${doc_faltante.map(f => `
+                <tr style="border-bottom: 0.5px solid black;">
+                    <td>${f.name}</td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>`
+ : ''}
+<div class="prot_info_history">
+    <h4 class="my-4"><b>Histórico</b></h4>
+    <div class="form-floating">
+        <textarea class="form-control textarea" placeholder="" id="prot_info_comment"></textarea>
+        <label for="prot_info_comment">Comentário</label>
+    </div>
+    <div>
+        <button type="button" name="btn" title="Enviar comentário" class="btn btn-outline-success text-center m-3" onclick="info_prot_comment(this, '${result.id}')">
+            <i class="fas fa-sm fa-paper-plane"></i>
+        </button>
+    </div>
+    <ul class="list-group">
+        ${prot_comments}
+    </ul>
+</div>

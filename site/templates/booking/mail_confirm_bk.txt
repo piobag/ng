@@ -1,0 +1,7 @@
+Olá {{ current_user.name }}.
+Um novo atendimento com início às {{ start.strftime('%H:%M do dia %d/%m/%Y') }} foi agendado para você.
+
+Para consultar ou cancelar seus atendimentos utilize o seguinte link:
+{{ url_for('base.index', _external=True, show='bookinglist') }}
+
+Registros Ocidental

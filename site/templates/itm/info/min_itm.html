@@ -1,0 +1,51 @@
+<div class="container-flush">
+    <div class="accordion accordion-flush container-flush text-center" id="itm-minuta-prot-accordion">
+        <div class="accordion-item accordion-border">
+            <h2 class="accordion-header" id="itm-minuta-prot-accordion-item">
+                <button class="accordion-button text-center  collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#itm-minuta-prot-accordion-body" aria-expanded="false">
+                <h5 class="accordion_title">${result['services'][0].minuta ? `<b class="text-success">Minuta Assinada</b>` : result['services'][0].minuta_pending ? `<b class="text-primary">Minuta em Revisão</b>` : result['services'][0].minuta_wrong ? `<b class="text-danger">Minuta Rejeitada</b>` : '<b>Minuta</b>'}</h5>
+                </button>
+            </h2>
+        <div id="itm-minuta-prot-accordion-body" class="accordion-collapse collapse ${!result['services'][0].minuta_printed ? 'show' : ''}" data-bs-parent="#itm-minuta-prot-accordion">
+            <div class="accordion-body">
+                <p class="justify">
+                    {{ config.SERVENTIA.HOLD }}, Oficial {{ config.SERVENTIA.TYPE }} do {{ config.SERVENTIA.DESC }} de {{ config.SERVENTIA.LOCAL[1] }}-{{ config.SERVENTIA.LOCAL[0] }}, em 
+                    <input type="checkbox" class="btn-check" id="btn-check_date" autocomplete="off">
+                    <label class="btn btn-sm text-danger" for="btn-check_data">${intimacao.services[0].prot_date ? new Date(intimacao.services[0].prot_date * 1000).toLocaleString('default', {dateStyle: 'short', timeZone: 'America/Sao_Paulo'}) : 'Data do protocolo'}</label>, segundo as atribuições conferidas pelo art. 26 § 1º da Lei 9.514 de 20 de novembro 1997, bem como, a requerimento firmado pelo(a) credor(a): 
+                    
+                    <input type="checkbox" class="btn-check" id="btn-check_credor" autocomplete="off">
+                    <label class="btn btn-sm text-danger" for="btn-check_credor"><b>${intimacao.credor ? intimacao.credor.name : 'Razão social do Credor'}</b></label>, inscrito(a) no CNPJ/MF sob nº <b>${intimacao.credor ? intimacao.credor.cnpj : 'CNPJ do credor'}</b>, com sede no(a) ${intimacao.credor ? intimacao.credor.sede : 'Endereço do credor'}, vem pela presente, intimar o(a) devedor(a): 
+
+                    ${min_devedor}
+                    , 
+                    <input type="checkbox" class="btn-check" id="btn-check_contr" autocomplete="off">
+                    <label class="btn btn-sm text-danger" for="btn-check_contr"><b>nos termos do(a)</b></label><b>${result['contr'] ? result['contr'] : 'Dados do contrato '}</b>; sob a matrícula Nº 
+                    
+                    <input type="checkbox" class="btn-check" id="btn-check_mat" autocomplete="off">
+                    <label class="btn btn-sm text-danger" for="btn-check_mat"><b>${result['services'][0].mat ? result['services'][0].mat : 'Matrícula do imóvel'}</b></label>, desta Serventia. 
+                </p>
+                <p class="d-flex flex-column justify">
+                    <span><b>Endereços</b> para intimação:</span>
+                    ${min_enderecos}
+                </p>
+
+                <p class="justify">
+                    <b>Assim, procedo à INTIMAÇÃO DE V. Sª, para que se dirija à agência responsável pelo financiamento imobiliário</b>, onde deverá 
+                    efetuar a purga do débito, no prazo improrrogável de 15 dias, contados a partir desta data. Nesta oportunidade, fica V. Sª 
+                    cientificado(a) que o não cumprimento da referida obrigação no prazo ora estipulado garante o direito de consolidação 
+                    da propriedade do imóvel em favor do credor – <b>${intimacao.credor ? intimacao.credor.name : 'Razão social do Credor'}</b> - nos termos do art.26, § 7º da Lei 9.514/97.  
+                </p>
+                <p class="justify">
+                    SELO Nº: 
+                    
+                    <input type="checkbox" class="btn-check" id="btn-check9" autocomplete="off">
+                    <label class="btn btn-sm text-danger" for="btn-check9"><b>${s.selo ? s.selo : 'Selo de prenotação da intimação'}</b></label>. Consulte este selo em https://see.tjgo.jus.br/ 
+                </p>
+                <div>
+                    ${min_btn}
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

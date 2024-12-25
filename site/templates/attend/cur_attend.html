@@ -1,0 +1,89 @@
+<h2>{{ _('Current attendance') }}</h2>
+<form id="cur_attend" class="cur_attend_home">
+  <div class="cur_attend container">
+    <div class="cur_attend_hearder">
+      <input name="id" value="${result['id']}" type="hidden">
+      <div><b> ${result['name']}</b></div>
+      ${result['cpf'] ? `<div>{{ _('CPF') }} | <b>${mask_cpfcnpj(result['cpf'])}</b></div>` : ''}
+      ${result['email'] ? `<div>{{ _('Email') }} | <b>${result['email']}</b></div>` : ''}
+      ${result['tel'] ? `<div>{{ _('Phone') }} | <b>${mtel(result['tel'])}</b></div>` : ''}
+    </div>
+    <hr>
+    <h5>Endereço</h5>
+    <div class="cur_attend_end d-flex flex-wrap">
+      <div class="form-floating col-md-3">
+        <input type="text" class="form-control form-control-sm" name="end_cep" placeholder="" value="72.860-436">
+        <label for="end_cep">CEP</label>
+      </div>
+      <div class="form-floating col-md-9">
+        <input type="text" class="form-control form-control-sm" name="end_log" placeholder="" value="Shopping Outlet Brasil - Rua 43, Quadra 473, Lote 06, Loja 14, 2° Piso">
+        <label for="end_log">Logradouro</label>
+      </div>
+      <div class="form-floating col-md-5">
+        <input type="text" class="form-control form-control-sm" name="end_bai" placeholder="" value="Parque Estrela Dalva VI">
+        <label for="end_bai">Bairro</label>
+      </div>
+      <div class="form-floating col-md-5">
+        <input type="text" class="form-control form-control-sm" name="end_cid" placeholder="" value="Novo Gama">
+        <label for="end_cid">Cidade</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="text" class="form-control form-control-sm" name="end_uf" placeholder="" value="GO">
+        <label for="end_uf">UF</label>
+      </div>
+    </div>
+    <hr>
+    <h5>Título Protestado</h5>
+    <div class="cur_attend_prot d-flex flex-wrap">
+      <div class="form-floating col-md-3">
+        <input type="text" class="form-control form-control-sm" name="prot_cod" placeholder="" value="1604150137">
+        <label for="prot_cod">Protocolo</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="text" class="form-control form-control-sm" name="prot_esp" placeholder="" value="CDA">
+        <label for="prot_esp">Espécie</label>
+      </div>
+      <div class="form-floating col-md-3">
+        <input type="text" class="form-control form-control-sm" name="prot_num" placeholder="" value="31115003568">
+        <label for="prot_num">Número do Título</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="text" class="form-control form-control-sm" name="prot_val" placeholder="" value="1.543,11" onkeyup="mask_value(this)">
+        <label for="prot_val">Valor do Título</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="date" class="form-control form-control-sm" name="prot_emi" placeholder="" value="2016-04-07">
+        <label for="prot_emi">Emissão</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="date" class="form-control form-control-sm" name="prot_ven" placeholder="" value="2016-04-07">
+        <label for="prot_ven">Vencimento</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="date" class="form-control form-control-sm" name="prot_date" placeholder="" value="2016-04-20">
+        <label for="prot_date">Data Protesto</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="text" class="form-control form-control-sm" name="prot_liv" placeholder="" value="240">
+        <label for="prot_liv">Livro</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="text" class="form-control form-control-sm" name="prot_fls" placeholder="" value="145">
+        <label for="prot_fls">Folha</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="text" class="form-control form-control-sm" name="prot_tot_c" placeholder="" value="51,02" onkeyup="mask_value(this)">
+        <label for="prot_tot_c">Total Cancelamento</label>
+      </div>
+      <div class="form-floating col-md-2">
+        <input type="text" class="form-control form-control-sm" name="prot_tot_p" placeholder="" value="201,79" onkeyup="mask_value(this)">
+        <label for="prot_tot_p">Total a Pagar</label>
+      </div>
+      
+    </div>
+    <div class="col">
+      <button name="btn" type="button" class="btn btn-sm btn-outline-success cancel_attend m-2" onclick="save_attend(this)" role="button">Finalizar <i class="far fa-sm fa-check-circle"></i></button>
+      <button name="btn" type="button" class="btn btn-sm btn-outline-danger cancel_attend m-2" onclick="cancel_attend(this)" role="button">Cancelar <i class="far fa-sm fa-times-circle"></i></button>
+    </div>
+  </div>
+</form>

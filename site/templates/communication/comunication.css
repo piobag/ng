@@ -1,0 +1,9 @@
+#comunication > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#comunication .btn-group {
+    align-items: center;
+}

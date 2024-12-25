@@ -1,0 +1,132 @@
+<nav class="navbar fixed-top bg-light itm_info_navbar">
+    <div class="container">
+        <div>
+            {% if 'adm' in roles %}
+                <button tabindex="-1" type="button" class="btn btn-sm btn-outline-danger" onclick="del_itm(this, '${id}')"><i class="fas fa-sm fa-trash"></i></button>
+            {% endif %}
+        </div>
+        <div>
+            <h4 style="margin: 8px 0">Etapa Atual | <b style="color: var(--first-color);">${
+                result.s_nopaid ? 'Orçamento' : 
+                result.s_noprot ? 'Protocolar' : 
+                result.s_protpend ? 'Aguardando Pagamento' : 
+                result.s_minuta ? 'Minuta' : 
+                result.s_nosign ? 'Assinar' : 
+                result.s_fix ? 'Correção' : 
+                result.s_noprint ? 'Imprimir' : 
+                result.s_visit1 || result.s_visit2 || result.s_visit3 ? 'Em Diligência' : 
+                result.s_nodili ? 'Certidão de Diligência' : 
+                result.s_nodecu ? 'Certidão de Decurso' : 
+                result.s_edital ? 'Orçamento Edital' : 
+                result.s_ended ? 'Finalizado' : 
+                result.s_public ? 'Publicar Edital' : 'Indefinido' }</b>
+            </h4>
+        </div>
+        <div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+    </div>
+</nav>
+
+<div class="info_content">
+    <div class="container-flush">
+        <div class="accordion accordion-flush container-flush text-center" id="itm-info-details-accordion">
+            <div class="accordion-item my-3">
+                <h2 class="accordion-header" id="itm-info-details-accordion-item">
+
+                    <button class="accordion-button text-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#itm-info-details-accordion-body" aria-expanded="false">
+                        <h5 class="accordion_title info-details-accordion-header">
+                            <div><b>Pedido</b> | <input ${disabled} style="width: 150px; text-align: center;" value="${result['cod']}"></div>
+                            <div><b>Data</b> | ${new Date(result['prot_date'] * 1000).toLocaleString('default', {dateStyle: 'short', timeZone: 'America/Sao_Paulo'})}</div>
+                            ${matricula ? `<div><b>Matrícula</b> | <input ${disabled} style="width: 80px; text-align: center;" value="${matricula}" id="itm_info_mat"></div>` : ''}
+                        </h5>
+                    </button>
+                </h2>
+            </div>
+            <div id="itm-info-details-accordion-body" class="accordion-collapse collapse ${show_payments ? 'show' : ''}" data-bs-parent="#itm-info-details-accordion">
+                <div class="accordion-body">
+                    <div class="info_details">
+                        <div class="info_payment">
+                            <h5><b>Pagamentos</b></h5>
+                            <div class="itm_info_new_payment">
+                                <div style="width: 136px">
+                                    <div class="form-floating form-floating-sm ">
+                                        <input onkeyup="mask_value(this)" type="text" class="form-control" name="value" placeholder="" required>
+                                        <label for="value">Adicionar valor</label>
+                                        </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <button tabindex="-1" type="button" class="btn btn-sm btn-outline-success itm_info_btn_save" onclick="itm_info_add_payment(this, '${result.id}')"><i class="fas fa-sm fa-save"></i></button>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Data</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="itm_info_pay"></tbody>
+                                <tfoot>
+                                    <td></td>
+                                    <td></td>
+                                    <td>Saldo</td>
+                                    <td><b>${(+saldo).toLocaleString('pt-BR', currency_br)}</b></td>
+                                </tfoot> 
+                            </table>
+                            <table class="table table-sm table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><h5 class="my-3"><b>Arquivos</b></h5></th>
+                                        <th scope="col"></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="info_itm_files"></tbody>
+                            </table>
+                            ${result.services[0] && !result.services[0].minuta ? `
+                                <table class="table table-sm table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"><b>Carregar arquivo</b></th>
+                                            <th scope="col">
+                                                <input tabindex="0" onchange="upload_itm_file_info(this, '${result.id}')" type="file" id="itm_file_info_add_${result.id}" multiple name="prot_file" accept=".jpg,.jpeg,.png,.gif,.pdf,.p7s" style="display: none;">
+                                                <label class="btn btn-sm btn-outline-primary" for="itm_file_info_add_${result.id}">
+                                                    <i class="fas fa-sm fa-upload"></i>
+                                                </label>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                                <ol class="list-group list-group-numbered" id="itm_info_add_file_${result.id}"></ol>      
+                            ` : ''}
+       
+                        </div>
+                        <div class="itm_info_history">
+                            <h5><b>Histórico</b></h5>
+                            <div class="form-floating">
+                                <textarea class="form-control textarea" placeholder="" id="itm_info_comment"></textarea>
+                                <label for="itm_info_comment">Comentário</label>
+                            </div>
+                            <ul class="list-group">
+                                ${itm_comments}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h4><b>Serviços</b></h4>
+    <div class="container-flush">
+        <div class="accordion accordion-flush container-flush text-center" id="itm_info_serv">
+
+        </div>
+    </div>
+    <div>
+        ${result.services[0] && !result.services[0].minuta || !result.services[0] ? `<hr><button tabindex="-1" type="button" name="${id}" class="btn btn-sm btn-outline-success itm_info_btn_save" onclick="${save_function}"><i class="fas fa-sm fa-save"></i> Salvar</button>` : ''}
+    </div>
+</div>
+

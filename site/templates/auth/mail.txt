@@ -1,0 +1,11 @@
+{{ config['TITLE'] }}
+
+{{ _('Dear') }} {{ user }},
+
+{{ _('Click on the following link to') }} {% if confirm %}{{ _('confirm your account') }}:
+{{ url_for('auth.confirm', token=token, __external=True) }}
+
+{% elif reset %}{{ _('reset your password') }}:
+{{ url_for('auth.reset', token=token, __external=True) }}
+
+{% endif %}

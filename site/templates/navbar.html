@@ -1,0 +1,30 @@
+<nav id="navbar" class="navbar">
+    <ul>
+        <li><a class="nav-link scrollto active" href="/">Inicio</a></li>
+        <li><a href="#about" class="scrollto">Sobre</a></li>
+        <li><a href="#services" class="scrollto">Serviços</a></li>
+        <li><a href="#contact" class="scrollto">Contato</a></li>
+        
+        <!-- <li class="dropdown"><a href="#"><span>Serviços</span><i class="bi bi-chevron-down"></i></a>
+            <ul>
+                <li><a data-bs-toggle="modal" href="#certificado" class="scrollto">Certificado Digital</a></li>
+                <li><a data-bs-toggle="modal" href="#consulta" class="scrollto">Consulta de andamentos</a></li>
+                <li><a data-bs-toggle="modal" href="#certidao" class="scrollto">Pedido de certidão</a></li>
+                <li> <a data-bs-toggle="modal" href="#pet" class="scrollto">Registro de Pet</a></li>
+            </ul>
+        </li> -->
+
+        <li><a href="https://www.instagram.com/cartoriodonovogama/" target="_blank"><i style="font-size: 22px;" class="fab fa-instagram"></i></a></li>
+  
+        {% if current_user.is_authenticated %}
+            {% if 'adm' in roles or 'ng' in roles %}
+                <li><a style="color: #006400;" href="{{ url_for('base.dashboard') }}"><span>Dashboard</span></i></a></li>
+            {% endif %}
+            <li><a onclick="get_profile()" href="#" style="color: #ff8800;">Perfil</a></li>
+            <li><a href="{{ url_for('auth.logout') }}" style="color: #ff0000;" class="scrollto">Sair</a></li>
+        {% else %}
+            <li><a data-bs-toggle="modal" href="#auth_modal" style="color: #006400;" class="scrollto">Acessar</a></li>
+        {% endif %}
+    </ul>
+    <i class="bi bi-list mobile-nav-toggle"></i>
+</nav>

@@ -1,0 +1,17 @@
+<p>Olá.</p>
+<p>Um novo atendimento com início às {{ start.strftime('%H:%M do dia %d/%m/%Y') }} foi agendado para você.</p>
+
+<p>Para consultar ou cancelar seus atendimentos 
+  <a href="{{ url_for('base.index', _external=True, show='bookinglist') }}">
+    Clique AQUI.
+  </a>
+</p>
+
+<p>
+  Ou voce pode usar o seguinte link no navegador:<br>
+  {{ url_for('base.index', _external=True, show='bookinglist') }}
+</p>
+<br>
+<p>
+  Registros Ocidental
+</p>

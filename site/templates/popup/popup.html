@@ -1,0 +1,68 @@
+<div class="accordion-item accordion-border settings_popup">
+    <h2 class="accordion-header" id="popup-list">
+      <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#popups-accordion" aria-expanded="false" aria-controls="popups-accordion">
+        <h2 class="accordion_title">{{ _('Pop-Up') }}</h2>
+      </button>
+    </h2>
+    <div id="popups-accordion" class="accordion-collapse collapse" data-bs-parent="#settings-accordion">
+      <div class="accordion-body">
+        <form name="popup_new" enctype="multipart/form-data">
+          <div class="popup_new">
+            <div class="col-md-3 form-floating">
+              <select tabindex="0" class="form-select" name="page" required>
+              </select>
+              <label for="page">{{ _('Display page') }}</label>
+            </div>
+  
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" id="popup_input" class="form-control form-control-sm" name="desc" placeholder="" required>
+                <label for="desc">{{ _('Description') }}</label>
+              </div>
+            </div>
+            <div class="col">
+              <input type="checkbox" class="btn-check" id="popup_btn_active" name="popup_btn_active" autocomplete="off">
+              <label title="Iniciar ativado" class="btn btn-sm btn-outline-success" for="popup_btn_active"><i class="fa fa-sm fa-check-circle"></i></label>
+              <input type="file" id="file_input" name="file_input" accept=".jpg,.jpeg,.png,.gif" style="display: none;">
+              <label title="Selecionar imagem" class="btn m-2 btn-sm btn-outline-primary" for="file_input">
+                  <i class="fas fa-sm fa-upload"></i>
+              </label>
+              <button type="button" class="btn btn-sm btn-outline-success" name="btn" onclick="new_popup(this)"><i class="fa fa-sm fa-save"></i></button>
+            </div>
+          </div>
+        </form>
+        
+        <form id="popups_list">
+          <div class="container popup_list">
+            <table class="table table-sm table-hover table-responsive">
+              <thead>
+                  <tr>
+                      <th class="col-md">Descrição</th>
+                      <th class="col-md-2">Pagina</th>
+                      <th class="col-md-2"></th>
+                  </tr>
+              </thead>
+              <tbody id="popups_table_list">
+              
+              </tbody>
+          </table>
+          </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="popup_show" tabindex="1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content">
+          <div class="modal-body">
+              <div class="d-flex m-2 justify-content-end">
+                  <div>
+                    <button type="button" class="btn-sm btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                  </div>
+              </div>
+              <span id="popup_show_content"></span>
+          </div>
+      </div>
+  </div>
+</div>

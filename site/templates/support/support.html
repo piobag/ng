@@ -1,0 +1,173 @@
+<h3><b>Suporte</b></h3>
+<div class="accordion accordion-flush container" id="support_accordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#support_accordion_certisign" aria-expanded="false" aria-controls="support_accordion_certisign">
+            <h4>Certisign</h4>
+        </button>
+        </h2>
+        <div id="support_accordion_certisign" class="accordion-collapse collapse show" data-bs-parent="#support_accordion">
+        <div class="accordion-body">
+            <div class="support_certisign_title">
+                <h2 class="text-center">Manual IZI ID</h2>
+                <span class="text-center">
+                    Este manual serve para informar o passo a passo do atendimento por videoconferência.
+                </span>
+            </div>
+            <div class="container container-fluid bg-body">
+                <h4 class="support_certisign_sumario">Sumário</h4>
+                <ul class="list-group">
+                    <a href="#support_certisign_1"><li class="list-group-item list-group-item-action">Acesso ao IZI ID</li></a>
+                    <a href="#support_certisign_2"><li class="list-group-item list-group-item-action">Atendimento</li></a>
+                    <a href="#support_certisign_3"><li class="list-group-item list-group-item-action">Agendar Atendimento</li></a>
+                    <a href="#support_certisign_4"><li class="list-group-item list-group-item-action">Cancelar Atendimento Iniciado</li></a>
+                    <a href="#support_certisign_5"><li class="list-group-item list-group-item-action">Realizando a Videoconferência</li></a>
+                </ul>
+                <h3 class="support_certisign_sumario_items" id="support_certisign_1">Acesso ao IZI ID</h3>
+                <p class="justify">
+                    Para acessar o sistema IZI ID acesse o link <a href="https://certisign.omotor.com.br/#/login" target="_blank">IZI ID</a>.
+                    Após isso você será direcionado para a página principal.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/01_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Nessa página você deverá acessar o sistema com o usuário e senha enviados por e-mail
+                    após o seu cadastro.<br>
+                </p>
+                <h3 class="support_certisign_sumario_items" id="support_certisign_2">Atendimento</h3>
+                <p class="justify">
+                    Após acessar a plataforma, você terá acesso ao <b>"Painel de atendimento"</b>.
+                    A busca do pedido pode ser realizada no campo <b>PEDIDO</b>.
+                    Para buscas avançadas, clique em <b>FILTROS AVANÇADOS</b>.
+                </p>
+                <p class="justify">
+                    Para Crie um novo atendimento no botão: <b>NOVO ATENDIMENTO</b>, após isso você será redirecionado 
+                    para a aba <b>"Criação de Atendimento"</b>, insira 
+                    o <b>Nº do Pedido e o CPF do TITULAR</b> e clique em buscar.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/02_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Confira se todos os campos estão preenchidos, não deixe nenhum em branco.
+                </p> 
+                <p class="justify">
+                    Na sequência, selecione a <b>'Fila de Atendimento"</b> e o <b>"Canal"</b> pelo qual deseja fazer o 
+                    endimento <em><b>(WhatsApp / SMS / E mail)</b></em>.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/03_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Após isso o cliente receberá <em>(No canal em que foi selecionado)</em> o link para iniciar o atendimento.
+                </p>
+                <p class="justify">
+                    Após inserir todos os pedidos do cliente, clique em "INICIAR", no alerta que 
+                    aparecer na tela, clique para acessar o sistema de videoconferência. 
+                </p>
+                <img src="{{ url_for('static', filename='img/support/04_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Após isso você será redirecionado para a tela de login. insira seu usuário e senha usados para acessar o IZI ID.
+                </p>
+                <h3 class="support_certisign_sumario_items" id="support_certisign_3">Agendar Atendimento</h3>
+                <p class="justify">
+                    Para fazer o <b>"Agendamento"</b> siga as mesmas orientações do passo anterior, no entando a data deverá ser preenchida com a data do agendamento. 
+                </p>
+                <p class="justify">
+                    Após prencher corretamente todos os campos clique em <b>"Agendar"</b>.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/05_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Ainda é possível que o cliente reagende o atendimento, o processo deverá ser feito via Whatsapp.
+                </p>
+                <p class="justify">
+                    Para orientações de como o cliente pode reagender acesse o manual em pdf "Manual IZI ID" 
+                    <a href="https://rcartorionovogama.sharepoint.com/:f:/s/NG/Ej7Nx6fMTkRCuvAAZtuMcPUB_G2t5x0AnPmHS4lhcU8j8A?e=JjtM1H"  target="_blank"><b>Clicando Aqui</b></a>.
+                </p>
+                <h3 class="support_certisign_sumario_items" id="support_certisign_4">Cancelar Atendimento Iniciado</h3>
+                <p class="justify">
+                    Após dar início ao atendimento, caso seja necessário 
+                    cancelar por algum motivo (exemplo: canal de atendimento errado), ao 
+                    clicar no botão para <b>CANCELAR</b> , será necessário justificar o cancelamento.
+                </p>
+                <p class="justify">
+                    Após confirmar o cancelamento, a informação ficará registrada nas ocorrências do atendimento.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/06_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">            
+                <h3 class="support_certisign_sumario_items" id="support_certisign_5">Realizando a Videoconferência</h3>
+                <p class="justify">
+                    Assim que o cliente acessar o sistema para começa a videoconferênciao conferência ele ficarána aba <b>"Em Espera"</b>.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/07_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Ao começar o atendimento do cliente, você verá o menu lateral contendo as seguinte informaçôes:                
+                </p>
+                <img src="{{ url_for('static', filename='img/support/08_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Para começar a videoconferência com o cliente clique no icone de câmera no menu e após isso clique em iniciar.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/09_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <P class="justify">
+                    Ao clicar em <b>INICIAR</b>, o cliente recebe o link para a videoconferência. 
+                </P>
+                <p class="justify">
+                    Após isso você será redirecionado para a tela de incio da videoconferência.
+                </p>
+                <p class="justify">
+                    Confira se o microfone e a câmera estão funcionando e após isso clique em entrar.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/10_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Na tela da videoconferência, no menu inferior clique em <b>"BIOMETRIA"</b> e 
+                    após isso o sistema abrirá um menu lateral com a opção <b>"Tirar Foto"</b>.
+                </p>
+                <img src="" class="my-3 rounded mx-auto d-block img-fluid"> <!-- imagem da tela de videoconferência -->
+                <p class="justify">
+                    Oriente o cliente para a correta captura da imagem:
+                </p>
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-action">Proibido o uso de boné e óculos.</li>
+                    <li class="list-group-item list-group-item-action">Proibido outra pessoa na imagem.</li>
+                </ul>
+                <p class="justify">
+                    Após isso clique em <b>"Tirar Foto"</b> para a captura da imagem. Na sequência ajuste a imagem
+                    e após isso clique em <b>"Aprovar a foto e enviar para a biometria"</b> caso a foto esteja de acordo ou <b>"Tirar Foto"</b> para 
+                    tirar uma nova foto.
+                </p>
+                <img src="" class="my-3 rounded mx-auto d-block img-fluid"> <!-- imagem da parte de biometria -->
+                <p class="justify">
+                    Após a aprovação da foto o sistema mostrará um alerta informando que a foto foi aprovada com sucesso e após isso clique 
+                    em <b>"OK"</b>
+                </p>
+                <img src="" class="my-3 rounded mx-auto d-block img-fluid"> <!-- imagem do alerta final -->
+                <p class="justify">
+                    Para ver o roteiro de atendimento acesse o roteiro em pdf "Roteiro Videoconferência IZI ID"
+                    <a href="https://rcartorionovogama.sharepoint.com/:f:/s/NG/Ej7Nx6fMTkRCuvAAZtuMcPUB_G2t5x0AnPmHS4lhcU8j8A?e=JjtM1H"  target="_blank"><b>Clicando Aqui</b></a>.
+                </p>
+                <p class="justify">
+                    Por fim para encerrar o atendimento clique no botão de sair e após isso clique em finalizar
+                </p>
+                <img src="{{ url_for('static', filename='img/support/11_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Após concluir a validação, ficam salvas na aba <b>"Dossiê"</b> todas as informações da videoconferência, incluindo a gravação.
+                </p>
+                <img src="{{ url_for('static', filename='img/support/12_iziid.png') }}" class="my-3 rounded mx-auto d-block img-fluid">
+                <p class="justify">
+                    Todos os arquivos enviados ficam salvos no dossiê, separados entre AGR e cliente. Clique 
+                    em <b>"Copiar"</b> e após isso insira o link na documentação do cliente
+                </p>
+            </div>        
+            <div class="back-to-top d-flex align-items-center justify-content-center active">
+                <a href="#support_accordion_certisign"><i class="fas fa-arrow-up"></i></a>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#support_accordion_lgpd" aria-expanded="false" aria-controls="support_accordion_lgpd">
+            <h4>LGPD</h4>
+        </button>
+        </h2>
+        <div id="support_accordion_lgpd" class="accordion-collapse collapse" data-bs-parent="#support_accordion">
+        <div class="accordion-body">
+            <h6>Conteúdo LGPD</h6>
+        </div>
+        </div>
+    </div>
+</div>

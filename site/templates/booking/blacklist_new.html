@@ -1,0 +1,53 @@
+<div class="d-flex m-4 justify-content-between">
+  <div>
+    <button class="btn btn-outline-primary" data-bs-target="#blacklistlist" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fas fa-list-ul" style="font-size: 1em;"></i></button>
+  </div>
+  <div>
+      <p class="fw-bold fs-3 mx-auto text-center">Novo</p>
+  </div>
+  <div>
+    <button type="button" class="btn-sm btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+  </div>
+</div>
+
+
+
+
+
+<form class="g-3" id='blacklistform' method='POST' action="{{ url_for('booking.blacklist') }}">
+  {{ blacklistform.hidden_tag() }}
+
+
+    <div class="container">
+        <div class="mb-3 ">
+        {{ blacklistform.name.label }}
+        {{ blacklistform.name() }}
+        {% for error in blacklistform.name.errors %}
+        <span style="color: red;">Campo obrigatório. | [{{ error }}]</span>
+        {% endfor %}
+        </div>    
+        <div class="row">
+            <div class="col mb-3">
+            {{ blacklistform.start.label }}
+            {{ blacklistform.start() }}
+            {% for error in blacklistform.start.errors %}
+            <span style="color: red;">Campo obrigatório. | [{{ error }}]</span>
+            {% endfor %}
+            </div>
+            <div class="col mb-3">
+            {{ blacklistform.end.label }}
+            {{ blacklistform.end() }}
+            {% for error in blacklistform.end.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            </div>
+           
+        </div>
+    </div>
+  <hr>
+  <div class="mt-2 mx-auto text-center ">
+      <span id='blacklistbtn'>
+          <div class="btn btn-success" onclick="newBlacklist()">Criar</div>
+      </span>
+  </div>
+</form>

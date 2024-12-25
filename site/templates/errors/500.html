@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ _('An unexpected error has occurred') }}</h1>
+    <p>{{ _('The administrator has been notified. Sorry for the inconvenience!') }}</p>
+    <p><a href="{{ url_for('base.index') }}"><img src="/logo" height="128" width="128"/></a></p>
+    <p><a href="{{ url_for('base.index') }}" class="btn btn-info btn-sm">
+      <span class="glyphicon glyphicon-reply"></span>
+    {{ _('Back') }}</a></p>
+{% endblock %}

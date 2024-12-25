@@ -1,0 +1,63 @@
+{% if devol %}
+    {% if retireok %}
+Prezado(a) {{ devol.name }},
+
+
+    Na condição de apresentante do título nº {{ devol.prot }}, informamos que o cheque para a devolução está pronto para a retirada na recepção, no período de 09:00 às 11:00hrs e 14:00 às 17:00hrs.
+    {% else %}
+Prezado(a) {{ devol.name }},
+
+
+    Tendo em vista o não cumprimento das exigências lançadas, e na condição de apresentante do título nº {{ devol.prot }}, informamos que seu protocolo foi cancelado por decurso de prazo.
+                        
+    Em atendimento ao Art. 170, P. Único do Código de Normas e Procedimento do Foro Extrajudicial do Estado de Goiás, solicitamos a vsª, que indique o metodo que deseja receber a devolução acessando o seguinte link:
+    
+    {{ url_for('finance.devol_resp', token=token, _external=True) }}
+    
+    Ademais, informamos que omissão em não acessar o link acima e informar o metodo de devolução desejado, será entendido como não concordância do apresentante em receber o depósito prévio dentro do prazo normativo e, nesse caso, os emolumentos ficarão a disposição para serem levantados pelo apresentante diretamente na recepção mediante cheque.
+                          
+    OBS: o atendimento para reembolso mediante cheque está condicionado a agendamento prévio através do site https://tabelionatonovogama.com.br/.
+    {% endif %}
+{% endif %}
+    
+{% if booking %}
+    {% if delete %}
+Prezado(a) {{ booking.name }},
+
+
+    Informamos que o agendamento com início às {{ booking.start.strftime('%H:%M do dia %d/%m/%Y') }} foi cancelado{% if reason %} com a seguinte observação: "{{ reason }}"{% endif %}.
+                        
+    {% else %}
+Prezado(a) {{ booking.name }},
+
+    Um novo atendimento com início às {{ booking.start.strftime('%H:%M do dia %d/%m/%Y') }} foi agendado para você.
+                            
+    Para consultar ou cancelar seus atendimentos acesse o link:
+    
+    {{ url_for('base.index', _external=True, show='bookinglist') }}"
+                           
+    {% endif %}
+{% endif %}
+
+
+{% if contact %}
+Contato pelo site em nome de {{ contact.name }}, email {{ contact.email }}, telefone {{ contact.tel }}, do tipo {{ contact.type }}.
+
+Assunto: {{ contact.subject }}
+Mensagem:
+
+{{ contact.message }}
+{% endif %}
+
+
+{% if exig %}
+Prezado(a) {{ exig.name }}
+
+Informamos que seu protocolo de nº {{ exig.prot }} encontra-se em exigência.
+
+Para mais detalhes acesse o link:
+
+{{ url_for('base.index', _external=True, show='bookinglist') }}">
+
+
+{% endif %}

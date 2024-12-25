@@ -1,0 +1,90 @@
+<div style="display: block; width: 595px; height: 800px;">
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100px; margin: 30px 20px; border: 1px solid black; border-radius: 16px;">
+        <span style="font-size: 13px;">
+            <b>TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;,&nbsp;&nbsp;PROTESTO&nbsp;&nbsp;E&nbsp;&nbsp;REGISTRO&nbsp;&nbsp;DE&nbsp;&nbsp;CONTRATOS&nbsp;&nbsp;MARÍTIMOS <br> NOVO&nbsp;&nbsp;GAMA/GO</b>
+        </span>
+        <span style="font-size: 10px;">
+            <b>Rua&nbsp;&nbsp;43,&nbsp;&nbsp;Quadra&nbsp;&nbsp;473,&nbsp;&nbsp;Lote&nbsp;&nbsp;06,&nbsp;&nbsp;Loja&nbsp;&nbsp;14,&nbsp;&nbsp;2°&nbsp;&nbsp;Piso&nbsp;&nbsp;-&nbsp;&nbsp;Shopping&nbsp;&nbsp;Outlet&nbsp;&nbsp;Brasil
+            <br>Parque&nbsp;&nbsp;Estrela&nbsp;&nbsp;Dalva&nbsp;&nbsp;VI,&nbsp;&nbsp;Novo&nbsp;&nbsp;Gama/GO,&nbsp;&nbsp;72860-436</b>
+        </span>        
+        <span style="font-size: 11px;">
+            <b>Contato&nbsp;&nbsp;-&nbsp;&nbsp;(61)&nbsp;&nbsp;99322-5955&nbsp;&nbsp;(WhatsApp)&nbsp;&nbsp;e&nbsp;&nbsp;(61)&nbsp;&nbsp;3060-6366&nbsp;&nbsp;(Fixo)&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ&nbsp;&nbsp;-&nbsp;&nbsp;56.987.452/0001-63</b>
+        </span>
+    </div>
+    <span style="display: flex; justify-content: center; font-size: 20px;"><b>AUTORIZAÇÃO&nbsp;&nbsp;DE&nbsp;&nbsp;CANCELAMENTO&nbsp;&nbsp;DO&nbsp;&nbsp;PROTESTO</b></span>
+
+    <div style="display: flex; flex-direction: column; justify-content: center; height: 110px; margin: 24px 20px; border: 1px solid black; border-radius: 16px;">
+        <h6><b>DESTINATÁRIO&nbsp;&nbsp;/&nbsp;&nbsp;PAGADOR</b></h6>
+        <span style="font-size: 15px;">Nome:&nbsp;&nbsp;<b>${attend.name}</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;CPF:&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b></span>
+        <span style="font-size: 11px;">Endereço:&nbsp;&nbsp;<b>${s.end_log}</b><br>${s.end_bai},&nbsp;&nbsp;${s.end_cid}/${s.end_uf}.&nbsp;&nbsp;CEP:&nbsp;&nbsp;<b>${s.end_cep}</b></span>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: center; height: 340px; margin: 16px 20px; border: 1px solid black; border-radius: 16px;">
+        <h6><b>CARACTERÍSTICA&nbsp;&nbsp;DO&nbsp;&nbsp;TÍTULO&nbsp;&nbsp;PROTESTADO</b></h6>
+        <form class="row g-1" style="display: flex; flex-wrap: wrap; justify-content: center; font-size: 13px;">
+                <div class="form-floating" style="width: 106px;">
+                    <input style="font-size: 12px;" type="text" class="form-control" name="prot_cod" placeholder="" value="${s['prot_cod']}">
+                    <label  for="prot_cod">Protocolo</label>
+                </div>
+                <div class="form-floating" style="width: 80px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_esp" placeholder="" value="${s['prot_esp']}">
+                    <label for="prot_esp">Espécie</label>
+                </div>
+                <div class="form-floating" style="width: 116px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_num" placeholder="" value="${s['prot_num']}">
+                    <label for="prot_num">Número do Título</label>
+                </div>
+                <div class="form-floating" style="width: 110px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_val" placeholder="" value="${s['prot_val'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
+                    <label for="prot_val">Valor do Título</label>
+                </div>
+                <div class="form-floating" style="width: 94px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_emi" placeholder="" value="${s.prot_emi ? new Date(s.prot_emi * 1000).toLocaleDateString('pt-BR') : ''}">
+                    <label for="prot_emi">Emissão</label>
+                </div>
+                <div class="form-floating" style="width: 94px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_ven" placeholder="" value="${s.prot_ven ? new Date(s.prot_ven * 1000).toLocaleDateString('pt-BR') : 'A VISTA'}">
+                    <label for="prot_ven">Vencimento</label>
+                </div>
+                <div class="form-floating" style="width: 94px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_date" placeholder="" value="${s.prot_date ? new Date(s.prot_date * 1000).toLocaleDateString('pt-BR') : ''}">
+                    <label for="prot_date">Data Protesto</label>
+                </div>
+                <div class="form-floating" style="width: 50px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_liv" placeholder="" value="${s['prot_liv']}">
+                    <label for="prot_liv">Livro</label>
+                </div>
+                <div class="form-floating" style="width: 50px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_fls" placeholder="" value="${s['prot_fls']}">
+                    <label for="prot_fls">Folha</label>
+                </div>
+                <div class="form-floating" style="width: 122px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_tot_c" placeholder="" value="${s['prot_tot_c'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
+                    <label  style="font-size: 12px;" for="prot_tot_c">Total Cancelamento</label>
+                </div>
+                <div class="form-floating" style="width: 96px;">
+                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_tot_p" placeholder="" value="${s['prot_tot_p'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
+                    <label for="prot_tot_p">Total a Pagar</label>
+                </div>
+        </form>
+        <span style="font-size: 10px; margin: 8px; text-align: justify;" >Comunicamos que já foi disponibilizada pelo credor Autorização para o Cancelamento do Protesto do título acima discriminado, no qual V.(s) Sª(s) figurou(aram) como devedor(es). Diante do informado, para darmos andamento ao referido cancelamento do protesto será necessário o pagamento das custas e emolumentos devidos, que poderá ser realizado através do <b>pagamento via pix, depósito e/ou transferência bancária</b>, ou diretamente no CARTÓRIO DO NOVO GAMA/GO – TABELIONATO DE NOTAS E PROTESTO, mediante <b>cartão de débito ou crédito</b>.</span>
+        <span style="font-size: 10px; margin: 8px; text-align: justify;">
+            1- Eventuais dúvidas poderão ser esclarecidas com o setor de Cancelamento de Protesto deste Tabelionato, através do telefone <b>(61) 99322-5955 (whatsapp) e (61) 3060-6366 (fixo) ou diretamente no Cartório</b>;
+            <br>2- O pagamento equivalerá à solicitação do cancelamento do protesto, nos termos do artigo 26 da lei federal nº 9.492/1997. 
+        </span>
+    </div>
+    <!-- <div style="display: flex; flex-direction: column; justify-content: center; height: 160px; margin: 16px 20px; border: 1px solid black; border-radius: 16px;">
+    </div> -->
+    
+    <div style="display: flex; flex-direction: column; justify-content: center; height: 110px; margin: 16px 20px; border: 1px solid black; border-radius: 16px;">
+        <span style="display: flex; justify-content: center; font-size: 14px;"><b>DADOS&nbsp;&nbsp;BANCÁRIOS&nbsp;&nbsp;PARA&nbsp;&nbsp;PAGAMENTO</b></span>
+        <span style="font-size: 10px; text-align: justify; margin: 4px;">
+            Beneficiário: <b>CARTÓRIO DO NOVO GAMA/GO - TABELIONATO DE NOTAS E PROTESTO </b><br>
+            Chave Pix: <b>56.987.452/0001-63 (CNPJ )</b><br>
+            Banco: <b>CAIXA ECONOMICA FEDERAL</b> | Agência: <b>3189</b> | Conta Corrente: <b>000577522893-2</b>
+        </span>
+        <span style="font-size: 10px; text-align: justify; margin: 4px;">
+            <b>ATENÇÃO:</b> Lembre-se de enviar o comprovante de pagamento para o Cartório <b>pelo WhatsApp (61) 99322-5955</b>.
+        </span>
+
+    </div>
+</div>

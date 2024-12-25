@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if title %}
+    <h2>{{ title }}</h2>
+  {% endif %}
+  {% if text %}
+    {{ text }}
+  {% endif %}
+{% endblock %}

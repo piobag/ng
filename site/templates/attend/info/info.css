@@ -1,0 +1,130 @@
+/* Modal attend */
+
+.finance_balance_itens .user_balance_amount .item {
+    border: 2px solid var(--first-color-dark);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+}
+
+
+.attend_info_body {
+    padding: 2rem;
+}  
+
+.attend_modal_body > h4 {
+    margin: 24px;
+}
+
+.attend_modal_hearder {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.attend_modal_hearder > div {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 4px;
+}
+
+.attend_modal_content {
+    padding: 12px;
+}
+
+.attend_modal_payment {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 8px;
+}
+
+
+.attend_modal_recibo {
+    padding: 16px;
+    margin: 30px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.attend_modal_recibo_header {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.attend_modal_recibo .attend_modal_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.attend_modal_recibo .modal_end {
+    font-size: 0.79rem;
+}
+
+.attend_modal_recibo img {
+    max-width: 260px;
+}
+
+.attend_modal_recibo table {
+    margin: 12px auto;
+}
+
+
+.attend_modal_payment .item {
+    border: 2px solid var(--first-color-dark);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+}
+
+
+/* Payments modal */
+.attend_modal_new_pay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 620px;
+    padding: 12px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.attend_modal_new_pay .form-floating {
+    margin: 0 4px;
+}
+
+/* Attend History */
+
+.attend_info_history {
+    display: flex;
+    flex-direction: column;
+}
+
+.attend_info_history .textarea {
+    height: 73px;
+}
+
+.attend_info_history .list-group {
+    max-height: 420px;
+    overflow-x: hidden;
+    overflow-y: auto; 
+}
+.attend_info_history .list-group .list-group-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.attend_info_history .list-group .list-group-item .item-header {
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+}
+

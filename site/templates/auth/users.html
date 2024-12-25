@@ -1,0 +1,20 @@
+<table class="table table-sm table-hover table-responsive">
+    <thead>
+        <tr>
+            <th scope="col">Nome <i class="fas fa-sort-down"></i></th>
+            <th scope="col">CPF/CNPJ <i class="fas fa-sort-down"></i></th>
+            <th scope="col">Email <i class="fas fa-sort-down"></i></th>
+            <th scope="col">Grupo <i class="fas fa-sort-down"></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        ${Object.keys(result).map(u => `
+            <tr id="${result[u]['id']}" >
+                <td>${result[u]['name']}</td>
+                <td>${result[u]['cpfcnpj'] ? mask_cpfcnpj(result[u]['cpfcnpj']) : ''}</td>
+                <td>${result[u]['email']}</td>
+                <td>${result[u]['roles']}</td>
+            </tr>`).join('')}
+    </tbody>
+</table>
+Filtrando de ${users_list_start+1} até ${parseInt(data['total']) < last_page ? data['total'] : last_page} do total de ${data['total']} itens. 

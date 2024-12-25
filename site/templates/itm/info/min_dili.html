@@ -1,0 +1,35 @@
+<div class="accordion-item accordion-border" value="cert">
+    <h2 class="accordion-header" id="itm_info_accord_h2_${info_itm_count}">
+        <button class="accordion-button text-center collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#itm_info_accord_${info_itm_count}" aria-expanded="false" aria-controls="itm_info_accord_${info_itm_count}">
+            <h5 class="accordion_title">
+                <span value="${all_natures['attend']['cert']['Diligência']}" class="nature"><i class="fas fa-sm fa-user mx-2"></i>Diligência</span>
+                <span>${result.pessoas[0].name} | <input style="width: 160px;" disabled value="${mask_cpfcnpj(result.pessoas[0].cpf)}"></input></span>
+            </h5>
+        </button>
+    </h2>
+    <div id="itm_info_accord_${info_itm_count}" class="accordion-collapse collapse${result.services[0] && result.services[0].minuta_printed ? 'show' : ''}" aria-labelledby="itm_info_accord_h2_${info_itm_count}" data-bs-parent="#itm_info_serv">
+        <div class="accordion-body">
+            <div class="visit">
+
+                <div class="row">
+                    ${edital}
+                </div>
+                <div class="row">
+                    <div class="col">
+                        ${codigo}
+                    </div>
+                    <div class="col-md-4">
+                        ${files}
+                    </div>
+                </div>
+                <div>
+                    ${visits}
+                </div>
+                ${save_cert_btn}
+                <div>
+                    ${visits_list}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

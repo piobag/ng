@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ _('Not found') }} (404)</h1>
+    <p><a href="{{ url_for('base.index') }}"><img src="{{ url_for('static', filename='img/logo.jpg') }}" height="128" width="128"/></a></p>
+{% endblock %}

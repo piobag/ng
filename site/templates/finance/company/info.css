@@ -1,0 +1,43 @@
+.fin_company_body .info_fin_company .info_company_header {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 36px 0px 12px 0px;
+}
+.fin_company_body .info_fin_company .info_company_content > h5 {
+    margin: 50px 0 8px 0;
+}
+
+.fin_company_body .info_fin_company .info_company_deposit {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.fin_company_body .info_fin_company .info_company_details {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 24px;
+    padding: 8px;
+    align-items: center;
+}
+
+.fin_company_body .info_fin_company .info_company_header > b {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--first-color-dark);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+    
+}
+.fin_company_body .info_company_content .new_company_rep {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    margin: 0 auto;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}

@@ -1,0 +1,234 @@
+/* User */
+
+.settings_user .users_header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.settings_user .users_perpage {
+    display: flex;
+    align-items: center;
+}
+.settings_user .users_perpage > b {
+    margin-right: 1rem;
+}
+
+.settings_user .users_perpage .border-style,
+.settings_user .users_search .border-style {
+    border: 1px solid var(--first-color);
+    padding: 4px 12px;
+    border-radius: 25px;
+}
+
+/* Service */
+
+.settings_service .nature_tp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.settings_service .nature_tp .n_item {
+    border: 2px solid var(--first-color);
+    padding: 16px;
+    border-radius: 2em / 5em;
+    margin: 8px;
+    width: 96px;
+}
+
+
+.settings_service .nature_tp .n_item:hover {
+    color: var(--first-color);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.settings_service .nature_tp .n_item .s_active {
+    color: var(--first-color-light);
+    background-color: var(--first-color);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.settings_service .nature_tp .n_item:visited {
+    background-color: var(--first-color);
+    color: var(--first-color-light);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+
+
+.settings_service .services_new {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 640px;
+    padding: 8px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_service .services_new .form-floating {
+    margin: 0 26px;
+}
+
+.settings_service .services_header,
+.settings_service .services_footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.settings_service .services_perpage {
+    display: flex;
+    align-items: center;
+}
+.settings_service .services_perpage > b {
+    margin-right: 1rem;
+}
+
+.settings_service .services_perpage .border-style,
+.settings_service .services_search .border-style {
+    border: 1px solid var(--first-color);
+    padding: 4px 12px;
+    border-radius: 25px;
+}
+
+/* Nature */
+
+.settings_nature .natures_new {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 980px;
+    padding: 8px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_service .settings_nature {
+   border-radius: 0 0 16px 16px;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_nature .natures_new .form-floating {
+    margin: 0 26px;
+}
+
+.settings_nature .natures_header,
+.settings_nature .natures_footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.settings_nature .natures_perpage {
+    display: flex;
+    align-items: center;
+}
+.settings_nature .natures_perpage > b {
+    margin-right: 1rem;
+}
+
+.settings_nature .natures_perpage .border-style,
+.settings_nature .natures_search .border-style {
+    border: 1px solid var(--first-color);
+    padding: 4px 12px;
+    border-radius: 25px;
+}
+
+.settings_nature .natures_list {
+    display: inline-table;
+}
+
+
+.settings_nature .list_nature {
+    flex-direction: column;
+}
+
+.settings_nature .filter_list_nature {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px auto;
+    padding: 8px;
+    max-width: 640px;
+}
+
+.settings_nature .filter_list_nature > div {
+    margin: 4px;
+}
+
+
+/* Document */
+
+.settings_document .documents_new {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 640px;
+    padding: 8px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_service .settings_document {
+   border-radius: 0 0 16px 16px;
+   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_document .documents_new .form-floating {
+    margin: 0 26px;
+}
+
+.settings_document .documents_header,
+.settings_document .documents_footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.settings_document .documents_perpage {
+    display: flex;
+    align-items: center;
+}
+.settings_document .documents_perpage > b {
+    margin-right: 1rem;
+}
+
+.settings_document .documents_perpage .border-style,
+.settings_document .documents_search .border-style {
+    border: 1px solid var(--first-color);
+    padding: 4px 12px;
+    border-radius: 25px;
+}
+
+.settings_document .documents_list {
+    display: inline-table;
+}
+
+.settings_document .filter_list_document {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 24px auto;
+    padding: 8px;
+    max-width: 640px;
+}
+
+.settings_document .filter_list_document > div {
+    margin: 4px;
+}
+

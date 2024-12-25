@@ -1,0 +1,75 @@
+<div class="modal fade" id="bookinglist" aria-hidden="true" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+          <div class="d-flex m-4 justify-content-between">
+            <div>
+              <button class="btn btn-outline-success" data-bs-target="#bookingnew" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fas fa-plus" style="font-size: 1em;"></i></button>
+            </div>
+          <div>
+            <p class="fw-bold mt-2 fs-3">{{ _('Appointments') }}</p>
+          </div>
+          <div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+        </div>
+          <div id="bookinglist-body" class="modal-body">
+            <div class="d-flex justify-content-center"><div class="text-center spinner-border spinner-border-sm text-ligth" role="status"></div></div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="bookingnew" data-bs-backdrop="static" aria-hidden="true" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-flex m-4 justify-content-between">
+        <div>
+          <button class="btn btn-outline-primary" data-bs-target="#bookinglist" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fas fa-list-ul" style="font-size: 1em;"></i></button>
+        </div>
+        <div>
+          <p class="fw-bold fs-3 mx-auto text-center">{{ _('Booking') }}</p>
+        </div>
+        <div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>      
+        </div>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form id='bookingform' class="was-validated">
+            <div class="col-xs-4 mb-4 mx-auto text-center">
+              <label class="form-label">{{ _('Name') }}</label>
+              <input type="text" id="name" class="form-control mb-2" placeholder="{{ _('Full name') }}" value="{{ current_user.name }}" required>
+            </div>
+            <div class="col-xs-4 mx-auto">
+              <table class="table table-sm table-hover">
+                <tbody id="book-ri">
+                </tbody>
+              </table>
+            </div>
+            <div class="col-xl-5 mb-2 mx-auto text-center">
+              <label class="form-label">{{ _('Day') }}</label>
+              <input class="form-control mb-2" type="date" name="day">
+            </div>
+            <div class="col-xl-6 mb-2 mx-auto text-center">
+              <span id="horas">
+                <label>{{ _('Hour') }}</label>
+                <select class="form-select form-select-sm" required>
+                    <option value="00:00">{{ _('Choose a day and services') }}</option>
+                </select>
+              </span>
+            </div>
+            <div class="col-xl-10 mb-2 mx-auto text-center ">
+              {{ _('Comments') }}
+            </div>
+            <textarea name="obs" rows="1" resize="none"></textarea>
+            <div class="col-md-4 mt-2 mx-auto text-center ">
+              <button type="button" name="btn" class="btn btn-success text-center" onclick="new_booking()">
+                {{ _('Schedule') }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

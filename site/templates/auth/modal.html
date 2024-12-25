@@ -1,0 +1,59 @@
+<div class="modal fade" id="auth_modal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="d-flex mx-3 justify-content-end">
+          <div>
+              <button type="button" class="btn-sm btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+        </div>
+        <form id="login" class="form-auth">
+          <h1>{{ _('Sign-in') }}</h1>
+          <div class="form-floating">
+            <input type="text" onkeyup="check_login(event)" class="form-control" id="cpf_log" placeholder="">
+            <label for="cpf_log">{{ _('CPF') }}</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" onkeyup="check_login(event)" class="form-control" id="pwd_log" placeholder="">
+            <label for="pwd_log">{{ _('Password') }}</label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input class="form-check-input" type="checkbox" id="remember"> {{ _('Keep me logged in') }}
+            </label>
+          </div>
+          <div class="btn-auth">
+            {% if config.DEBUG %}
+              <button id="loginbtn" type="button" class="btn btn-lg btn-outline-primary" onclick='login()'>{{ _('Login') }}</button>
+            {% else %}
+              <button id="loginbtn" type="button" class="btn btn-lg btn-outline-primary g-recaptcha" data-sitekey="{{ config['RECAPTCHA_SITEKEY'] }}" data-callback='login' data-action='submit'>{{ _('Login') }}</button>
+            {% endif %}
+            <span class="show_register">{{ _('Create account') }}</span>
+            <span class="show_restore">{{ _('Restore password') }}</span>
+          </div>
+        </form>
+        {% include 'auth/register.html' %}
+        <form id="restore" class="form-auth" style="display: none;">
+          <h2>{{ _('Restore password') }}</h2>
+          <div class="form-floating">
+            <input type="text" onkeyup="check_restore(event)" class="form-control" id="cpf_res" placeholder="">
+            <label for="cpf_res">{{ _('CPF') }}</label>
+          </div>
+          <div class="btn-auth">
+            {% if config.DEBUG %}
+              <button id="restorebtn" type="button" class="btn btn-lg btn-outline-primary" onclick='restore()'>{{ _('Restore') }}</button>
+            {% else %}
+              <button id="restorebtn" type="button" class="btn btn-lg btn-outline-primary g-recaptcha" data-sitekey="{{ config['RECAPTCHA_SITEKEY'] }}" data-callback='restore' data-action='submit'>{{ _('Restore') }}</button>
+            {% endif %}
+            <span class="show_register">{{ _('Create account') }}</span>
+            <span class="show_login">{{ _('Sign-in') }}</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

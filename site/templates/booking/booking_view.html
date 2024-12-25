@@ -1,0 +1,31 @@
+<div class="accordion-body">
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="card-body">
+                <h5>Serviços </h5>
+                {% for s in services %}
+                    {% if services[s]|int > 0 %}
+                        {{ s }}: {{ services[s] }}<br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card-body">
+                <div class="btn-group btn-group-sm d-grid d-md-flex justify-content-md-end">
+                    <span id="btn_{{ booking.id }}">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="delete_booking('{{booking.id}}')"><i class="fa fa-sm fa-trash"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+        {% if booking.obs %}
+            <div class="card-body">
+                <h5>Observações</h5>
+                <p>{{ booking.obs }}</p>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</div>

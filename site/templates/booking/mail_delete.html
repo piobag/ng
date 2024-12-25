@@ -1,0 +1,3 @@
+<p>
+    Informamos que o agendamento {% if name %}em nome de "{{ name }}" {% endif %}com início às {{ start.strftime('%H:%M do dia %d/%m/%Y') }} foi cancelado{% if reason %} com o motivo: "{{ reason }}"{% endif %}. 
+</p>

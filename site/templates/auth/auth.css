@@ -1,0 +1,77 @@
+:root {
+    --black: rgba(56, 51, 51, 0.274);
+    --white: rgba(255, 255, 255, 0.733);
+    --green: rgb(1, 80, 5);
+    --red: rgb(255, 0, 0);
+    --blue: rgb(0, 38, 255);
+}
+
+
+/* 
+html,
+body {
+  height: 100%;
+} */
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-image: url("{{ url_for('static', filename='/img/auth-bg.jpg') }}");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Formulário de login */
+.form-auth {
+    width: 100%;
+    justify-content: center;
+    max-width: 359px;
+    padding: 15px;
+    margin: auto;
+    box-shadow: 0 1px 4px rgba(0,0,0,.05),0 4px 16px rgba(0,0,0,.06);
+    border-radius: 8px;
+    background-color: var(--white);
+    padding: 24px;
+}
+.form-auth .checkbox {
+    margin-top: 16px;
+}
+
+.form-auth .btn-auth {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-auth .btn-auth .btn-lg {
+    margin-top: 16px;
+    margin-bottom: 16px;
+}
+
+.form-auth .btn-auth .btn-sm {
+    margin: 8px 60px auto;
+}
+
+/* Show btns */
+.show_login:hover {
+    color: var(--blue);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.show_register:hover {
+    color: var(--green);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.show_restore:hover {
+    color: var(--red);
+    transform: scale(1.2);
+    cursor: pointer;
+}

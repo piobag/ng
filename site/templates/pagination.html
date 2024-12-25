@@ -1,0 +1,25 @@
+<div class="pagination_content">
+    <div class="pagination_perpage">
+      <b>{{ _('Per page') }}:</b>
+      <div>
+        <select onchange="${f}_change_perpage(this, '${filter}')" class="form-select form-select-sm change-pagination border-style per_page">
+          ${perpage == 1 ? '<option value="1" selected>1</option>' : ''}
+          <option value="5" ${perpage == 5 ? 'selected' : ''}>5</option>
+          <option value="10" ${perpage == 10 ? 'selected' : ''}>10</option>
+          <option value="25" ${perpage == 25 ? 'selected' : ''}>25</option>
+          <option value="50" ${perpage == 50 ? 'selected' : ''}>50</option>
+          <option value="100" ${perpage == 100 ? 'selected' : ''}>100</option>
+        </select>
+      </div>
+    </div>
+    <div class="pagination_pages">
+        <nav>
+            <ul class="pagination pagination-sm pages_devol_${filter}">
+                ${pages.map(p => `
+                    <li class="page-item${current_page == p ? ' active' : ''}"><a class="page-link" onclick="${f}_page(${p}, '${filter}')">${p}</a></li>
+                `).join('')}
+            </ul>
+        </nav>
+    </div>
+</div>
+

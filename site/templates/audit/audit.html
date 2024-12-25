@@ -1,0 +1,45 @@
+<div class="dash_content">
+    <h1>{{ _('Dashboard') }}</h1>
+    <!-- <div class="item">
+      <h4>{{ _('Finance') }}</h4>
+    </div>
+    <div class="item">
+      <h4>{{ _('Digitizer') }}</h4>
+    </div> -->
+    <div class="item">
+      <h4>Desenvolvimento Web - Relatórios</h4>
+      {% if 'adm' in roles %}
+      <form name="devreport" enctype="multipart/form-data">
+        <div class="devreport_header">
+          <div class="form-floating col-md-3">
+            <input type="date" class="form-control form-control-sm" name="date" placeholder="" required>
+            <label for="date">{{ _('Date') }}</label>
+          </div>
+          <div class="form-floating col-md-2">
+            <input type="number" class="form-control form-control-sm" name="hours" placeholder="" required>
+            <label for="hours">{{ _('Hours') }}</label>
+          </div>
+          <div>
+            <input type="file" id="devreport_file" name="devreport_file" accept=".doc,.docx,.pdf" required style="display: none;">
+            <label class="btn m-2 btn-sm btn-outline-primary" for="devreport_file">
+                <i class="fas fa-sm fa-upload"></i>
+            </label>
+            <button class="btn btn-sm btn-outline-success" type="button" onclick="new_devreport(this)"><i class="fas fa-sm fa-save"></i></button>
+          </div>
+        </div>
+      </form>
+      {% endif %}
+      <div id="list_devreport_total"></div>
+      <table class="table table-sm table-hover table-responsive">
+        <tbody id="list_devreport"></tbody>
+      </table>
+    </div>
+    <!-- <div class="item">
+      <h4>{{ _('Vacation') }}</h4>
+    </div> -->
+</div>
+
+
+
+
+

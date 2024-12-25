@@ -1,0 +1,51 @@
+<div id="info_itm_print" class="info_itm_print">
+    <div class="info_itm_print_header">
+        <p style="font-size: 9px;">
+            REPÚBLICA FEDERATIVA DO BRASIL<br> 
+            CARTÓRIO DE REGISTRO DE IMÓVEIS E ANEXOS - COMARCA DE CIDADE OCIDENTAL – GO<br>
+            SQ 12, Quadra 11, Lote 56, Centro, Cidade Ocidental – GO<br>
+            OFICIAL REGISTRADOR: MÁRCIO SILVA FERNANDES<br>
+            OFICIAL SUBSTITUTO: AUGUSTO VIEIRA LIMA JÚNIOR e ALYRIO CARDOSO NETO<br>
+            ESCREVENTE AUTORIZADA: NAYANE BATISTA DA SILVA<br>
+        </p>  
+        <h5><u><b>INTIMAÇÃO</b></u></h5>
+        <h6 style="width: 100%; text-align: end;">Protocolo: <b>${intimacao['services'][0].prot}</b></h6>
+    </div>
+    <div class="info_itm_print_content">
+        <div class="itm_print_minu">
+            <p style="font-size: 0.85rem; text-align: justify;">
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp {{ config.SERVENTIA.HOLD }}, Oficial {{ config.SERVENTIA.TYPE }} do {{ config.SERVENTIA.DESC }}, em ${new Date(intimacao['services'][0].prot_date * 1000).toLocaleString('default', {dateStyle: 'long', timeZone: 'America/Sao_Paulo'})}, segundo as atribuições conferidas pelo art. 26 § 1º da Lei 9.514 de 20 de novembro 1997, bem como, a requerimento firmado pelo(a) credor(a): 
+                <b>${intimacao.credor.name}</b>, inscrito(a) no CNPJ/MF sob nº <b>${intimacao.credor.cnpj}</b>, com sede no(a) ${intimacao.credor.sede}, vem pela presente, intimar o(a) devedor(a): 
+                ${devedor}, nos termos do(a) ${intimacao.contr ? intimacao.contr : '<b>Dados do Contrato/Escritura</b>'}, referente ao imóvel registrado sob a matrícula Nº <b>${intimacao['services'][0].mat}</b> desta Serventia, com saldo devedor de responsabilidade de V. Sª. A intimação visa o cumprimento das obrigações contratuais relativas ao(s) encargo(s) constante dos documentos em anexo, variável conforme a data do efetivo pagamento. 
+            </p>
+            <p style="font-size: 0.85rem; text-align: start;">
+                <b>Endereços para intimação:</b><br>
+            </p>
+            ${minut_end}
+            <p style="font-size: 0.70rem; text-align: justify;">
+                <b>Assim, procedo à INTIMAÇÃO DE V. Sª, para que se dirija à agência responsável pelo financiamento imobiliário</b>, onde deverá efetuar a purga do débito, no prazo improrrogável de 15 dias, contados a partir desta data. Nesta oportunidade, fica V. Sª cientificado(a) que o não cumprimento da referida obrigação no prazo ora estipulado garante o direito de consolidação da propriedade do imóvel em favor do credor – 
+                ${intimacao.credor.name} - nos termos do art.26, § 7º da Lei 9.514/97.
+            </p>
+            <p style="font-size: 0.70rem; text-align: start;">
+                SELO Nº: <b>${intimacao['services'][0].selo}</b>  - Consulte o selo em https://see.tjgo.jus.br/ 
+            </p>
+        </div>
+        <div class="itm_print_sign" >
+                <p style="width: 100%; text-align:end;">Cidade Ocidental - GO, <b>${new Date(intimacao.services[0].prot_date * 1000).toLocaleString('default', {dateStyle: 'long', timeZone: 'America/Sao_Paulo'})}.</b></p>
+                <h4 style="font-size: 1rem;">
+                    Alyrio Cardoso Neto<br>
+                    Oficial Substituto
+                </h4>
+                <p style="font-size: 0.85rem; text-align: start;">
+                    <b>Notificação Entregue</b><br>
+                    Notificado em Data ______/______/_______ Horário: _____:_____<br><br>
+                    Assinatura:_____________________________________________________ CPF: ______.______._____-____
+                </p>
+        </div>
+    </div>
+    <div style="page-break-before: always; height: 800px;" class="info_itm_print_verse">
+        <h5>Controle das Visitas</h5>
+        ${controle_visit}
+
+    </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="accordion-item accordion-border settings_blacklist">
+  <h2 class="accordion-header" id="blacklist-list">
+    <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#blacklist-accordion" aria-expanded="false" aria-controls="blacklist-accordion">
+      <h2 class="accordion_title">{{ _('Blacklist') }}</h2>
+    </button>
+  </h2>
+  <div id="blacklist-accordion" class="accordion-collapse collapse" data-bs-parent="#settings-accordion">
+    <div class="accordion-body">
+      <form id="blacklist_new" enctype="multipart/form-data">
+        <div class="row g-1 blacklist_new">
+          <div class="col-md-5">
+            <div class="form-floating">
+              <input type="text" id="blacklist_input" class="form-control form-control-sm" name="name" placeholder="" required>
+              <label for="name">{{ _('Description') }}</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div onchange="blacklist_new.end.value = blacklist_new.start.value" class="form-floating">
+              <input type="date" class="form-control" name="start" placeholder="" required>
+              <label for="start">{{ _('Date start') }}</label>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-floating">
+              <input type="date" class="form-control" name="end" placeholder="" required>
+              <label for="end">{{ _('Date end') }}</label>
+            </div>
+          </div>
+          <div class="col-md-1">
+            <div type="button" class="btn btn-sm btn-outline-success" onclick="save_blacklist(this)"><i class="fas fa-sm fa-save"></i></div>
+          </div>
+        </div>
+      </form>
+      <form>
+        <div class="container blacklist_list">
+          <table class="table table-sm table-hover table-responsive">
+            <thead>
+              <tr>
+                <th class="col-md">{{ _('Description') }}</th>
+                <th class="col-md-2">{{ _('Start') }}</th>
+                <th class="col-md-2">{{ _('End') }}</th>
+                <th class="col-md-2"></th>
+              </tr>
+            </thead>
+            <tbody id="blacklist_list"></tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

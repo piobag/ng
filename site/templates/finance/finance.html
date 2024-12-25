@@ -1,0 +1,47 @@
+<div class="container-flush">
+  <div class="accordion accordion-flush container-flush text-center" id="finance-accordion">
+    <div class="accordion-item finance_balance accordion-border">
+      <h2 class="accordion-header" id="balance-One">
+          <button class="accordion-button active text-center" type="button" data-bs-toggle="collapse" data-bs-target="#balance-accordion" aria-expanded="false" aria-controls="balance-accordion">
+          <h2 class="accordion_title">{{ _('Balance') }}</h2>
+          </button>
+      </h2>
+      <div id="balance-accordion" class="accordion-collapse collapse show" aria-labelledby="balance-One" data-bs-parent="#finance-accordion">
+        <div class="accordion-body">
+          <div class="finance_balance_header">
+            <form id="find_balance" class="form-floating finance_balance_form">
+              <div>
+                <div title="Filtrar período" class="btn btn-sm btn-outline-primary" name="btn" onclick="filter_balance(this)"><i class="fas fa-sm fa-search"></i></div>
+              </div>
+              <div class="row g-1 justify-content-center">
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="date" class="form-control" id="date_start" name="date_start" placeholder="">
+                    <label for="date_start">{{ _('Date start') }}</label>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-floating">
+                    <input type="date" class="form-control" id="date_end" name="date_end" placeholder="">
+                    <label for="date_end">{{ _('Date end') }}</label>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <button type="button" name="print" id="finance_balance_print" title="Imprimir relatório" class="btn btn-sm btn-success text-center m-3" onclick="print_balance(this)">
+                    <i class="fas fa-sm fa-print"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="finance_balance_content">
+            <div id="finance_balance_amount" class="finance_balance_amount"></div>
+            <div id="finance_balance_itens" class="finance_balance_itens accordion accordion-flush container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'finance/company/company.html' %}
+    {% include 'finance/devol/devol.html' %}
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="container pt-5 col-md-10 text-center">
+    <h2>Devolução de Emolumentos</h2><br><br>
+    <h4>Prezado(a) <b>${devol['name']}</b>, informamos que o valor de <b>${devol['value'].toLocaleString('pt-BR', currency_br)}</b> referente ao protocolo de nº <b>${devol['prot']}</b> está disponivel para devolução.</h4>
+    <br>
+    <button onclick="devolrespback()" id="devolrespback" style="display: none;" class="btn btn-sm btn-outline-danger mx-auto">Voltar</button>
+
+    <span id="devolrespopt">
+        <h5 class="p-2">Escolha a opção desejada:</h5>
+        <br>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-3 mx-auto">
+            <div class="col t-card mx-auto">
+            <div class="card border-dark h-100">
+                <div class="card-body">
+                <button id="t-btn" onclick="transfer()" class="btn btn-sm btn-outline-success"><strong>Transferência Bancária</strong></button>
+                <p class="card-text mt-3">O reembolso realizado mediante transferência bancária está sujeito a desconto de eventuais tarifas incidentes na operação.</p>
+                </div>
+            </div>
+            </div>
+            <div class="col r-card mx-auto">
+            <div class="card border-dark h-100">
+                <div class="card-body">
+                <button id="r-btn" onclick="retire()" class="btn btn-sm btn-outline-success"><strong>Retirada na Recepção</strong></button>
+                <p class="card-text mt-3">Será realizada mediante a cheque nominal ao apresentante do título e estará disponível para a retirada após 3 dias úteis da sua confirmação.</p>
+                </div>
+            </div>
+            </div>
+            <div class="col p-card mx-auto">
+            <div class="card border-dark h-100">
+                <div class="card-body">
+                <button id="p-btn" onclick="reprot()" class="btn btn-sm btn-outline-success"><strong>Re-Protocolo</strong></button>
+                <p class="card-text mt-3">Ao reprotocolar o valor informado será descontado no valor final do novo título, sendo necessário pagar a difença das custas.</p>
+                </div>
+            </div>
+            </div>
+        </div>
+    </span>
+    <div id="t-body" class="col-md p-4 container" style="display: none;">
+        <h4 class="p-2">{{ _('Bank Data') }}</h4>
+        <hr>
+        <div class="d-flex align-items-end justify-content-around">
+            <div>
+                <h5><p>{{ _('Holder') }} | <b>${devol['name']}</b></p></h5>
+            </div>
+            <div>
+                ${devol['cpf'] ? `<h5><p>{{ _('CPF') }} | <b>${mask_cpfcnpj(devol['cpf'])}</b></p></h5>`  : ''}
+            </div>
+        </div>
+        <form class="g-2 p-2 row d-flex align-items-center justify-content-center" id='devolrespform' method='POST' action="/devol/resp/{{ token }}" class="was-validated">
+            <div class="form-floating col-md-5">
+                <input type="text" class="form-control form-control-sm" name="banco" placeholder="">
+                <label for="banco">{{ _('Bank') }}</label>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="contaradio" id="conta_c">
+                    <label class="form-check-label" for="conta_c">
+                      Corrente
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="contaradio" id="conta_p">
+                    <label class="form-check-label" for="conta_p">
+                      Poupança
+                    </label>
+                </div>
+            </div>
+            <div class="form-floating col-md-2">
+                <input type="text" class="form-control form-control-sm" name="agencia" placeholder="">
+                <label for="agencia">{{ _('Agency') }}</label>
+            </div>
+            <div class="form-floating col-md-3">
+                <input type="text" class="form-control form-control-sm" name="conta" placeholder="">
+                <label for="conta">{{ _('Account') }}</label>
+            </div>
+            <span id='devolresptransfbtn'>
+                <button class="btn m-3 btn-success text-center" type="button" onclick="devolresp(this, 'transf')">Enviar</button>
+            </span>
+        </form>
+    </div>
+    <div id="r-body" class=" p-4" style="display: none;">
+        <h4 class="p-2">Devolução por cheque</h4>
+        <h5 class="p-4">Após a sua confirmação, enviaremos um email quando estiver pronto para a retirada.</h5>
+        <span id='#'>
+            <button class="btn btn-success text-center" onclick="devolresp(this, 'retire')">Confirmar</button>
+        </span>
+    </div>
+    <div id="p-body" class=" p-4" style="display: none;">
+        <h4 class="p-2">Reprotocolar título</h4>
+        <h5 class="p-4">Para dar entrada em um novo protocolo, é necessário agendar o atendimento.</h5>
+        <button class="btn btn-success text-center" onclick="devolresp(this, 'reprot')">Reprotocolar</button>
+    </div>
+</div>

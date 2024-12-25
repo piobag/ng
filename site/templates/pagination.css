@@ -1,0 +1,33 @@
+/* User */
+
+.pagination_content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 540px;
+    margin: 12px auto;
+}
+.pagination_content ul {
+    margin: 0;
+}
+
+
+.pagination_content .pagination_text_filter { 
+    display: flex;
+    justify-content: center;
+}
+.pagination_content .pagination_perpage {
+    display: flex;
+    align-items: center;
+}
+.pagination_content .pagination_perpage > b {
+    margin-right: 1rem;
+}
+
+.pagination_content .pagination_perpage .border-style,
+.pagination_content .pagination_search .border-style {
+    border: 1px solid var(--first-color-dark);
+    padding: 4px 24px 4px 4px;
+    border-radius: 25px;
+    text-align: center;
+}

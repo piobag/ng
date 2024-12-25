@@ -1,0 +1,12 @@
+**__pycache__
+profile
+.venv
+venv
+.env
+<<<<<<< HEAD
+**geckodriver.log
+=======
+
+app/msg.png
+app/teste.png
+>>>>>>> 8c93e99b44a6dfcd88bb5b424f067b0ac52f9dc8

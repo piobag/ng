@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+{% block styles %}
+  {{ super() }}
+  <style>
+    {% include "dashboard.css" %}
+
+    {% if 'audit' in roles %}
+      {% include 'audit/audit.css' %}
+    {% endif %}
+    {% if 'fin' in roles %}
+      {% include "finance/finance.css" %}
+      {% include 'finance/company/info.css' %}
+      {% include 'attend/info/info.css' %}
+    {% endif %}
+    {% if 'itm' in roles %}
+      {% include 'itm/itm.css' %}
+    {% endif %}
+
+    {% if 'fin' in roles %}
+      {% include 'attend/prot/info.css' %}
+      {% include 'itm/info/info.css' %}
+    {% elif 'itm' in roles %}
+      {% include 'itm/info/info.css' %}
+    {% endif %}
+
+    {% if 'ri' in roles %}
+      {% include 'attend/attend.css' %}
+      {% include 'attend/prot/info.css' %}
+      {% include 'attend/info/info.css' %}
+
+    {% endif %}
+    {% if 'ng' in roles %}
+      {% include 'ferias/ferias.css' %}
+      {% include 'support/support.css' %}
+    {% endif %}
+
+
+    {% if 'settings' in roles %}
+      {% include "settings/settings.css" %}
+      {% include "settings/info/nature.css" %}
+      {% include "popup/popup.css" %}
+      {% include "booking/booking.css" %}
+    {% endif %}
+  </style>
+{% endblock %}
+
+{% block navbar%}
+<nav class="navbar sticky-top navbar-light bg-light">
+    <div>
+      <a class="btn_link"><i class="fas fa-arrow-right nav_icon" id="header-toggle"></i></a>
+      <a href="{{ url_for('base.index')}}?home=1" class="btn_link"><i class="fa fa-home nav_icon"></i></a>
+    </div>
+    <div>
+      <a class="btn_link btn" type="submit"><i class="fas fa-search"></i></a>
+      <input class="form-control form-control-sm" style="min-width: 212px;" onkeyup="dashboard_search(this, event)" onblur="dashboard_search(this, event)" id="dashboard_search" placeholder="{{ _('Search') }}">
+    </div>
+    <div>
+      <a class="btn_link position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#dashboard_notify">
+        <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-primary">
+          0
+        </span>
+        <i class="fas fa-bell"></i>
+      </a>
+      <a class="btn_link" id="user-toggle">
+        <i class="fas fa-user-circle"></i>
+      </a>
+      <a href="{{ url_for('auth.logout') }}" class="btn_link"> 
+        <i class="fas fa-sign-out-alt nav_icon"></i> 
+      </a>
+    </div>
+</nav>
+
+<div class="l-navbar" id="nav-bar">
+  <nav class="nav">
+    <div class="nav_list"> 
+
+      {% if 'audit' in roles %}
+        <a class="nav_link" id="show_dash">
+          <i class="fas fa-chart-line nav_icon"></i>
+          <span class="nav_name">{{ _('Dashboard') }}</span>
+        </a>
+      {% endif %}
+      {% if 'fin' in roles %}
+        <a class="nav_link" id="show_finance">
+          <i class="fas fa-money-check-alt nav_icon"></i> 
+          <span class="nav_name">{{ _('Finance') }}</span> 
+        </a> 
+      {% endif %}
+      {% if 'ri' in roles %}
+        <a class="nav_link" id="show_attend">
+          <i class="fas fa-tasks nav_icon"></i>
+          <span class="nav_name">{{ _('Attendance') }}</span> 
+        </a> 
+      {% endif %}
+      {% if 'itm' in roles %}
+        <a onclick="load_itms()" class="nav_link" id="show_onr">
+          <i class="fas fa-id-card-alt nav_icon"></i>
+          <span class="nav_name">{{ _('Intimation') }}</span> 
+        </a> 
+      {% endif %}
+      {% if 'ng' in roles %}
+        <a class="nav_link" id="show_vacation">
+          <i class="fas fa-plane nav_icon"></i> 
+          <span class="nav_name">{{ _('Vacation') }}</span> 
+        </a>
+        <a class="nav_link" id="show_support">
+          <i class="fas fa-info-circle nav_icon"></i>
+          <span class="nav_name">{{ _('Support') }}</span> 
+        </a>
+            {% endif %}
+      {% if 'settings' in roles %}
+        <a class="nav_link" id="show_settings">
+          <i class="fas fa-tools nav_icon"></i>
+          <span class="nav_name">{{ _('Settings') }}</span> 
+        </a>
+      {% endif %}
+      {% if 'digitizer' in roles %}
+        <a href="/digit/" class="nav_link" id="show_dash">
+          <i class="fas fa-file-image nav_icon"></i>
+          <span class="nav_name">{{ _('Images') }}</span>
+        </a>
+      {% endif %}
+    </div>
+    <div>
+
+      
+    </div>
+  </nav>
+</div>
+{% endblock %}
+
+{% block content %}
+
+  <section id="dash" class="grid_center" style="display: none;">
+    {% if 'audit' in roles %}
+      {% include 'audit/audit.html' %}
+    {% endif %}
+  </section>
+  <section id="finance" class="grid_center" style="display: none;">
+    {% if 'fin' in roles %}
+      {% include 'finance/finance.html' %}
+      {% include 'finance/company/info.html' %}
+    {% endif %}
+     
+  </section>
+  <section id="attend" class="grid_center attend" style="display: none;">
+    
+    {% if 'fin' in roles %} 
+      {% include 'attend/attend.html' %}
+    {% elif 'ri' in roles %}
+      {% include 'attend/attend.html' %}
+    {% endif %}
+  </section>
+  <section id="onr" class="onr_itm" style="display: none;">
+
+  </section>
+
+  <section id="vacation" class="grid_center" style="display: none;">
+    {% if 'ng' in roles %}
+      {% include 'ferias/ferias.html' %}
+    {% endif %}
+  </section>
+  <section id="support" class="grid_center support" style="display: none;">
+    {% if 'ng' in roles %}
+      {% include 'support/support.html' %}
+    {% endif %}
+  </section>
+  <section id="settings" class="grid_center" style="display: none;">
+    {% if 'settings' in roles %}
+      {% include 'settings/settings.html' %}
+      {% include 'settings/info/nature_modal.html' %}
+    {% endif %}
+  </section>
+  <div id="sec_info">
+      {% include 'attend/info/info.html' %}
+      {% include 'attend/prot/info.html' %}
+      {% include 'itm/info/info.html' %}
+      {% include 'finance/devol_info.html' %}
+      {% if 'itm' in roles %} 
+        {% include 'itm/cur_info.html' %}
+      {% endif %}
+  
+  </div>
+
+
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="dashboard_notify" aria-labelledby="dashboard_notifyLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="dashboard_notifyLabel">Notificações</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      ...
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+    {% if 'ri' in roles %}
+      <script src="{{ url_for('static', filename='js/jspdf.umd.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/purify.js') }}"></script>
+    {% elif 'fin' in roles %}
+      <script src="{{ url_for('static', filename='js/jspdf.umd.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/purify.js') }}"></script>
+    {% endif %}
+  <script>
+
+
+
+    {% include "dashboard.js" %}
+    {% include "datatable.js" %}
+    
+    {% if 'ri' in roles %}
+      const { jsPDF } = window.jspdf
+      {% include 'attend/info/info.js' %}  
+      {% include 'attend/attend.js' %}
+      {% include 'attend/prot/info.js' %} 
+    {% elif 'fin' in roles %}
+      const { jsPDF } = window.jspdf
+      {% include 'attend/info/info.js' %} 
+      {% include 'attend/prot/info.js' %} 
+      {% include 'attend/attend.js' %} 
+    {% elif 'itm' in roles %}
+      {% include 'attend/info/info.js' %}
+      {% include 'attend/prot/info.js' %} 
+    {% elif 'settings' in roles %}
+      {% include 'attend/info/info.js' %}
+    {% endif %}
+
+
+    {% if 'audit' in roles %}
+      {% include 'audit/audit.js' %}
+    {% endif %}
+
+    {% if 'fin' in roles %}
+      {% include 'finance/devol_info.js' %}
+      {% include 'finance/finance.js' %}
+      {% include 'finance/company/info.js' %}
+    {% endif %}
+
+    {% if 'itm' in roles %}
+      {% include 'itm/itm.js' %}
+    {% endif %}
+    
+ 
+    {% if 'ng' in roles %}
+      {% include 'ferias/ferias.js' %}
+    {% endif %}
+
+    {% if 'ng' in roles %}
+      {% include 'support/support.js' %}
+    {% endif %}
+    
+    {% if 'settings' in roles %}
+      {% include "settings/settings.js" %}
+      {% include 'popup/popup.js' %}
+      {% include 'booking/blacklist.js' %}
+      {% include 'settings/info/nature.js' %}
+    {% endif %}
+
+
+    {% if 'ri' in roles %}
+      {% include 'booking/booking.js' %}
+    {% elif 'fin' in roles %}
+      {% include 'booking/booking.js' %}
+    {% endif %}
+
+
+    {% if 'fin' in roles %}
+      {% include 'itm/info/info.js' %}
+    {% elif 'itm' in roles %}
+      {% include 'itm/info/info.js' %}
+    {% endif %}
+
+
+  </script>
+{% endblock %}
+
+

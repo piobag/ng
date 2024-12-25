@@ -1,0 +1,175 @@
+/* .onr_itm .itm_home {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+} */
+
+.onr_itm .new_itm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0px;
+    margin: 9px auto 18px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 800px;
+}
+
+.onr_itm .content_itm .content_itm_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.onr_itm .content_itm {
+    display: grid;
+    margin: 24px;
+}
+.onr_itm .content_itm > div {
+    margin: auto;
+}
+
+
+.onr_itm .itm_home .chart_itm {
+    min-height: 360px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.onr_itm .new_itm {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.onr_itm .itm_people {
+    display: flex;
+    flex-direction: column;
+}
+
+.onr_itm .itm_people_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 2px;
+    margin: 4px;
+    /* width: 400px; */
+}
+
+.onr_itm .new_itm .btn {
+    margin: 12px;
+}
+
+.onr_itm .list_itm {
+    flex-direction: column;
+}
+
+.onr_itm .list_itm .filter_list_itm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+    padding: 8px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.onr_itm .list_itm .filter_list_itm > div {
+    margin: 4px;
+}
+
+
+/* Cur_itm */
+.cur_itm_info .cur_itm_info_body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cur_itm_info .cur_itm_info {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 12px;
+}
+
+.cur_itm_info .cur_itm {
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.cur_itm .cur_itm_hearder {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+
+
+.cur_itm .cur_itm_content > div {
+    overflow-x: hidden;
+    overflow-y: auto; 
+    margin: 20px;
+}
+
+.cur_itm .cur_itm_content > div .row {
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+}
+
+
+.cur_itm .cur_itm_hearder .form-control {
+    width: 480px;
+}
+
+.cur_itm .cur_itm_content .select_service {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.cur_itm .cur_itm_service {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.cur_itm .cur_itm_details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cur_itm .cur_itm_details_title {
+    display: grid;
+    grid-template-columns: 1fr 2.3fr;
+    gap: 8px;
+    padding: 8px;
+    align-items: center;
+}
+
+.cur_itm .cur_itm_details .payment_add {
+    display: flex;
+    align-items: center;
+    margin: 16px;
+}
+
+.cur_itm .cur_itm_footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.cur_itm .cur_itm_footer > div > img {
+    margin: 16px;
+}

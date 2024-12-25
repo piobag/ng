@@ -1,0 +1,71 @@
+
+.ferias_approval_content .content_list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+.ferias_approval_content .ferias_aproved {
+    max-width: 660px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.ferias_approval_content .pagination {
+    justify-content: end;
+    margin: 8px;
+}
+
+.ferias_approval_content .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.ferias_new_header {
+    max-width: 640px;
+    padding: 8px;
+    margin: 0 auto;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.ferias_new_content {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+}
+.ferias_new_content > table {
+    max-width: 400px;
+}
+
+
+/* .ferias_list_content {
+    display: flex;
+    justify-content: center;
+} */
+
+.ferias_list_content > ul {
+    max-width: 400px;
+}
+
+.ferias_list_header,
+.ferias_list_footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.ferias_list_perpage {
+    display: flex;
+    align-items: center;
+}
+.ferias_list_perpage > b {
+    margin-right: 1rem;
+}
+
+.ferias_list_perpage .border-style,
+.ferias_list_search .border-style {
+    border: 1px solid var(--first-color);
+    padding: 4px 12px;
+    border-radius: 25px;
+}

@@ -1,0 +1,177 @@
+
+/* Info ITM */
+
+.itm_info_navbar > div > div {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+}
+
+.header_info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.info_content {
+    margin: 32px 0px 0px;
+}
+.info_content .info_details {
+    display: grid;
+    grid-template-columns: 1fr 1.7fr;
+    gap: 12px;
+    padding: 8px;
+    align-items: center;
+}
+
+.info_content .info_details .itm_info_new_payment {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    margin: 12px 0;
+}
+
+.info_content .info-details-accordion-header {
+    display: flex; 
+    justify-content: space-around;
+    align-items: center;
+}
+
+.info_content .info_payment .item {
+    border: 2px solid var(--first-color-dark);
+    padding: 4px 8px;
+    border-radius: 2em / 5em;
+    margin: 12px -8px;
+}
+
+.info_content .new_itm_edital_date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 0px;
+    margin: 9px auto 18px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 920px;
+}
+
+.info_content .accordion {
+    padding: 12px;
+}
+.info_content .accordion-item .accordion_title {
+    display: flex; 
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.info_content .accordion-item .accordion_title > div {
+    margin: 4px;
+}
+
+
+
+@media (max-width: 768px) {
+    .info_content .accordion-item .accordion_title > span {
+        font-size: 14px;
+        margin: 4px;
+    }
+    .fixed-top {
+        position: absolute;
+    }
+}
+
+/* 
+.info_content .card {
+    margin: 8px 0
+}
+
+.info_content .card-header {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.info_content .card-body {
+    padding: 8px;
+}
+
+.info_content .itm_pend-prot {
+    margin: 0 auto;
+}
+
+.info_content .card-body .g-1 {
+    justify-content: center;
+    padding: 8px;
+    align-items: center;
+}
+
+.info_content .card-body .justify {
+    text-align: justify;    
+} */
+
+.info_content .table > tbody > tr {
+    vertical-align: middle;
+}
+
+.info_content .itm_info_files > li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2px;
+}
+
+.info_content #itm_info_serv {
+    /* max-height: 660px; */
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.info_content #itm_info_serv .item-visita {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* margin: 0 auto;
+    width: 320px; */
+}
+
+.info_content .info_itm_endereco {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4px;
+}
+
+
+
+.itm_info_history {
+    display: flex;
+    flex-direction: column;
+}
+
+.itm_info_history .textarea {
+    height: 73px;
+}
+
+.itm_info_history .list-group {
+    max-height: 420px;
+    overflow-x: hidden;
+    overflow-y: auto; 
+}
+.itm_info_history .list-group .list-group-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.itm_info_history .list-group .list-group-item .item-header {
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+}
+

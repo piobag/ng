@@ -1,0 +1,44 @@
+<div class="accordion-item settings_company accordion-border">
+    <h2 class="accordion-header" id="company-list">
+      <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#company-accordion" aria-expanded="false" aria-controls="company-accordion">
+        <h2 class="accordion_title">{{ _('Company') }}</h2>
+      </button>
+    </h2>
+    <div id="company-accordion" class="accordion-collapse collapse" aria-labelledby="company-list" data-bs-parent="#finance-accordion">
+      <div class="accordion-body">
+        <form id="company_new" class="company_new">
+          <div class="row g-2">
+            <div class="form-floating col-md-2">
+              <input maxlength="18" type="text" class="form-control form-control-sm" name="cnpj" placeholder="">
+              <label for="cnpj">{{ _('CNPJ') }}</label>
+            </div>
+            <div class="form-floating col-md-4">
+              <input type="text" class="form-control form-control-sm" name="name" placeholder="" >
+              <label for="name">Razão Social</label>
+            </div>
+            <div class="form-floating col-md-2">
+              <input type="text" class="form-control form-control-sm" name="tel" onkeypress="mask_tel(this, mtel)" onblur="mask_tel(this, mtel)" placeholder="" >
+              <label for="tel">{{ _('Phone') }}</label>
+            </div>
+            <div class="form-floating col">
+              <input type="email" class="form-control form-control-sm" name="email" placeholder="" >
+              <label for="email">{{ _('Email') }}</label>
+            </div>
+            <div class="form-floating col-1">
+              <button type="button" class="btn btn-sm btn-outline-success" name="btn" onclick="save_company(this)"><i class="fas fa-sm fa-save"></i></button>
+            </div>
+          </div>
+        </form>
+        <div class="company_lists">
+          <div>
+            <button type="button" class="btn btn-sm btn-outline-dark m-2" id="company_update_btn" onclick="load_companys()"><i class="fas fa-sm fa-sync"></i></button>
+            <h5>{{ _('List') }}</h5>
+            <div id="company_info_list">
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+</div>

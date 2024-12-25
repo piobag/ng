@@ -1,0 +1,54 @@
+<div class="mx-auto col-md-6"> 
+    <form class="g-3 text-center" id='devoltransfform' method='POST' action="{{ url_for('devol.index', sendtransf=True) }}" enctype="multipart/form-data">
+        {{ form.id() }}
+        <div class="row mb-3">
+          <label class="col-sm-2 col-form-label">Titular:</label>
+          <div class="col-sm-10">
+            {{ devol.titular }}
+          </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">CPF/CNPJ:</label>
+            <div class="col-sm-10">
+            {{ devol.cpfcnpj }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Banco:</label>
+            <div class="col-sm-10">
+                {{ devol.banco }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Tipo:</label>
+            <div class="col-sm-10">
+                {% if devol.tipo == 'c' %}Conta Corrente   {% elif devol.tipo == 'p' %}Poupança   {% else %}Tipo de conta não identificado   {% endif %}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Agencia</label>
+            <div class="col-sm-10">
+                {{ devol.agencia }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Conta</label>
+            <div class="col-sm-10">
+                {{ devol.conta }}
+            </div>
+        </div>
+        <div class="input-group mb-3">
+            {{ form.file.label }} <br><br>
+            {{ form.file() }}
+            {% for error in form.file.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="mt-2 mx-auto text-center ">
+            <span id='devoltransfbtn'>
+                <div class="btn btn-success" onclick="send_transf()">Confirmar</div>
+            </span>
+        </div>
+    </form>
+</div>

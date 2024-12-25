@@ -1,0 +1,154 @@
+.accordion .accordion-border {
+    border-radius: 0 0 16px 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    margin: 16px auto;
+}
+
+.finance_balance .finance_balance_form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin: 12px auto;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 512px;
+}
+
+.finance_balance .table-onr {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.finance_balance .finance_balance_form > div {
+    margin: 10px;
+}
+
+.finance_balance .finance_balance_amount {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.finance_balance .finance_balance_amount .item {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--first-color);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+    min-width: 150px;
+}
+
+.finance_balance .finance_balance_amount .item:hover {
+    color: var(--first-color);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.finance_balance .finance_balance_amount .item:visited {
+    background-color: var(--first-color);
+    color: var(--first-color-light);
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+/* Itens */
+
+.finance_balance_itens .accordion_title {
+    width: 100%;
+}
+
+.finance_balance_itens .balances_header,
+.finance_balance_itens .balances_footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+
+.finance_balance_itens .user_balance_amount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.finance_balance_itens .user_balance_amount .item {
+    border: 3px solid var(--first-color-dark);
+    padding: 12px;
+    border-radius: 2em / 5em;
+    margin: 12px;
+}
+
+.finance_balance_itens .balances_perpage {
+    display: flex;
+    align-items: center;
+}
+.finance_balance_itens .balances_perpage > b {
+    margin-right: 1rem;
+}
+
+.finance_balance_itens .balances_perpage .border-style,
+.finance_balance_itens .balances_search .border-style {
+    border: 1px solid var(--first-color);
+    padding: 4px 12px;
+    border-radius: 25px;
+}
+
+/* Devol */
+
+.settings_devol .devol_new {
+    display: flex;
+    flex-direction: column;
+    max-width: 1024px;
+    padding: 14px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_devol .devol_new > div {
+    justify-content: center;
+    align-items: center;
+}
+
+.settings_devol .devol_new .form-floating {
+    margin: 8px 0px;
+}
+
+.settings_devol .devol_lists .table {
+    max-width: 460px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.settings_devol .devol_list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.settings_devol .devol_list > div > h5 {
+    margin: 12px;
+}
+
+.devol_info_body .devol_info_hearder {
+    padding: 8px;
+    margin: 16px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.devol_info_body .devol_info_hearder > div {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 8px;
+}
+
+.devol_info_body .devol_info_content > div .btn {
+    margin: 12px;
+}
+
+{% include "finance/company/company.css" %}

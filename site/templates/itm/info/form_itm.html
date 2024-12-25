@@ -1,0 +1,21 @@
+<form id="itm_info_minuta" class="">
+    <div class="row g-2">
+        <b>Informações do Contrato / Escritura</b>
+        ${credor}
+        <hr>
+        <div>
+            <b>Informações do(s) Devedor(es)</b>
+        </div>
+        <spam id="itm_info_minuta_devedores">
+            ${devedor}
+        </spam>
+        <hr>
+        <div>
+            <b>Endereços de Intimação</b>
+        </div>
+        <spam id="itm_info_minuta_enderecos">
+            ${enderecos}
+        </spam>
+        ${!result.services[0].minuta ? `<button tabindex="-1" type="button" class="btn btn-sm col-1 btn-outline-success" style="margin: 12px auto; max-width: 100px" onclick="add_end_itm_info(this)"><i class="fas fa-sm fa-plus"></i> Endereço</button>` : ''}
+    </div>
+</form>

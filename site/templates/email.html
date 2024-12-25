@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Santo Antônio Digital</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        table, td, div, h1, p {font-family: Arial, sans-serif;}
+        /* table, td {border:1px solid #000000 !important;} */
+    </style>
+</head>
+<body style="margin:0;padding:0;">
+    <table align="center" cellpadding="0" cellspacing="0" width="600">
+        <tr>
+            <td bgcolor="#eeeeee" style="padding: 30px 30px 30px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                    <td>
+                        <a href="https://tabelionatonovogama.com.br">
+                            <img src="https://tabelionatonovogama.com.br/static/img/logo.jpg" width="300" style="height:auto;display:block;background: black;"/>
+                        </a>
+                    </td>
+                    <td align="right">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                         <tr>
+                          <td>
+                           <!-- <a href="http://www.facebook.com/cartorionovogama">
+                            <img src="https://{{ config.DOMAIN }}/static/img/facebook.png" width="38" height="38" style="display: block;" border="0" />
+                           </a> -->
+                          </td>
+                          <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                          <td>
+                           <!-- <a href="http://www.instagram.com/cartorionovogama">
+                            <img src="https://{{ config.DOMAIN }}/static/img/instagram.png" width="38" height="38" style="display: block;" border="0" />
+                           </a> -->
+                          </td>
+                         </tr>
+                        </table>
+                    </td>
+                    </tr>
+                   </table>
+             </td>
+        
+        </tr>
+        <tr>
+         <td bgcolor="#1b1185" align="center"  style="padding: 5px 30px 5px 30px;">
+            <h3 style="font-family:Arial,sans-serif;font-size:25px;color:#ffffff;">{{ title }}</h3>
+         </td>
+        </tr>
+        {% if proc %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a),</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Seu pedido de Procuração para o veiculo de placa <strong>{{ proc.placa.upper() }}</strong> solicitado em nosso site <b><a href="http://www.tabelionatonovogama.com.br">( Cartório do Novo Gama )</a></b> foi recebido com sucesso! Nossa equipe está processando sua solicitação e em breve entraremos em contato para fornecer mais detalhes.</p>
+                            </td>
+                        </tr>
+
+        {% endif %}
+
+
+        {% if auth %}
+            {% if confirm %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td>
+                            <p align="center" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a) <strong>{{ user }}</strong>,</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p align="center" style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Clique <a href="{{ url_for('auth.confirm', token=token, _external=True) }}"><strong>aqui</strong></a> para confirmar seu email.</p>
+                        </td>
+                    </tr>
+            {% elif reset %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <p align="center" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a) <strong>{{ user }}</strong>,</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="center" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Clique <a href="{{ url_for('auth.reset', token=token, _external=True) }}"><strong>aqui</strong></a> para escolher uma nova senha.</p>
+                            </td>
+                        </tr>
+            {% endif %}
+        {% endif %}
+
+
+        {% if ferias %}
+            {% if ferias.confirmed %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td>
+                            <p style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a) <strong>{{ ferias.user.name }}</strong>,</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Informamos que o período de férias solicitado entre o dia <strong>{{ferias.start.strftime('%d/%m/%Y')}}</strong> ao dia <strong>{{ferias.end.strftime('%d/%m/%Y')}}</strong> foi aprovado, boas férias.</p>
+                        </td>
+                    </tr>
+            {% else %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a) <strong>{{ ferias.user.name }}</strong>,</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Informamos que o período de férias solicitado entre o dia <strong>{{ ferias.start.strftime('%d/%m/%Y') }}</strong> ao dia <strong>{{ferias.end.strftime('%d/%m/%Y')}}</strong> foi negado, escolha outra data ou entre em contato com o setor administrativo para mais detalhes.</p>
+                            </td>
+                        </tr>
+            {% endif %}
+        {% endif %}
+        
+        {% if booking %}
+            {% if delete %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                        <td>
+                            <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a) <strong> {{ booking.name }}</strong>,</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Informamos que o agendamento com início às {{ booking.start.strftime('%H:%M do dia %d/%m/%Y') }} foi cancelado{% if reason %} com a seguinte observação: "{{ reason }}"{% endif %}.</p>
+                        </td>
+                    </tr>
+            {% else %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a) <strong>{{ booking.name }}</strong>,</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Um novo atendimento com início às {{ booking.start.strftime('%H:%M do dia %d/%m/%Y') }} foi agendado para você.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Para consultar ou cancelar seus atendimentos clique <a style="color:#1b1185;" href="{{ url_for('base.index', _external=True, show='bookinglist') }}">AQUI.</a></p>
+                            </td>
+                        </tr>
+            {% endif %}
+        {% endif %}
+        {% if contact %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Contato pelo site em nome de<strong> {{ contact.name }}</strong>, email<strong> {{ contact.email }}</strong>{% if contact.tel %}, telefone<strong> {{ contact.tel }}</strong>{% endif %}, do tipo <strong> {{ contact.type }}.</strong></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{% if contact.subject %}Assunto: {{ contact.subject }} {% endif %}<br><br> Mensagem: {{ contact.message }}</p>
+                            </td>
+                        </tr>
+        {% endif %}
+        {% if exig %}
+            <tr>
+                <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">
+                                    Prezado(a) <strong>{{ exig.name }}</strong>,</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Informamos que o Protocolo de nº <b>{{ exig.prot }}</b> encontra-se em exigência.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acesse o <a style="color:#1b1185;" href="{{ url_for('attend.resp_exig', token=token, _external=True) }}">LINK</a> para mais detalhes.</p>
+                            </td>
+                        </tr>
+        {% endif %}
+                        <tr>
+                            <td align="center" style="padding: 40px 0px 0px 0px;">
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;color:#000000;"><b>Tem alguma dúvida? <a style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;color:#1b1185;" href="https://api.whatsapp.com/send?phone=556136267942&text=Gostaria%20de%20iniciar%20um%20atendimento&lang=pt_br" target="_blank">Tire suas dúvidas pelo WhatsApp</a></b></p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        <tr>
+            <td bgcolor="#eeeeee" style="padding: 10px 30px 20px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                     <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr align="center">
+                             <td  width="260" valign="top">
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;"><b><strong>Telefone</strong></b></p>
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;">(61) 3626-7942 </p>
+                             </td>
+                             <td style="font-size: 0; line-height: 0;" width="20">
+                              &nbsp;
+                             </td>
+                             <td width="260" valign="top">
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;"><b><strong>Endereço</strong></b></p>
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;">Avenida Dom Emanuel QD 48, Lote 11-A - Centro </p>
+                             </td>
+                            </tr>
+                        </table>
+                     </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

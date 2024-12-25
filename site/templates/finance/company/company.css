@@ -1,0 +1,55 @@
+/* Company */
+
+.settings_company .company_new {
+    display: flex;
+    flex-direction: column;
+    max-width: 1024px;
+    padding: 14px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_company .company_new > div {
+    justify-content: center;
+    align-items: center;
+}
+
+.settings_company .company_new .form-floating {
+    margin: 8px 0px;
+}
+
+.settings_company .company_lists .table {
+    max-width: 460px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.settings_company .company_list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.settings_company .company_list > div > h5 {
+    margin: 12px;
+}
+
+.company_info_body .company_info_hearder {
+    padding: 8px;
+    margin: 16px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.company_info_body .company_info_hearder > div {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 8px;
+}
+
+.company_info_body .company_info_content > div .btn {
+    margin: 12px;
+}
+

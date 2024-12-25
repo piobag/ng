@@ -1,0 +1,20 @@
+<table class="table table-sm table-hover table-responsive">
+    <thead>
+        <tr>
+            <th scope="col">Tipo <i class="fas fa-sort-down"></i></th>
+            <th scope="col">Nome <i class="fas fa-sort-down"></i></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        ${result.map(n => `
+            <tr>
+                <td>${all_services[n['type']]['name']}</td>
+                <td>${ n['name'] }</td>
+                <td>
+                    <!-- <button id="${ n['id'] }" onclick="del_nature(this)" type="button" name="del_nat" class="btn btn-sm btn-outline-danger"><i class="fas fa-sm fa-trash"></i></button> -->
+                </td>
+            </tr>`).join('')}
+    </tbody>
+</table>
+

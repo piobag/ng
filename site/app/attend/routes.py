@@ -1,0 +1,1506 @@
+import re
+import base64
+from os import path
+from io import BytesIO
+from bson.objectid import ObjectId
+from datetime import datetime, timezone
+import pytz
+import jwt
+from pytz import timezone as pytz_timezone
+
+from werkzeug.utils import secure_filename
+from flask import request, abort, current_app, send_file, render_template, jsonify
+from flask_login import login_required, current_user
+from flask_babel import _
+from mongoengine.errors import ValidationError, NotUniqueError
+
+from . import bp, Attend, Nature, Service, Document
+from .. import db
+from ..auth import check_roles, get_json, get_roles, notify
+from ..auth.cpfcnpj import verify_cpfcnpj
+from ..finance import Payment
+from ..finance.company import CompanyBind
+from ..booking import Booking
+from ..base import Event, File, get_datatable, User
+from ..base.qrcode import get_qrcode
+from .import_xls import import_xls
+
+tz = pytz.timezone('America/Sao_Paulo')
+
+### Import XLSX
+@bp.get('/import')
+@login_required
+def import_carta():
+    # Captura a resposta da função import_xls
+    response = import_xls()
+
+    # Verifica se a resposta é válida
+    if response:
+        return response  # Retorna a resposta gerada por import_xls
+    else:
+        # Retorna uma resposta padrão caso a função não forneça nada
+        return jsonify({"message": "No response from import_xls"}), 500
+
+
+
+### Attend
+@bp.get('/') # Get Attends
+@login_required
+@check_roles(['ri', 'fin', 'itm'])
+def index():
+    attend = Attend.objects.filter(func=current_user.id, end=None).first()
+    if attend:
+        result = attend.to_dict()
+        result['company'] = []
+        saldo = 0.0
+        if attend.user.pj:
+            # Balance
+            payments = sum([x.value for x in Payment.objects.filter(user=attend.user, confirmed__ne=None).only('value')])
+            services = 0.0
+            for a in Attend.objects.filter(user=attend.user, end__ne=None).only('id'):
+                services += sum([float(x.paid) for x in Service.objects.filter(attend=a.id).only('paid')])
+        else:
+            for company in CompanyBind.objects.filter(user=attend.user):
+                result['company'].append({
+                    'id': str(company.company.id),
+                    'name': company.company.name,
+                    'cpfcnpj': company.company.cpfcnpj,
+                })
+            # Buscar serviços e pagamentos vinculados
+            services = 0.0
+            # services = sum([x.paid for x in Service.objects.filter(attend=attend).only('paid')])
+            payments = sum([x.value for x in Payment.objects.filter(attend=attend, confirmed__ne=None).only('value')])
+
+        saldo = round(float(payments - services), 2)
+        result['balance'] = saldo
+        return {'result': result}
+    else:
+        start = request.args.get('start', 0, type=int)
+        length = request.args.get('length', 1, type=int)
+        day = datetime.fromisoformat(f"{datetime.now(tz).date()} 00:00").astimezone(pytz.utc).timestamp()
+        total = Booking.objects(func=current_user.id, start__gt=day, attend=None).count()
+        bookings = Booking.objects(func=current_user.id, start__gt=day, attend=None).\
+                        skip(start).limit(length).order_by('start') #.paginate(page=page, per_page=1)
+        # next_url = bookings.next_num if bookings.has_next else None
+        # prev_url = bookings.prev_num if bookings.has_prev else None
+        return {
+            'noresult': True,
+            'total': total,
+            'booking': [b.to_dict() for b in bookings], # if len(bookings.items) > 0 else False,
+            # 'next': next_url,
+            # 'prev': prev_url,
+        }
+
+@bp.get('/info') # Get Attend Info
+@login_required
+@check_roles(['ri', 'fin'])
+def get_info():
+    id = request.args.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    result = {'result': Attend.objects.get_or_404(id=id).to_info()}
+    return result
+
+@bp.get('/prot/info') # Get Prot Info
+@login_required
+@check_roles(['ri', 'fin', 'itm'])
+def prot_info():
+    id = request.args.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    next = request.args.get('next')
+    prev = request.args.get('prev')
+    if next:
+        prot = Service.objects.filter(id=id).only('prot').first()
+        if not prot: abort(400)
+        next_prot = Service.objects.filter(prot__gt=prot.prot).first() #.limit(1)
+        if not next_prot: abort(404)
+        result = {'result': next_prot.to_info()}
+    elif prev:
+        prot = Service.objects.filter(id=id).only('prot').first()
+        if not prot: abort(400)
+        prev_prot = Service.objects.filter(prot__lt=prot.prot).order_by('-prot').first()
+        if not prev_prot: abort(404)
+        result = {'result': prev_prot.to_info()}
+    else:
+        result = {'result': Service.objects.get_or_404(id=id).to_info()}
+    return result
+
+@bp.get('/list') # Get Documents
+@login_required
+@check_roles(['ri', 'fin', 'itm', 'settings'])
+@get_datatable
+def list(dt):
+    fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
+    enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
+    if enddate and not fromdate:
+        return {'error': 'Selecione a data inicial.'}, 400
+    
+    attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
+    total_filtered = attends.count()
+    list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+
+    return {
+        'result': [x.to_list() for x in list],
+        'total': total_filtered,
+    }
+
+
+    if dt['search']:
+        total_filtered = Attend.objects.search_text(dt['search']).count()
+        list = Attend.objects.search_text(dt['search']).skip(dt['start']).limit(dt['length'])
+        return {
+            'result': [x.to_list() for x in list],
+            'total': total_filtered,
+        }
+    total_filtered = Attend.objects().count()
+    list = Attend.objects().order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+    return {
+        'result': [x.to_list() for x in list],
+        'total': total_filtered,
+    }
+
+def get_attend_info(id):
+    a = Attend.objects.get_or_404(id=id)
+    attend = {
+        'id': str(a.id),
+
+        'name': a.user.name,
+        'cpf': a.user.cpfcnpj,
+        'end': a.end,
+        'email': a.user.email or None,
+
+        'saldo': 0.0,
+        'paid': 0.0,
+        'to_pay': 0.0,
+        'total': 0.0,
+    }
+    # Pagamentos confirmados no atendimento
+    for p in Payment.objects.filter(attend=a, confirmed__ne=None):
+        attend['paid'] += float(p.value)
+    # Serviços executados no atendimento
+    for s in Service.objects(attend=p.attend):
+        attend['total'] += s.total
+        attend['to_pay'] += s.paid
+    # Uso de Saldo
+    saldo_usado = attend['to_pay'] - attend['paid']
+    if saldo_usado > 0:
+        attend['paid'] += saldo_usado
+    return attend
+
+# GET
+@bp.get('/finance') # Get Finance
+@login_required
+@check_roles(['ri', 'fin'])
+@get_datatable
+def finance(dt):
+    fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
+    enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
+    if enddate and not fromdate:
+        return {'error': 'Selecione a data inicial.'}, 400
+
+    total_payments = {}
+
+    # result = {
+    #     'name': current_user.name,
+    #     'result': [],
+    #     'total': 0,
+    #     # 'itms': [],
+    #     'payments': {},
+    #     'services': [],
+    # }
+
+    for p in Payment.objects.filter(func=current_user.id, attend__ne=None, confirmed__gt=fromdate, confirmed__lt=enddate):
+        if total_payments.get(p.type):
+            total_payments[p.type] += p.value
+        else:
+            total_payments[p.type] = p.value
+
+
+    # attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
+    # result['total'] += attends.count()
+    # ### Atendimentos
+    # for a in attends.order_by('-timestamp').skip(dt['start']).limit(dt['length']):
+    #     attend = {
+    #         'id': str(a.id),
+
+    #         'name': a.user.name,
+    #         'cpf': a.user.cpfcnpj,
+    #         'end': a.end,
+    #         'email': a.user.email,
+
+    #         'paid': 0.0,
+    #         'to_pay': 0.0,
+    #         'total': 0.0,
+    #     }
+    #     for p in Payment.objects.filter(attend=a.id, confirmed__ne=None):
+    #         attend['paid'] += float(p.value)
+    #         # Boleto
+    #         if current_app.config['PAYMENTS'][p.type].get('pending'):
+    #             # print(f'Pulando Boleto {p.value}') 
+    #             ### Pode ter sido confirmado por outra pessoa
+    #             ### É incluído depois
+    #             continue
+    #         if total_payments.get(p.type):
+    #             total_payments[p.type] += p.value
+    #         else:
+    #             total_payments[p.type] = p.value
+    #         if result['payments'].get(p.type):
+    #             result['payments'][p.type] += p.value
+    #         else:
+    #             result['payments'][p.type] = p.value
+
+    #     for s in Service.objects(attend=a):
+    #         attend['total'] += s.total
+    #         attend['to_pay'] += s.paid
+    #     # Uso de Saldo
+    #     saldo_usado = float(attend['to_pay'] - attend['paid'])
+    #     if saldo_usado > 0:
+    #         if total_payments.get('cred'):
+    #             total_payments['cred'] += saldo_usado
+    #         else:
+    #             total_payments['cred'] = saldo_usado
+    #         if result['payments'].get('cred'):
+    #             result['payments']['cred'] += saldo_usado
+    #         else:
+    #             result['payments']['cred'] = saldo_usado
+    #     result['result'].append(attend)
+
+    # # Boletos confirmados
+    # for e in Event.objects.filter(action='confirm', object='payment',
+    #                                 actor=current_user.id,
+    #                                 target__attend__ne=None,
+    #                                 timestamp__gt=fromdate, timestamp__lt=enddate,
+    #                               ).order_by('-timestamp').skip(dt['start']).limit(dt['length']):
+
+    #     # Adicionar o atendimento na lista do usuário
+    #     if not e.target['attend'] in [x['id'] for x in result['result']]:
+    #         result['result'].append(get_attend_info(e.target['attend']))
+    #         result['total'] += 1
+
+    #     # Adicionar valor do pagamento no total do usuário
+    #     if total_payments.get(e.target['type']):
+    #         total_payments[e.target['type']] += e.target['value']
+    #     else:
+    #         total_payments[e.target['type']] = e.target['value']
+    #     if result['payments'].get(e.target['type']):
+    #         result['payments'][e.target['type']] += e.target['value']
+    #     else:
+    #         result['payments'][e.target['type']] = e.target['value']
+
+
+    # # Protocolos confirmados
+    # for e in Event.objects.filter(action='pay', object='service',
+    #                               target__attend__ne=None, actor=current_user.id,
+    #                               timestamp__gt=fromdate, timestamp__lt=enddate
+    #                             ).order_by('-timestamp').skip(dt['start']).limit(dt['length']):
+
+    #     # Adicionar o atendimento na lista do usuário
+    #     if not e.target['attend'] in [x['id'] for x in result['result']]:
+    #         result['result'].append(get_attend_info(e.target['attend']))
+    #         result['total'] += 1
+
+    #     if total_payments.get('prot'):
+    #         total_payments['prot'] += e.target['paying']
+    #     else:
+    #         total_payments['prot'] = e.target['paying']
+    #     if result['payments'].get('prot'):
+    #         result['payments']['prot'] += e.target['paying']
+    #     else:
+    #         result['payments']['prot'] = e.target['paying']
+    
+    return {'result': 1, 'total_payments': total_payments}
+
+@bp.get('/search') # Search Prot
+@login_required
+@check_roles(['ri', 'fin', 'itm', 'ng'])
+@get_roles
+def search(roles):
+    text = request.args.get('text')
+    text = text.strip().upper()
+    if not text:
+        return {'result': []}
+    prots = Service.objects.search_text(text).order_by('$text_score')
+    return {'result': [x.to_event() for x in prots]}
+
+
+    # fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
+    # enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
+    # if enddate and not fromdate:
+    #     return {'error': 'Selecione a data inicial.'}, 400
+
+    prots = {}
+
+    ### Atendimentos
+    result = {
+        'name': current_user.name,
+        'attends': [],
+        # 'itms': [],
+        'payments': {},
+        'services': [],
+    }
+
+    for a in Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate):
+        attend = {
+            'id': str(a.id),
+
+            'name': a.user.name,
+            'cpf': a.user.cpfcnpj,
+            'end': a.end,
+            'email': a.user.email,
+
+            'paid': 0.0,
+            'to_pay': 0.0,
+            'total': 0.0,
+        }
+        for p in Payment.objects.filter(attend=a.id, confirmed__ne=None):
+            attend['paid'] += p.value
+            if total_payments.get(p.type):
+                total_payments[p.type] += p.value
+            else:
+                total_payments[p.type] = p.value
+            if result['payments'].get(p.type):
+                result['payments'][p.type] += p.value
+            else:
+                result['payments'][p.type] = p.value
+
+        for s in Service.objects(attend=a):
+            attend['total'] += s.total
+            attend['to_pay'] += s.paid
+        # Uso de Saldo
+        saldo_usado = float(attend['to_pay'] - attend['paid'])
+        if saldo_usado > 0:
+            if total_payments.get('cred'):
+                total_payments['cred'] += saldo_usado
+            else:
+                total_payments['cred'] = saldo_usado
+            if result['payments'].get('cred'):
+                result['payments']['cred'] += saldo_usado
+            else:
+                result['payments']['cred'] = saldo_usado
+        result['attends'].append(attend)
+    users[str(current_user.id)] = result
+    return {'result': {
+        'total_payments': total_payments,
+        'users': users,
+    }}
+
+@bp.get('/exig') # Abrir arquivo da exigência (func)
+@login_required
+@check_roles(['ri'])
+def get_exig():
+    id = request.args.get('id')
+    exig = request.args.get('exig')
+    if not (id and len(id) == 24 and exig):
+        abort(400)
+    svc = Service.objects.get_or_404(id=id)
+    if exig == 'exig_resp':
+        file = File.objects.get_or_404(id=svc.exig_resp.id)
+        return send_file(
+            file.file.get(),
+            mimetype=file.content_type,
+        )
+    else:
+        file = File.objects.get_or_404(id=svc.exig.id)
+        return send_file(
+            file.file.get(),
+            mimetype=file.content_type,
+        )
+
+@bp.get('/exig/<token>') # Página de resposta Exigência
+def resp_exig(token):
+    try:
+        data_token = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256']
+        )
+    except Exception as e:
+        notify('Erro decodificando token', e)
+        abort(400)
+    if not data_token:
+        abort(404)
+    id = data_token.get('exig')
+    if not (id and len(id) == 24):
+        abort(400)
+    svc = Service.objects.get_or_404(id=id)
+
+    if svc.exig_resp:
+        return render_template(
+            'landingpage.html',
+            message='Exigência já respondida!' )
+    exig = {
+        'id': str(svc.id),
+        'name': svc.attend.user.name if svc.attend else '',
+        'prot': svc.prot,
+    }
+    return render_template(
+        'landingpage.html',
+        roles=[],
+        exig=exig,
+        token=token,
+    )
+
+@bp.get('/exig_user/<token>') # Abrir arquivo da exigência (user)
+def get_exig_user(token):
+    try:
+        data_token = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256']
+        )
+    except Exception as e:
+        notify('Erro decodificando token', e)
+        abort(400)
+    if not data_token:
+        abort(404)
+    id = data_token.get('exig')
+    if not (id and len(id) == 24):
+        abort(400)
+    svc = Service.objects.get_or_404(id=id)
+    if not svc.exig:
+        return {'error': 'Serviço sem exigência'}, 400
+    return send_file(
+        svc.exig.file.get(),
+        mimetype=svc.exig.file.content_type,
+    )
+
+@bp.get('/docs/qrcode') # QRCode para cliente fazer upload de documentos faltantes
+def get_docs_qrcode():
+    id = request.args.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    svc = Service.objects.get_or_404(id=id)
+    response = svc.docs_token()
+    if response.get('result'):
+        img_src = get_qrcode(response['result'], docs=True)
+        return {'result': img_src}
+    else:
+        return {'error': response['error'] if response.get('error') else 'Erro desconhecido gerando qrcode'}, 400
+    
+
+# POST
+@bp.post('/') # New Attend
+@login_required
+@check_roles(['ri'])
+@get_json
+def new(data):
+    start = datetime.utcnow().timestamp()
+
+    email = data['email'].strip().lower()
+    if not email:
+        email = None
+    if email and not re.fullmatch('^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*@(?:\w+\.)+[A-Za-z0-9]+$', email):
+        return {'error': _('Enter a valid email address')}, 400
+
+    cpf = re.sub('\D', '', data['cpf'])
+    if not verify_cpfcnpj(cpf):
+        return {'error': _('Invalid CPF')}, 400
+
+    name = data['name'].strip().title()
+    tel = re.sub('\D', '', data['tel'])
+
+    if Attend.objects.filter(func=current_user.id, end=None).first():
+        return {'error': _('There is a service in progress')}
+
+    # bk = Booking.objects.filter(func=current_user.id, start__lte=start + timedelta(minutes=10), attend=None).first()
+    # if bk:
+    #     return {'error': f"{_('Conflict with scheduling for')} {str(bk.start.time()).split('.')[0]}"}
+
+    # Salvar dados atualizados
+    user = User.objects.filter(cpfcnpj=cpf).first()
+    if user:
+        save = False
+        if user.name != name:
+            print(f'Mudando nome de {user.name} para {name}')
+            user.name = name
+            save = True
+        if email and user.email != email:
+            print(f'Mudando email de {user.email} para {email}')
+            user.email = email
+            save = True
+        if user.tel != tel:
+            print(f'Mudando tel de {user.tel} para {tel}')
+            user.tel = tel
+            save = True
+        if save:
+            user.save()
+    else:
+        # user = User.objects.filter(email=email).first()
+        # if user:
+        #     if user.cpfcnpj:
+        #         return {'error': 'Email cadastrado em outra conta com o CPF {user.cpfcnpj}'}, 400
+        #     user.cpfcnpj = cpf
+        #     user.name = name
+        #     user.tel = tel
+        #     user.save()
+        # else:
+        if len(cpf) > 11:
+            pj = True
+        else:
+            pj = False
+        user = User(
+            cpfcnpj=cpf,
+            pj=pj,
+            name=name,
+            email=email,
+            tel=tel,
+        )
+        user.save()
+    try:
+        attend = Attend(
+            user=user,
+            func=current_user.id,
+            start=start,
+            timestamp=start,
+        )
+        attend.save()
+        return {'result': str(attend.id)}
+    except Exception as e:
+        msg = _('Error saving to database')
+        notify(msg, e)
+        return {'error': msg}, 400
+
+@bp.post('/import') # Import Service
+@login_required
+@check_roles(['ri'])
+@get_json
+def import_service(data):
+    id = data.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    files = data.get('files')
+    if not files:
+        return {'error': 'Nenhum arquivo encontrado'}, 400
+    result = {}
+    for f in files:
+        filename = secure_filename(f['fileName'])
+        if not path.splitext(filename)[1].lower() in ['.p7s', '.pdf']:
+            return {'error': 'Tipo de arquivo inválido'}, 400
+        if not f.get('data'):
+            return {'error': 'Tipo de arquivo inválido'}, 400
+        content = base64.b64decode(f['data'])
+        # Test content type
+        from app.base.ocr import extract_text_from_pdf
+        text = extract_text_from_pdf(content)
+        # print(text)
+
+        # Ordem
+        ordem_re = re.compile(r"mero de ordem: (\d+)").search(text)
+        if not ordem_re:
+            return {'error': 'Não foi possível identificar o número de Ordem'}, 400
+        result['ordem'] = ordem_re.group(1)
+
+        # Atendimento
+        attend_re = re.compile(r"igo do atendimento: (\S+)").search(text)
+        if not attend_re:
+            return {'error': 'Não foi possível identificar o código de Atendimento'}, 400
+        result['attend'] = attend_re.group(1)
+
+        # # Matricula
+        # matricula_re = re.compile(r"Registro Geral: .* \((\d+)\)").search(text)
+        # if not matricula_re:
+        #     return {'error': 'Não foi possível identificar o número de Matricula'}, 400
+        # print(f'Matrícula: {matricula_re.group(1)}')
+
+        # Total Pago
+        pago_re = re.compile(r"R\$(\d+\.?\d+,\d{2})\n\nTotal").search(text)
+        if not pago_re:
+            return {'error': 'Não foi possível identificar valor Pago'}, 400
+        result['pago'] = pago_re.group(1).replace('.', '').replace(',', '.')
+
+        # Total Restante
+        restante_re = re.compile(r"R\$(\d+\.?\d+,\d{2})\n\nObs:").search(text)
+        if not restante_re:
+            return {'error': 'Não foi possível identificar valor Restante'}, 400
+        result['restante'] = restante_re.group(1).replace('.', '').replace(',', '.')
+
+        return result
+
+
+    # Dando certo a extração de dados
+    # Identificar o attend e incluir os serviços
+
+
+    # status = 'Event'
+    # event = Event(
+    #     timestamp = datetime.utcnow().timestamp(),
+    #     actor = current_user.id,
+    #     action = 'create',
+    #     object = 'payment',
+    #     target = new_p.to_event(),
+    # )
+    # event.save()
+    # e_created.append(str(event.id))
+
+    return {'result': 'dados'}
+
+@bp.post('/service') # Save Service
+@login_required
+@get_json
+@check_roles(['ri'])
+def post_service(data):
+    id = data.get('attend')
+    if not (id and len(id) == 24):
+        abort(400)
+    attend = Attend.objects.get_or_404(id=id)
+
+    new_s = Service(
+        prot_cod=str(data.get('prot_cod').strip().upper()),
+        attend=attend.id,
+        end_bai=data.get('end_bai'),
+        end_cep=data.get('end_cep'),
+        end_cid=data.get('end_cid'),
+        end_log=data.get('end_log'),
+        end_uf=data.get('end_uf'),
+        prot_emi=data.get('prot_emi'),
+        prot_esp=data.get('prot_esp'),
+        prot_fls=data.get('prot_fls'),
+        prot_liv=data.get('prot_liv'),
+        prot_num=data.get('prot_num'),
+        prot_tot_c=data.get('prot_tot_c'),
+        prot_tot_p=data.get('prot_tot_p'),
+        prot_val=data.get('prot_val'),
+        prot_ven=data.get('prot_ven'),
+        prot_date=data.get('prot_date'),
+        s_start=True,
+        timestamp = datetime.now(timezone.utc).timestamp(),
+    )
+
+    new_s.save()
+
+    attend.end = datetime.now(timezone.utc).timestamp()
+    attend.save()
+    # Evento
+    event = Event(
+        timestamp = datetime.utcnow().timestamp(),
+        actor = current_user.id,
+        action = 'create',
+        object = 'service',
+        target = new_s.to_list(),
+    )
+    event.save()
+
+    return {'result': str(new_s.id)}
+
+@bp.post('/payment') # New Payment
+@login_required
+@check_roles(['ri'])
+@get_json
+def post_payment(data):
+    id = data.get('id')
+    ptype = data.get('type')
+    pvalue = data.get('value')
+    id = data.get('id')
+    if not (id and len(id) == 24 and ptype and pvalue):
+        abort(400)
+    
+    attend = Attend.objects.get_or_404(id=id)
+
+    f_created = []
+    p_created = []
+    e_created = []
+    # try:
+    pending = current_app.config['PAYMENTS'][ptype].get('pending')
+
+    status = 'File'
+    files = data.get('files')
+    if files:
+        filename = secure_filename(files[0]['fileName'])
+        content = base64.b64decode(files[0]['data'])
+        bcontent = BytesIO(content)
+        newfile = File(
+            user = current_user.id,
+            timestamp = datetime.utcnow().timestamp(),
+            name = filename,
+            content_type = files[0]['fileType'],
+            attend = attend.id,
+        )
+        newfile.file.put(bcontent, app='attend', attend=str(attend.id), filename=filename, content_type=files[0]['fileType'])
+        newfile.save()
+        f_created.append(newfile.id)
+
+    status = 'Payment'
+    new_p = Payment(
+        attend=attend.id,
+        user=attend.user.id,
+        func=current_user.id,
+        type=ptype,
+        value=float(pvalue),
+        confirmed = None if pending else datetime.utcnow().timestamp(),
+        compr = newfile.id if files else None,
+        timestamp = datetime.utcnow().timestamp(),
+    )
+    new_p.save()
+    p_created.append(str(new_p.id))
+
+    status = 'Event'
+    event = Event(
+        timestamp = datetime.utcnow().timestamp(),
+        actor = current_user.id,
+        action = 'create',
+        object = 'payment',
+        target = new_p.to_event(),
+    )
+    event.save()
+    e_created.append(str(event.id))
+
+    return {'result': 'ok'}
+
+@bp.post('/exig') # Nova Exigência
+@login_required
+@check_roles(['ri'])
+@get_json
+def post_exig(data):
+    id = data.get('id')
+    file = data.get('file')
+    if not (id and len(id) == 24 and file):
+        abort(400)
+    f_created = []
+
+    obj = Service.objects.get_or_404(id=id)
+    if obj.exig:
+        if not obj.exig_resp:
+            return {'error': 'Serviço aguardando resposta de outra exigência'}, 400
+
+    attend = Attend.objects.get_or_404(id=obj.attend.id)
+
+    # File
+    filename = secure_filename(file['fileName'])
+    content = base64.b64decode(file['data'])
+    bcontent = BytesIO(content)
+    newfile = File(
+        user = current_user.id,
+        timestamp = datetime.utcnow().timestamp(),
+        name = filename,
+        content_type = file['fileType'],
+        service = obj.id,
+    )
+    newfile.file.put(bcontent, app='attend', service=str(obj.id), filename=filename, content_type=file['fileType'])
+    newfile.save()
+    f_created.append(newfile.id)
+
+    obj.exig_resp = None
+    obj.exig = newfile.id
+    obj.save()
+
+    # Event
+    event = Event(
+        timestamp = datetime.now(timezone.utc).timestamp(),
+        actor = current_user.id,
+        action = 'create',
+        object = 'exig',
+        target = obj.to_event(),
+    )
+    event.save()
+
+
+
+    match obj.send_exigencia():
+        case '0':
+            return {'result': 1}
+        case '403':
+            return {'error': 'Valide o qrcode enviado para o email'}, 400
+        case '402':
+            return {'error': 'Número Inválido'}, 400
+            # Email User Attend
+            # exig = {
+            #     'name': attend.user.name,
+            #     'prot': obj.prot,
+            #     'date': obj.timestamp,
+            # }
+            # obj.send_mail(exig=exig)
+        case '401':
+            return {'error': 'Erro'}, 400
+        case _:
+            print('abora')
+            abort(400)
+
+    return {'result': 'ok'}
+
+@bp.post('/comment') # New Comment Attend
+@login_required
+@check_roles(['ri'])
+@get_json
+def comment(data):
+    id = data.get('id')
+    comment = data.get('comment')
+    if not (id and len(id) == 24 and comment):
+        abort(400)
+    attend = Attend.objects.get_or_404(id=id)
+    target = attend.to_event()
+    target['comment'] = comment.strip()
+    event = Event(
+        timestamp = datetime.utcnow().timestamp(),
+        actor = current_user.id,
+        action = 'comment',
+        object = 'attend',
+        target = target,
+    )
+    event.save()
+    return {'result': str(attend.id)}
+
+@bp.post('/service/comment') # New Comment Service
+@login_required
+@check_roles(['ri'])
+@get_json
+def prot_comment(data):
+    id = data.get('id')
+    comment = data.get('comment')
+    if not (id and len(id) == 24 and comment):
+        abort(400)
+    service = Service.objects.get_or_404(id=id)
+
+    target = service.to_event()
+    target['comment'] = comment.strip()
+
+    event = Event(
+        timestamp = datetime.utcnow().timestamp(),
+        actor = current_user.id,
+        action = 'comment',
+        object = 'service',
+        target = target,
+    )
+    event.save()
+    return {'result': str(event.id)}
+
+@bp.post('/service/docs') # Envio de Documentos faltantes do Serviço
+@get_json
+def post_service_docs(data):
+    id = data.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    docs = data.get('docs')
+    if not (docs and len(docs) > 0):
+        return {'error': 'Envie os docs'}, 400
+    service = Service.objects.get_or_404(id=id)
+
+    for d in docs:
+        if len(docs[d]) == 0:
+            continue
+        doc = Doc.objects.get_or_404(id=d, service=service.id)
+        if doc.entregue:
+            return {'error': f'Documento "{doc.name}" já foi entregue.'}, 400
+        fcreated = []
+        for f in docs[d]:
+            fname = secure_filename(f.get('name'))
+            ftype = f.get('type')
+            fdata = f.get('data')
+            if not (fname and ftype and fdata):
+                return {'error': f'Arquivo incompleto.'}, 400
+            content = base64.b64decode(fdata)
+            bcontent = BytesIO(content)
+            file = File(
+                timestamp = datetime.now(timezone.utc).timestamp(),
+                name= fname,
+                content_type= ftype.strip(),
+                attend = service.attend.id,
+                service= service.id,
+                user= service.attend.user.id,
+            )
+            file.file.put(bcontent, app='attend', attend=str(service.attend.id), filename=fname, content_type=ftype)
+            file.save()
+            fcreated.append(file.id)
+        doc.files = fcreated
+        doc.entregue = True
+        doc.save()
+    return {'result': '1'}
+
+
+# PUT
+@bp.put('/') # Edit / End Attend
+@login_required
+@get_json
+@check_roles(['ri'])
+def edit(data):
+    id = data.get('id')
+    if not (id and len(id) == 24 and data.get('action')):
+        abort(400)
+    s_created = []
+    p_created = []
+    f_created = []
+    e_created = []
+    docs_created = []
+    try:
+        if data['action'] == 'pay':
+            status = 'Service'
+            svc = Service.objects.get_or_404(id=data['id'], attend__ne=None)
+            if svc.total == svc.paid:
+                return {'error': f"Serviço já pago"}, 400
+            # Buscar serviços e pagamentos vinculados
+            if svc.attend.user.pj:
+                services = 0.0
+                for a in Attend.objects.filter(user=svc.attend.user):
+                    services += sum([x.paid for x in Service.objects.filter(attend=a.id).only('paid')])
+                payments = sum([x.value for x in Payment.objects.filter(user=svc.attend.user, confirmed__ne=None, attend__ne=None).only('value')])
+                deposits = sum([x.value for x in Payment.objects.filter(user=svc.attend.user, confirmed__ne=None, attend=None).only('value')])
+                saldo = round(payments + deposits - services, 2)
+            else:
+                services = sum([x.paid for x in Service.objects.filter(attend=svc.attend).only('paid')])
+                payments = sum([x.value for x in Payment.objects.filter(attend=svc.attend, confirmed__ne=None).only('value')])
+                saldo = round(payments - services, 2)
+
+            paying = round(svc.total - svc.paid, 2)
+            if saldo < paying:
+
+                return {'error': f"Atendimento sem saldo"}, 400
+
+            status = 'Event'
+            t_event = svc.to_event()
+            t_event['paying'] = paying
+            event = Event(
+                timestamp = datetime.utcnow().timestamp(),
+                actor = current_user.id,
+                action = data['action'],
+                object = 'service',
+                target = t_event,
+            )
+            svc.paid = float(svc.total)
+
+            status = 'Save Event'
+            event.save()
+            e_created.append(str(event.id))
+
+            status = 'Paying' 
+            svc.save()
+
+            return {'result': 'Ok'}
+        if data['action'] == 'end':
+            status = 'End'
+            attend = Attend.objects.get_or_404(id=id)
+
+            status = 'Payments'
+            for p in data['payments']:
+                pending = current_app.config['PAYMENTS'][p['type']].get('pending')
+                new_p = Payment(
+                    attend=attend.id,
+                    user=attend.user.id,
+                    func=current_user.id,
+                    type=p['type'],
+                    value=float(p['value']),
+                    confirmed = None if pending else datetime.utcnow().timestamp(),
+                    timestamp = datetime.utcnow().timestamp(),
+                )
+                new_p.save()
+                p_created.append(str(new_p.id))
+
+            # Gravar arquivos no banco
+            status = 'Files'
+            files = data.get('files')
+            for f in files or []:
+                filename = secure_filename(f['fileName'])
+                content = base64.b64decode(f['data'])
+                bcontent = BytesIO(content)
+                newfile = File(
+                    user = current_user.id,
+                    timestamp = datetime.utcnow().timestamp(),
+                    name = filename,
+                    content_type = f['fileType'],
+                    attend = attend.id,
+                )
+                newfile.file.put(bcontent, app='attend', attend=str(attend.id), filename=filename, content_type=f['fileType'])
+                newfile.save()
+                f_created.append(newfile.id)
+
+            status = 'Comment'
+            comment = data.get('comment')
+            if comment and comment.strip():
+                comment = Event(
+                    timestamp = datetime.utcnow().timestamp(),
+                    actor = current_user.id,
+                    action = 'comment',
+                    object = 'attend',
+                    target = {
+                        'id': str(attend.id),
+                        'comment': comment.strip(),
+                    },
+                )
+                comment.save()
+                e_created.append(str(comment.id))
+
+            status = 'Event'
+            event = Event(
+                timestamp = datetime.utcnow().timestamp(),
+                actor = current_user.id,
+                action = data['action'],
+                object = 'attend',
+                target = attend.to_list(),
+            )
+            event.save()
+            e_created.append(str(event.id))
+
+            status = 'Attend'
+            attend.end = datetime.utcnow().timestamp()
+            attend.save()
+            return {'result': 'Ok'}
+    except Exception as e:
+        msg = f"{_('Error saving to database')} | {status}"
+        notify(msg, e)
+        for i in docs_created:
+            to_del = Doc.objects.filter(id=i).first()
+            if to_del:
+                to_del.delete()
+        for i in s_created:
+            to_del = Service.objects.filter(id=i).first()
+            if to_del:
+                to_del.delete()
+        for i in p_created:
+            to_del = Payment.objects.filter(id=i).first()
+            if to_del:
+                to_del.delete()
+        for i in f_created:
+            to_del = File.objects.filter(id=i).first()
+            if to_del:
+                f.file.delete()
+                f.delete()
+        for i in e_created:
+            to_del = Event.objects.filter(id=i).first()
+            if to_del:
+                to_del.delete()
+        return {'error': msg}, 400
+    abort(404)
+
+@bp.put('/prot') # Edit Prot
+@login_required
+@get_json
+@get_roles
+@check_roles(['ri', 'adm'])
+def put_prot(roles, data):
+    id = data.get('id')
+    if not (id and len(id) == 24 and data.get('action')):
+        abort(400)
+    if data['action'] == 'edit':
+
+        svc = Service.objects.get_or_404(id=data['id'])
+        if not svc.attend:
+            return {'error': 'Serviço não é do Atendimento'}, 400
+        to_event = svc.to_event()
+        e_created = []
+        # try:
+        # if data['action'] == 'value':
+        #     value = data.get('value')
+        #     if not (value):
+        #         abort(400)
+        #     to_event['new_value'] = float(value)
+        #     if svc.total == float(value):
+        #         return {'error': 'Não alterado'}, 400
+        #     svc.total = float(value)
+        #     svc.save()
+        #     event = Event(
+        #         timestamp = datetime.utcnow().timestamp(),
+        #         actor = current_user.id,
+        #         action = data['action'],
+        #         object = 'service',
+        #         target = to_event,
+        #     )
+        #     event.save()
+        #     e_created.append(str(event.id))
+        #     return {'result': 'Ok'}
+
+
+        # Cria um dicionário com os valores convertidos e validados
+        service_data = {
+            "prot_cod": int(data.get('prot_cod')),
+            "end_bai": data.get('end_bai'),
+            "end_cep": int(data.get('end_cep')),
+            "end_cid": data.get('end_cid'),
+            "end_log": data.get('end_log'),
+            "end_uf": data.get('end_uf'),
+            "prot_emi": int(data.get('prot_emi')),
+            "prot_esp": data.get('prot_esp'),
+            "prot_num": int(data.get('prot_num')),
+            "prot_fls": data.get('prot_fls'),
+            "prot_liv": data.get('prot_liv'),
+            "prot_val": data.get('prot_val'),
+            "prot_tot_c": data.get('prot_tot_c'),
+            "prot_tot_p": data.get('prot_tot_p'),
+            "prot_ven": int(data.get('prot_ven')),
+            "prot_date": int(data.get('prot_date')),
+        }
+        # Remove chaves com valores None
+        filtered_data = {key: value for key, value in service_data.items() if value is not None}
+
+        try:
+            # Atualiza os campos do objeto
+            for key, value in filtered_data.items():
+                setattr(svc, key, value)
+            svc.save()
+            print(f"Service {svc.id} atualizado com sucesso.")
+            event = Event(
+                timestamp = datetime.utcnow().timestamp(),
+                actor = current_user.id,
+                action = data['action'],
+                object = 'service',
+                target = to_event,
+            )
+            event.save()
+            e_created.append(str(event.id))
+            return {'result': 'Ok'}
+        except NotUniqueError as e:
+           # Tratamento para duplicação de chave única
+            return {
+                'status': 'error',
+                'message': 'Duplicate prot_cod detected',
+                'details': str(e),
+            }
+        except ValidationError as e:
+            # Tratamento para validações de esquema
+            return {
+                'status': 'error',
+                'message': 'Validation error',
+                'details': str(e),
+            }
+        except Exception as e:
+            # Tratamento genérico de erros
+            return {
+                'status': 'error',
+                'message': 'An unexpected error occurred',
+                'details': str(e),
+            }
+
+
+    # except Exception as e:
+    #     msg = f"{_('Error saving to database')} | {status}"
+    #     notify(msg, e)
+    #     if s_edited:
+    #         svc.total = to_event['total']
+    #         svc.save()
+    #     for i in e_created:
+    #         to_del = Event.objects.filter(id=i).first()
+    #         if to_del:
+    #             to_del.delete()
+    #     return {'error': msg}, 400
+
+@bp.put('/docs') # Edit Docs do Prot
+@login_required
+@get_json
+@check_roles(['ri', 'digitizer'])
+# def put_docs(data):
+def put_docs(data):
+    id = data.get('id')
+    if not (id and len(id) == 24 and data.get('docs')):
+        abort(400)
+    svc = Service.objects.get_or_404(id=data['id'])
+    to_event = svc.to_event()
+
+    e_created = []
+    doc_list = {}   # Lista de Docs não entregues do Service
+    for d in Doc.objects.filter(service=svc.id).only('id', 'name', 'entregue'):
+        if not d.entregue:
+            doc_list[d.name] = d.id
+    for d in data['docs']:
+        qtd = d.get('qtd')
+        if not qtd:
+            qtd = 1
+        for q in range(0, qtd):
+            new_doc = Doc(
+                name = d['name'],
+                entregue = d['entregue'],
+                func_id = current_user.id,
+                service = str(svc.id),
+                pending = True,
+                timestamp = datetime.utcnow().timestamp(),
+            ).save()
+
+            print(f'Novo doc {str(new_doc.id)} com service {str(svc.id)}')
+
+            # Apagar doc igual não entregue
+            if d['name'] in doc_list.keys():
+                Doc.objects.get(id=doc_list[d['name']]).delete()
+
+    event = Event(
+        timestamp = datetime.utcnow().timestamp(),
+        actor = current_user.id,
+        action = 'create',
+        object = 'docs',
+        target = to_event,
+    )
+    event.save()
+    e_created.append(str(event.id))
+    return {'result': 'ok'}
+    # except Exception as e:
+    #     msg = f"{_('Error saving to database')} | {status}"
+    #     notify(msg, e)
+    #     if s_edited:
+    #         svc.total = to_event['total']
+    #         svc.save()
+    #     for i in e_created:
+    #         to_del = Event.objects.filter(id=i).first()
+    #         if to_del:
+    #             to_del.delete()
+    #     return {'error': msg}, 400
+    abort(404)
+
+@bp.put('/exig/<token>') # Enviar Resposta Exigência
+@get_json
+def put_exig(data, token):
+    try:
+        data_token = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256']
+        )
+    except Exception as e:
+        notify('Erro decodificando token', e)
+        abort(400)
+    if not data_token:
+        abort(404)
+    id = data_token.get('exig')
+    file = data.get('file')
+    if not (id and len(id) == 24 and file):
+        abort(400)
+    svc = Service.objects.get_or_404(id=id)
+    if not svc.exig:
+        return {'error': 'Serviço sem exigência'}, 400
+    if svc.exig_resp:
+        return {'error': 'Exigência já respondida'}, 400
+
+    attend = Attend.objects.get_or_404(id=svc.attend.id)
+
+    f_created = []
+
+    # File
+    filename = secure_filename(file['fileName'])
+    content = base64.b64decode(file['data'])
+    bcontent = BytesIO(content)
+    newfile = File(
+        user = attend.user,
+        timestamp = datetime.utcnow().timestamp(),
+        name = filename,
+        content_type = file['fileType'],
+        service = svc.id,
+    )
+    newfile.file.put(bcontent, app='attend', service=str(svc.id), filename=filename, content_type=file['fileType'])
+    newfile.save()
+    f_created.append(newfile.id)
+
+    svc.exig_resp = newfile.id
+    svc.save()
+
+    return {'result': 'ok'}
+
+# DELETE
+@bp.delete('/') # Delete Attend Info
+@login_required
+@check_roles(['ri'])
+@get_json
+def delete(data):
+    # id = data.get('id')
+    # if not (id and len(id) == 24 and data.get('action')):
+    #     abort(400)
+
+    attend = Attend.objects.get_or_404(id=data['id'])
+    if not attend.func.id == current_user.id:
+        abort(401)
+    if attend.end:
+        return {'error': 'Atendimento já finalizado'}, 400
+    try:
+        attend.delete_all()
+        return {'result': 'deleted'}
+    except Exception as e:
+        msg = _('Error saving to database')
+        notify(msg, e)
+        return {'error': msg}, 400
+
+@bp.delete('/service') # Delete Service Current Attend
+@login_required
+@check_roles(['ri'])
+@get_json
+def del_prot(data):
+    id = str(data.get('id'))
+    svc = str(data.get('service'))
+    if not (id and len(id) == 24 and svc and len(svc) == 24):
+        abort(400)
+    attend = Attend.objects.get_or_404(id=id)
+    if not attend.func.id == current_user.id:
+        abort(401)
+    if attend.end:
+        return {'error': 'Atendimento já finalizado'}, 400
+    service = Service.objects.get_or_404(id=svc)
+    try:
+        service.delete_all()
+        return {'result': 1}
+    except Exception as e:
+        msg = _('Erro deletando service attend.del_prot')
+        notify(msg, e)
+        return {'error': msg}, 400
+
+### NATURES
+@bp.get('/natures') # Get Natures
+@login_required
+@check_roles(['ri', 'fin', 'itm', 'settings', 'ng'])
+@get_datatable
+def natures(dt):
+    if dt['search']:
+        total_filtered = Nature.objects(enabled=True).search_text(dt['search']).count()
+        list = Nature.objects(enabled=True).search_text(dt['search']).skip(dt['start']).limit(dt['length'])
+        return {
+            'result': [x.to_info() for x in list],
+            'total': total_filtered,
+        }
+    total_filtered = Nature.objects(enabled=True).count()
+    list = Nature.objects(enabled=True).order_by('name').skip(dt['start']).limit(dt['length'])
+    return {
+        'result': [x.to_info() for x in list],
+        'total': total_filtered,
+    }
+
+@bp.get('/nature/info') # Get Nature Info
+@login_required
+@check_roles(['settings', 'ri'])
+def nature_info():
+    id = request.args.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    result = Nature.objects.get_or_404(id=id)
+    return {'result': result.to_info()}
+
+@bp.post('/nature') # New Nature
+@login_required
+@check_roles(['settings'])
+@get_json
+def new_nature(data):
+    try:
+        Nature(name=data['name'], type=data['type'], group=data['group']).save()
+    except db.NotUniqueError as e:
+        return {'error': 'Natureza já existente'}
+    return {'result': _('Nature created') }
+
+@bp.put('/nature') # Edit Nature
+@login_required
+@check_roles(['settings'])
+@get_json
+def put_nature(data):
+    id = data.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    docs = data.get('docs')
+    for doc in docs:
+        if not len(doc) == 24:
+            abort(400)
+    nature = Nature.objects.get_or_404(id=id)
+    nature.docs = [ObjectId(x) for x in docs]
+    nature.save()
+
+    # e_created = []
+    # try:
+    #     event = Event(
+    #         timestamp = datetime.utcnow().timestamp(),
+    #         actor = current_user.id,
+    #         action = data['action'],
+    #         object = 'attend',
+    #         target = attend.to_dict(),
+    #     )
+    #     event.save()
+    #     e_created.append(str(event.id))
+
+    #     status = 'Attend'
+    #     attend.save()
+
+    # except Exception as e:
+    #     msg = f"{_('Error saving to database')} | {status}"
+    #     notify(msg, e)
+    #     for i in s_created:
+    #         to_del = Service.objects.filter(id=i).first()
+    #         if to_del:
+    #             to_del.delete()
+    #     for i in p_created:
+    #         to_del = Payment.objects.filter(id=i).first()
+    #         if to_del:
+    #             to_del.delete()
+    #     for i in e_created:
+    #         to_del = Event.objects.filter(id=i).first()
+    #         if to_del:
+    #             to_del.delete()
+    #     return {'error': msg}, 400
+
+    return {'result': 'Ok'}
+
+@bp.delete('/nature') # Delete Nature
+@login_required
+@check_roles(['settings'])
+@get_json
+def del_nature(data):
+    id = data.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    n = Nature.objects.get_or_404(id=data['id'])
+    if not n.enabled:
+        return {'error': 'Natureza já desativada'}, 400
+    n.enabled = False
+    n.save()
+    return {'result': 'Ok'}
+
+### Documents
+@bp.post('/document') # New Document
+@login_required
+@check_roles(['settings'])
+@get_json
+def new_document(data):
+    try:
+        Document(name=data['name']).save()
+    except db.NotUniqueError as e:
+        return {'error': 'Documento já existente'}
+    return {'result': _('Document created') }
+
+@bp.get('/documents') # Get Documents
+@login_required
+@check_roles(['ri', 'fin', 'itm', 'settings'])
+@get_datatable
+def get_documents(dt):
+    if dt['search']:
+        total_filtered = Document.objects.search_text(dt['search']).count()
+        list = Document.objects.search_text(dt['search']).skip(dt['start']).limit(dt['length'])
+        return {
+            'result': [x.to_list() for x in list],
+            'total': total_filtered,
+        }
+    total_filtered = Document.objects().count()
+    list = Document.objects(active=True).order_by('name').skip(dt['start']).limit(dt['length'])
+    return {
+        'result': [x.to_list() for x in list],
+        'total': total_filtered,
+    }
+
+@bp.get('/document/info') # Get Document Info
+@login_required
+@check_roles(['settings'])
+def document_info():
+    id = request.args.get('id')
+    if not (id and len(id) == 24):
+        abort(400)
+    result = Document.objects.get_or_404(id=id)
+    return {'result': result.to_info()}
+
+### COMPANY
+# Mover de User para a Company o usuário do Atendimento
+@bp.put('/company')
+@login_required
+@check_roles(['ri'])
+@get_json
+def put_company(data):
+    id = data.get('id')
+    company_id = data.get('company')
+    if not (id and len(id) == 24 and company_id and len(company_id) == 24):
+        abort(400)
+    attend = Attend.objects.get_or_404(id=id)
+    company = User.objects.get_or_404(id=company_id, pj=True)
+
+    if not CompanyBind.objects.filter(user=attend.user, company=company).first():
+        return {'error': f'Usuário não credenciado'}, 400
+    attend_event = attend.to_event()
+    attend_event['company'] = str(company.id)
+    event = Event(
+        timestamp = datetime.utcnow().timestamp(),
+        actor = current_user.id,
+        action = 'company',
+        object = 'attend',
+        target = attend_event,
+    )
+    attend.cred = attend.user
+    attend.user = company.id
+
+    attend.save()
+    event.save()
+    return {'result': 'Ok'}
+

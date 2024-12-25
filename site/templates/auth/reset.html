@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block navbar%}{% endblock %}
+{% block styles %}
+{{ super() }}
+<style>
+  {% include 'auth/auth.css' %}
+</style>
+{% endblock %}
+{% block content %}
+
+<form id="reset" class="form-auth">
+  <h2>{{ _('Reset password') }}</h2>
+  <div class="form-floating">
+    <input type="password" class="form-control" id="pwd" placeholder="">
+    <label for="pwd">{{ _('New password') }}</label>
+  </div>
+  <div class="form-floating">
+    <input onkeyup="check_reset(event)" type="password" class="form-control" id="pwd2" placeholder="">
+    <label for="pwd2">{{ _('Confirm password') }}</label>
+  </div>
+  <div class="btn-auth">
+    {% if config.DEBUG %}
+      <button type="button" id="resetbtn" class="btn btn-lg btn-primary" onclick='reset_pwd()'>{{ _('Reset') }}</button>
+    {% else %}
+      <button type="button" id="resetbtn" class="btn btn-lg btn-primary g-recaptcha" data-sitekey="{{ config['RECAPTCHA_SITEKEY'] }}" data-callback='reset_pwd' data-action='submit'>{{ _('Reset') }}</button>
+    {% endif %}
+  </div>
+</form>
+{% endblock %}
+{% block scripts %}
+  {{ super() }}
+  <script src="https://www.google.com/recaptcha/api.js"></script>
+  <script>
+    {% include 'auth/reset.js' %}
+  </script>
+{% endblock %}
+
+
+

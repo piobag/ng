@@ -1,0 +1,53 @@
+<form id='cur_itm'>
+  <div class="cur_itm">
+    <div class="cur_itm_hearder">
+      <input name="id" value="${result['id']}" type="hidden">
+    </div>
+    <div class="cur_itm_content">
+      <div class="cur_itm_details">
+        <section class="cur_itm_details_title">
+          <div>
+            <div><h6>Pedido<br> <b> ${result['cod']}</b></h6></div>
+            <div><h6>Data<br> <b>${new Date(result['prot_date'] * 1000).toLocaleString('default', {dateStyle: 'short', timeZone: 'UTC'})}</b></h6></div>
+            ${result['mat'] ? `<div><h6>Matrícula<br><b>${result['mat']}</b>` : ''}</h6></div>
+            <table class="table table-sm table-hover table-responsive">
+              <thead>
+                  <tr>
+                      <th>Tipo</th>
+                      <th>Natureza</th>
+                      <th>Valor</th>
+                  </tr>
+              </thead>
+              <tbody id="itm_service_list">
+    
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th></th>
+                  <th>Total</th>
+                  <th><b class="text-dark">${data['itm_values']['total'].toLocaleString('pt-BR', currency_br)}</b></th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div>
+            ${devedor}
+            ${credor}
+            ${enderecos}    
+          </div>
+        </section>
+        <section>
+          <div class="form-floating" style="min-width: 600px;">
+            <textarea class="form-control" placeholder="" name="comment"></textarea>
+            <label for="comment">Comentários</label>
+          </div>
+          <div class="btn-group btn-group-sm m-3" role="group">
+            <button name="btn_cancel" type="button" class="btn btn-sm btn-outline-danger" onclick="cancel_itm(this)" role="button">{{ _('Cancel') }} <i class="fas fa-times"></i></button>
+            <button name="btn_cancel" type="button" class="btn btn-sm btn-outline-success started" onclick="orc_itm(this)" role="button">{{ _('Finalize') }} <i class="fas fa-check"></i></button>
+          </div>
+        </section>
+      </div>
+
+    </div>
+  </div>
+</form>

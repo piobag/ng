@@ -1,0 +1,46 @@
+### Título (no html e no remetente dos emails)
+TITLE=Dev NG
+### Emails de Administrador separados por ","
+MAIL_ADMIN=lpiobag@gmail.com
+### Emails de Usuário para testes offline, separados por ","
+MAIL_USERS=user@ng.com
+### Domínio
+DOMAIN=localhost:8080
+DOMAIN_API=localhost:8080/api
+NEXT_APP_URL=http://localhost:8080/
+NEXT_PUBLIC_BASE_API_URL=http://localhost:8080
+### Secret
+SECRET_KEY="Top_Secret_Key!!!"
+
+### MongoDB
+MONGO_URI=mongodb://user:password@mongo/ng?authSource=admin&connectTimeoutMS=10000
+### Chave de acesso S3 da vultr
+S3_HOST=
+S3_KEY=
+S3_SECRET=
+### SMTP - Dados do servidor de email
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_SERVER=
+### Recaptcha
+RECAPTCHA_SITEKEY=
+RECAPTCHA_SECRETKEY=
+
+### Modo Desenvolvimento do Flask
+FLASK_DEBUG=1
+FLASK_ENV=development
+### Diretório do docker compose
+DIR=
+
+##### !! #####
+
+### Dados da página de contato
+MAIL_CONTACT=
+ADDRESS=
+TEL=
+# Botão do Whatsapp - Número
+WHATS=
+# Google Maps iframe
+MAPS=
+
+

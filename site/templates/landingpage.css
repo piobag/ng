@@ -1,0 +1,10 @@
+.modal_exig_resp .modal_exig_resp_file {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin: 12px auto;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 640px;
+}

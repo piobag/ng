@@ -1,0 +1,23 @@
+/* Pop-up */
+
+.settings_popup .popup_new {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 800px;
+    padding: 8px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.settings_popup .popup_new .form-floating {
+    margin: 0 12px;
+}
+
+.settings_popup .popup_list {
+    display: flex;
+    justify-content: center;
+    max-width: 800px;
+}

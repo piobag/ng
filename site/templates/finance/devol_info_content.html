@@ -1,0 +1,20 @@
+<h3><b>{{ _('Devolution summary') }}</b></h3>
+
+<div class="devol_info_hearder">
+  <div>
+        ${result['user'].name ? `<div><b>${result['user'].name}</b></div>`  : ''}
+        ${result['user'].cpfcnpj ? `<div>{{ _('CPF') }} | <b>${mask_cpfcnpj(result['user'].cpfcnpj)}</b></div>`  : ''}
+        ${result['user'].tel ? `<div>{{ _('Phone') }} | <b>${mtel(result['user'].tel)}</b></div>`  : ''}
+        ${result['user'].email ? `<div>{{ _('Email') }} | <b>${result['user'].email}</b></div>`  : ''}
+    </div>
+    <div>
+        <div>{{ _('Protocol') }} | <b>${result['prot']}</b></div>
+        ${result['nature'] ? `<div>{{ _('Nature') }} | <b>${result['nature']}</b></div>`  : ''}
+        ${result['value'] ? `<div>{{ _('Value') }} | <b>${result['value'].toLocaleString('pt-BR', currency_br)}</b></div>`  : ''}
+        <div>{{ _('Date') }} | <b>${new Date(result['senddate'] * 1000).toLocaleString('default', {dateStyle: 'short', timeZone: 'America/Sao_Paulo' })}</b></div>
+    </div>
+</div>
+
+<div class="devol_info_content">
+   ${devol_btn_status}
+</div>

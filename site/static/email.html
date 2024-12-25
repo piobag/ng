@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>Tabelionato Novo Gama</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        table, td, div, h1, p {font-family: Arial, sans-serif;}
+        /* table, td {border:1px solid #000000 !important;} */
+    </style>
+</head>
+<body style="margin:0;padding:0;">
+    <table align="center" cellpadding="0" cellspacing="0" width="600">
+        <tr>
+            <td bgcolor="#eeeeee" style="padding: 30px 30px 30px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                    <td>
+                        <a href="https://{{ config.DOMAIN }}">
+                            <img src="https://{{ config.DOMAIN }}/static/img/logo.jpg" alt="logo" width="300" style="height:auto;display:block;background: black;"/>
+                        </a>
+                    </td>
+                    <td align="right">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                         <tr>
+                          <td>
+                           <a href="http://www.facebook.com/cartoriodescoberto">
+                            <img src="https://{{ config.DOMAIN }}/static/img/facebook.png" alt="Facebook" width="38" height="38" style="display: block;" border="0" />
+                           </a>
+                          </td>
+                          <td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
+                          <td>
+                           <a href="http://www.instagram.com/cartoriodescoberto">
+                            <img src="https://{{ config.DOMAIN }}/static/img/instagram.png" alt="Instagram" width="38" height="38" style="display: block;" border="0" />
+                           </a>
+                          </td>
+                         </tr>
+                        </table>
+                    </td>
+                    </tr>
+                   </table>
+             </td>
+        
+        </tr>
+        <tr>
+         <td bgcolor="#d06925" align="center"  style="padding: 10px 30px 10px 30px;">
+            <h3 style="font-family:Arial,sans-serif;font-size:25px;color:#ffffff;">Lembrete de agendamento</h3>
+
+         </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">Prezado(a) <strong> {% booking.name %} </strong>,</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p align="justify" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Informamos que o agendamento com início às {{ booking.start.strftime('%H:%M do dia %d/%m/%Y') }} foi cancelado{% if reason %} com a seguinte observação: "{{ reason }}"{% endif %}.</p>
+                    </td>
+                </tr>
+                 <tr>
+                    <td align="center" style="padding: 40px 0px 0px 0px;">
+                       <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;color:#000000;"><b>Tem alguma dúvida? <a style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;color:#d06925;" href="https://api.whatsapp.com/send?phone=556130846911&text=Gostaria%20de%20iniciar%20um%20atendimento&lang=pt_br" target="_blank">Tire suas dúvidas pelo WhatsApp</a></b></p>
+                    </td>
+                </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#eeeeee" style="padding: 10px 30px 20px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    
+                    <tr>
+                     <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr align="center">
+                             <td  width="260" valign="top">
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;"><b><strong>Telefone (61)</strong></b></p>
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;">3084-6911 3084-6940 <br> 3084-6936 98540-3963</p>
+                             </td>
+                             <td style="font-size: 0; line-height: 0;" width="20">
+                              &nbsp;
+                             </td>
+                             <td width="260" valign="top">
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;"><b><strong>Endereço</strong></b></p>
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;">SD 12, QD 11, LT 56 - Centro <br> Cidade Ocidental - GO</p>
+                             </td>
+                            </tr>
+                           </table>
+                     </td>
+                    </tr>
+                   </table>
+            </td>
+        </tr>
+       </table>
+</body>
+</html>
+
+
+

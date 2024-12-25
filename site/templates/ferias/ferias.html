@@ -1,0 +1,90 @@
+<div class="container-flush">
+    <div class="accordion accordion-flush container-flush text-center" id="ferias-accordion">
+        {% if 'fin' in roles %}
+            <div class="accordion-item accordion-border ferias_approval">
+                <h2 class="accordion-header" id="flush-One">
+                    <button class="accordion-button active text-center" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#ferias_approval" aria-expanded="false" aria-controls="ferias_approval">
+                        <h2 class="accordion_title">{{ _('Approval vacation') }}</h2>
+                    </button>
+                </h2>
+                <div id="ferias_approval" class="accordion-collapse collapse show" data-bs-parent="#ferias-accordion">
+                    <div class="accordion-body">
+                        <div class="ferias_approval_header">
+                        </div>
+                        <div class="ferias_approval_content">
+                            <button type="button" class="btn btn-sm btn-outline-dark m-2" id="ferias_update_btn" onclick="ferias_update()"><i class="fas fa-sm fa-sync"></i></button>
+                            <div class="content_list">
+                                <div class="ferias_pending">
+                                    <h5><b>{{ _('Pending') }}</b></h5>
+                                    <div id="ferias_list_pending"></div>
+                                </div>
+                                <div class="ferias_conflicting">
+                                    <h5><b>{{ _('Conflicting') }}</b></h5>
+                                    <div id="ferias_list_conflicting"></div>
+                                </div>
+                            </div>
+                            <div class="ferias_aproved">
+                                <h5><b>{{ _('Aproved') }}</b></h5>
+                                <div id="ferias_list_aproved"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="accordion-item accordion-border ferias_new">
+            <h2 class="accordion-header" id="flush-Two">
+                <button class="accordion-button text-center {% if 'fin' in roles %}collapsed{% else %}active{% endif %}" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#feriasnew" aria-expanded="false" aria-controls="feriasnew">
+                    <h2 class="accordion_title">{{ _('Booking vacation') }}</h2>
+                </button>
+            </h2>
+            <div id="feriasnew" class="accordion-collapse collapse {% if not 'fin' in roles %}show{% endif %}" data-bs-parent="#ferias-accordion">
+                <div class="accordion-body">
+                    <div class="ferias_new_header">
+                        <form id="ferias_new_form" class="form-floating ferias_new_form">
+                            <div class="row g-1 justify-content-center">
+                                <h5><span id="ferias_dias">{{ _('Select the period you want') }}</span></h5>
+                                <div class="col-md-4">
+                                    <div onchange="dias_ferias(event)" class="form-floating">
+                                        <input type="date" class="form-control" name="start" placeholder="" required>
+                                        <label for="start">{{ _('Date start') }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div onchange="dias_ferias(event)" class="form-floating">
+                                        <input type="date" class="form-control" name="end" placeholder="" required>
+                                        <label for="end">{{ _('Date end') }}</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div type="button" class="btn btn-sm btn-outline-success"
+                                        onclick="save_ferias(this)"><i class="fas fa-sm fa-save"></i></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-outline-dark m-2" id="ferias_load_btn" onclick="load_ferias()"><i class="fas fa-sm fa-sync"></i></button>
+                    <div class="ferias_new_content">
+                        <div>
+                            <table class="table table-sm table-hover table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>{{ _('Start') }}</th>
+                                        <th>{{ _('End') }}</th>
+                                        <th>{{ _('Days') }}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ferias_list_content" class="ferias_list_content">
+                        
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

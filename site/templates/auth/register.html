@@ -1,0 +1,38 @@
+
+<form id="register" class="form-auth" style="display: none;">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+  <h2>{{ _('New user') }}</h2>
+  <div class="form-floating">
+    <input type="text" class="form-control" id="name_reg" placeholder="">
+    <label for="name_reg">{{ _('Name') }}</label>
+  </div>
+  <div class="form-floating">
+    <input type="text" class="form-control" id="cpf_reg" placeholder="">
+    <label for="cpf_reg">{{ _('CPF') }}</label>
+  </div>
+  <div class="form-floating">
+    <input type="text" class="form-control" id="email_reg" placeholder="">
+    <label for="email_reg">{{ _('Email') }}</label>
+  </div>
+  <div class="form-floating">
+    <input type="email" class="form-control" id="tel_reg" onkeyup="mask_tel(this, mtel)" onblur="mask_tel(this, mtel)" placeholder="">
+    <label for="tel_reg">{{ _('Phone') }}</label>
+  </div>
+  <div class="form-floating">
+    <input type="password" class="form-control" id="pwd_reg" placeholder="">
+    <label for="pwd_reg">{{ _('Password') }}</label>
+  </div>
+  <div class="form-floating">
+    <input type="password" onkeyup="check_register(event)" class="form-control" id="pwd2_reg" placeholder="">
+    <label for="pwd2_reg">{{ _('Confirm password') }}</label>
+  </div>
+  <div class="btn-auth">
+    {% if config.DEBUG %}
+      <button type="button" id="registerbtn" class="btn btn-lg btn-outline-primary" onclick='register()'>{{ _('Register') }}</button>
+    {% else %}
+      <button type="button" id="registerbtn" class="btn btn-lg btn-outline-primary g-recaptcha" data-sitekey="{{ config['RECAPTCHA_SITEKEY'] }}" data-callback='register' data-action='submit'>{{ _('Register') }}</button>
+    {% endif %}
+    <span class="show_restore">{{ _('Restore password') }}</span>
+    <span class="show_login">{{ _('Sign-in') }}</span>
+  </div>
+</form>

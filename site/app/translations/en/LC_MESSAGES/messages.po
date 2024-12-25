@@ -1,0 +1,1318 @@
+# English translations for PROJECT.
+# Copyright (C) 2022 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-06-15 23:28+0000\n"
+"PO-Revision-Date: 2022-04-08 20:16+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.12.1\n"
+
+#: app/__init__.py:36
+msgid "Please login."
+msgstr ""
+
+#: app/attend/routes.py:325 app/auth/routes.py:60 app/auth/routes.py:295
+#: app/finance/company.py:105 app/finance/routes.py:492
+#: templates/attend/attend.js:260 templates/auth/auth.js:39
+#: templates/auth/auth.js:101 templates/auth/auth.js:174 templates/contact.js:8
+#: templates/finance/company/company.js:90 templates/finance/devol/devol.js:164
+msgid "Enter a valid email address"
+msgstr ""
+
+#: app/attend/routes.py:329 app/finance/routes.py:495
+#: templates/attend/attend.js:57 templates/attend/attend.js:256
+#: templates/auth/auth.js:82 templates/auth/auth.js:97
+#: templates/auth/auth.js:157 templates/auth/auth.js:212
+#: templates/auth/auth.js:233 templates/auth/profile.js:26
+#: templates/auth/profile.js:74 templates/finance/company/info.js:232
+msgid "Invalid CPF"
+msgstr ""
+
+#: app/attend/routes.py:335
+msgid "There is a service in progress"
+msgstr ""
+
+#: app/attend/routes.py:383 app/attend/routes.py:717 app/audit/routes.py:50
+#: app/booking/routes.py:325 app/booking/routes.py:326 app/ferias/routes.py:49
+#: app/ferias/routes.py:50 app/finance/routes.py:417 app/finance/routes.py:669
+#: app/finance/routes.py:670 app/finance/routes.py:726
+#: app/finance/routes.py:727 app/itm/routes.py:1774 app/popup/routes.py:47
+#: app/popup/routes.py:48 app/popup/routes.py:80 app/popup/routes.py:81
+msgid "Error saving to database"
+msgstr ""
+
+#: app/attend/routes.py:760
+msgid "Nature created"
+msgstr ""
+
+#: app/attend/routes.py:837
+msgid "Document created"
+msgstr ""
+
+#: app/auth/__init__.py:65
+msgid "Registration confirmation"
+msgstr ""
+
+#: app/auth/__init__.py:67
+msgid "Reset your password"
+msgstr ""
+
+#: app/auth/routes.py:57 app/auth/routes.py:123 app/auth/routes.py:166
+#: app/auth/routes.py:223
+msgid "Failed to validate reCAPTCHA, please reload the page"
+msgstr ""
+
+#: app/auth/routes.py:62 app/auth/routes.py:230
+msgid "Passwords do not match"
+msgstr ""
+
+#: app/auth/routes.py:100
+msgid "Email verified, you can now login."
+msgstr ""
+
+#: app/auth/routes.py:105 app/auth/routes.py:106
+msgid "Error sending confirmation email"
+msgstr ""
+
+#: app/auth/routes.py:107
+msgid "Account registered, click on the confirmation link sent to your email"
+msgstr ""
+
+#: app/auth/routes.py:128 app/auth/routes.py:136
+msgid "Invalid id or password."
+msgstr ""
+
+#: app/auth/routes.py:131
+msgid "Invalid password, please request a password reset"
+msgstr ""
+
+#: app/auth/routes.py:140
+msgid ""
+"Mail not validated yet, check your spam box for the confirmation link or "
+"request a password reset to be verified"
+msgstr ""
+
+#: app/auth/routes.py:142
+msgid "Account disabled, contact admin."
+msgstr ""
+
+#: app/auth/routes.py:170
+msgid "This email is not registered yet."
+msgstr ""
+
+#: app/auth/routes.py:177
+msgid "Check your mail for the instructions to reset your password"
+msgstr ""
+
+#: app/auth/routes.py:187
+msgid "Expired Token. Confirm your email reseting password."
+msgstr ""
+
+#: app/auth/routes.py:190
+msgid "Invalid Token."
+msgstr ""
+
+#: app/auth/routes.py:194
+msgid "User already confirmed."
+msgstr ""
+
+#: app/auth/routes.py:199
+msgid "User verified, you can now login."
+msgstr ""
+
+#: app/auth/routes.py:210
+msgid "Expired Token. Request a new password change."
+msgstr ""
+
+#: app/auth/routes.py:232 templates/auth/auth.js:43 templates/auth/auth.js:105
+#: templates/auth/reset.js:5
+msgid "Password must be at least 8 characters long"
+msgstr ""
+
+#: app/auth/routes.py:237
+msgid "Your password has been changed."
+msgstr ""
+
+#: app/auth/routes.py:307
+msgid "Email already registered in another account"
+msgstr ""
+
+#: app/auth/routes.py:327 app/auth/routes.py:328
+msgid "Error saving profile"
+msgstr ""
+
+#: app/auth/routes.py:342
+msgid "Invalid CPF/CNPJ"
+msgstr ""
+
+#: app/auth/routes.py:352
+msgid "Invalid email address"
+msgstr ""
+
+#: app/base/routes.py:66
+msgid "Fill in all form fields"
+msgstr ""
+
+#: app/base/routes.py:67
+msgid "New Site Contact"
+msgstr ""
+
+#: app/booking/routes.py:42
+msgid "Invalid day timestamp"
+msgstr ""
+
+#: app/booking/routes.py:55
+msgid "Unable to schedule to the past"
+msgstr ""
+
+#: app/booking/routes.py:59
+msgid "Selected day is not a working day"
+msgstr ""
+
+#: app/booking/routes.py:63
+msgid "There will be no office on this day"
+msgstr ""
+
+#: app/booking/routes.py:113
+msgid "Time not available"
+msgstr ""
+
+#: app/booking/routes.py:113
+msgid "No time available for selection"
+msgstr ""
+
+#: app/booking/routes.py:208
+msgid "Maximum appointments per user reached"
+msgstr ""
+
+#: app/booking/routes.py:220
+msgid "Maximum 3 hours of appointment reached"
+msgstr ""
+
+#: app/booking/routes.py:239
+msgid "Failed to send booking confirmation email"
+msgstr ""
+
+#: app/booking/routes.py:240
+msgid "Service scheduled"
+msgstr ""
+
+#: app/booking/routes.py:242
+msgid "Error saving to the database"
+msgstr ""
+
+#: app/booking/routes.py:243
+msgid "Error saving to the database, please try again"
+msgstr ""
+
+#: app/booking/routes.py:245
+msgid "No service selected"
+msgstr ""
+
+#: app/booking/routes.py:256
+msgid "Appointment canceled"
+msgstr ""
+
+#: app/booking/routes.py:258
+msgid "You cannot cancel this appointment"
+msgstr ""
+
+#: app/errors/__init__.py:13
+msgid "Bad request"
+msgstr ""
+
+#: app/errors/__init__.py:19
+msgid "Not permited"
+msgstr ""
+
+#: app/errors/__init__.py:25 templates/errors/404.html:4
+msgid "Not found"
+msgstr ""
+
+#: app/finance/company.py:108
+msgid "Invalid CNPJ"
+msgstr ""
+
+#: app/finance/company.py:114
+msgid "CNPJ already registered with a User"
+msgstr ""
+
+#: app/finance/routes.py:644 templates/finance/devolresp.js:18
+msgid "Please enter the bank name correctly"
+msgstr ""
+
+#: app/finance/routes.py:646 templates/finance/devolresp.js:26
+msgid "Please enter the agency number correctly"
+msgstr ""
+
+#: app/finance/routes.py:648 templates/finance/devolresp.js:30
+msgid "Please enter the account number correctly"
+msgstr ""
+
+#: templates/contact.js:4
+msgid "Enter a valid name"
+msgstr ""
+
+#: templates/contact.js:12
+msgid "Please enter a longer message so we can answer you"
+msgstr ""
+
+#: templates/attend/attend.js:54 templates/attend/attend.js:126
+#: templates/attend/attend.js:208 templates/attend/attend.js:281
+#: templates/attend/attend.js:425 templates/attend/attend.js:451
+#: templates/attend/attend.js:474 templates/attend/attend.js:653
+#: templates/attend/attend.js:748 templates/attend/info/info.js:148
+#: templates/attend/info/info.js:174 templates/attend/info/info.js:232
+#: templates/attend/info/info.js:259 templates/attend/info/info.js:284
+#: templates/attend/prot/info.js:101 templates/attend/prot/info.js:135
+#: templates/attend/prot/info.js:203 templates/attend/prot/info.js:209
+#: templates/audit/audit.js:34 templates/audit/audit.js:58
+#: templates/auth/auth.js:65 templates/auth/auth.js:139
+#: templates/auth/auth.js:195 templates/auth/profile.js:59
+#: templates/auth/profile.js:134 templates/auth/reset.js:32
+#: templates/booking/blacklist.js:67 templates/booking/blacklist.js:90
+#: templates/booking/blacklist.js:111 templates/booking/booking.js:73
+#: templates/booking/booking.js:155 templates/booking/booking.js:178
+#: templates/contact.js:40 templates/dashboard.js:109
+#: templates/ferias/ferias.js:41 templates/ferias/ferias.js:75
+#: templates/ferias/ferias.js:98 templates/ferias/ferias.js:178
+#: templates/ferias/ferias.js:213 templates/ferias/ferias.js:237
+#: templates/finance/company/company.js:63
+#: templates/finance/company/company.js:117
+#: templates/finance/company/info.js:158 templates/finance/company/info.js:205
+#: templates/finance/company/info.js:229 templates/finance/company/info.js:285
+#: templates/finance/company/info.js:311 templates/finance/devol/devol.js:93
+#: templates/finance/devol/devol.js:143 templates/finance/devol/devol.js:210
+#: templates/finance/devol/devol.js:234 templates/finance/devol_info.js:58
+#: templates/finance/devol_info.js:83 templates/finance/devol_info.js:130
+#: templates/finance/devolresp.js:56 templates/finance/finance.js:164
+#: templates/itm/info/info.js:37 templates/itm/info/info.js:958
+#: templates/itm/info/info.js:1072 templates/itm/info/info.js:1353
+#: templates/itm/info/info.js:1436 templates/itm/info/info.js:1578
+#: templates/itm/info/info.js:1605 templates/itm/info/info.js:1630
+#: templates/itm/info/info.js:1657 templates/itm/info/info.js:1683
+#: templates/itm/info/info.js:1760 templates/itm/info/info.js:1821
+#: templates/itm/info/info.js:1848 templates/itm/itm.js:82
+#: templates/itm/itm.js:94 templates/itm/itm.js:178 templates/itm/itm.js:184
+#: templates/itm/itm.js:235 templates/itm/itm.js:336 templates/itm/itm.js:370
+#: templates/itm/itm.js:396 templates/itm/itm.js:431 templates/itm/itm.js:450
+#: templates/itm/itm.js:471 templates/popup/popup.js:34
+#: templates/popup/popup.js:62 templates/popup/popup.js:92
+#: templates/popup/popup.js:117 templates/popup/popup.js:143
+#: templates/settings/info/nature.js:34 templates/settings/info/nature.js:58
+#: templates/settings/info/nature.js:112 templates/settings/info/nature.js:114
+#: templates/settings/settings.js:91 templates/settings/settings.js:130
+#: templates/settings/settings.js:153 templates/settings/settings.js:176
+msgid "Error in API"
+msgstr ""
+
+#: templates/dashboard.html:54 templates/settings/settings.html:15
+#: templates/settings/settings.html:188
+msgid "Search"
+msgstr ""
+
+#: templates/audit/audit.html:2 templates/dashboard.html:75
+msgid "Dashboard"
+msgstr ""
+
+#: templates/audit/audit.html:4 templates/dashboard.html:81
+msgid "Finance"
+msgstr ""
+
+#: templates/attend/attend.html:3 templates/dashboard.html:87
+msgid "Attendance"
+msgstr ""
+
+#: templates/dashboard.html:93
+msgid "Intimation"
+msgstr ""
+
+#: templates/audit/audit.html:38 templates/dashboard.html:99
+msgid "Vacation"
+msgstr ""
+
+#: templates/dashboard.html:103
+msgid "Support"
+msgstr ""
+
+#: templates/dashboard.html:109
+msgid "Settings"
+msgstr ""
+
+#: templates/datatable.js:48 templates/pagination.html:3
+#: templates/settings/settings.html:176
+msgid "Per page"
+msgstr ""
+
+#: templates/attend/attend.html:7 templates/attend/cur_attend.html:6
+#: templates/attend/info/content.html:6 templates/attend/info/info.js:60
+#: templates/attend/prot/content.html:6 templates/auth/auth.html:15
+#: templates/auth/auth.html:43 templates/auth/modal.html:14
+#: templates/auth/modal.html:40 templates/auth/register.html:11
+#: templates/finance/devol/devol.html:13
+#: templates/finance/devol_info_content.html:6
+#: templates/finance/devolresp.html:45
+msgid "CPF"
+msgstr ""
+
+#: templates/attend/attend.html:11 templates/booking/booking.html:40
+#: templates/finance/company/info_cont.html:59
+msgid "Full name"
+msgstr ""
+
+#: templates/attend/attend.html:15 templates/attend/cur_attend.html:7
+#: templates/attend/info/content.html:7 templates/attend/info/info.js:61
+#: templates/attend/prot/content.html:7 templates/auth/profile.html:25
+#: templates/auth/register.html:15 templates/finance/company/company.html:25
+#: templates/finance/company/company.js:28
+#: templates/finance/devol/devol.html:25
+#: templates/finance/devol_info_content.html:8
+msgid "Email"
+msgstr ""
+
+#: templates/attend/attend.html:19 templates/attend/cur_attend.html:8
+#: templates/attend/info/content.html:8 templates/attend/prot/content.html:8
+#: templates/auth/mail.html:76 templates/auth/profile.html:37
+#: templates/auth/register.html:19 templates/finance/company/company.html:21
+#: templates/finance/devol/devol.html:21
+#: templates/finance/devol_info_content.html:7
+msgid "Phone"
+msgstr ""
+
+#: templates/attend/attend.html:38
+msgid "Bookings"
+msgstr ""
+
+#: templates/attend/attend.js:516 templates/itm/cur_itm.html:46
+msgid "Finalize"
+msgstr ""
+
+#: templates/attend/attend.js:520 templates/attend/cur_attend.html:100
+#: templates/itm/cur_itm.html:45
+msgid "Cancel"
+msgstr ""
+
+#: templates/attend/cur_attend.html:1
+msgid "Current attendance"
+msgstr ""
+
+#: templates/attend/cur_attend.html:64 templates/attend/info/content.html:81
+msgid "Select"
+msgstr ""
+
+#: templates/attend/cur_attend.html:69 templates/attend/info/content.html:86
+msgid "Payment"
+msgstr ""
+
+#: templates/attend/cur_attend.html:73 templates/attend/info/content.html:92
+#: templates/finance/devol/devol.html:41 templates/finance/devol/devol.js:46
+#: templates/finance/devol_info_content.html:13
+msgid "Value"
+msgstr ""
+
+#: templates/attend/cur_attend.html:90 templates/booking/booking.html:61
+msgid "Comments"
+msgstr ""
+
+#: templates/attend/info/content.html:1
+msgid "Service summary"
+msgstr ""
+
+#: templates/attend/info/content.html:12 templates/attend/prot/content.html:11
+msgid "Attendant"
+msgstr ""
+
+#: templates/attend/info/content.html:13 templates/attend/prot/content.html:12
+#: templates/audit/audit.html:16 templates/finance/devol/devol.js:45
+#: templates/finance/devol_info_content.html:14
+msgid "Date"
+msgstr ""
+
+#: templates/attend/info/content.html:74
+msgid "Payments"
+msgstr ""
+
+#: templates/attend/info/info.js:59
+msgid "Representante"
+msgstr ""
+
+#: templates/audit/audit.html:7
+msgid "Digitizer"
+msgstr ""
+
+#: templates/audit/audit.html:20
+msgid "Hours"
+msgstr ""
+
+#: templates/auth/auth.html:12 templates/auth/auth.html:52
+#: templates/auth/modal.html:11 templates/auth/modal.html:49
+#: templates/auth/register.html:36
+msgid "Sign-in"
+msgstr ""
+
+#: templates/auth/auth.html:19 templates/auth/modal.html:18
+#: templates/auth/register.html:23
+msgid "Password"
+msgstr ""
+
+#: templates/auth/auth.html:23 templates/auth/modal.html:22
+msgid "Keep me logged in"
+msgstr ""
+
+#: templates/auth/auth.html:29 templates/auth/auth.html:31
+#: templates/auth/modal.html:27 templates/auth/modal.html:29
+msgid "Login"
+msgstr ""
+
+#: templates/auth/auth.html:33 templates/auth/auth.html:51
+#: templates/auth/modal.html:31 templates/auth/modal.html:48
+msgid "Create account"
+msgstr ""
+
+#: templates/auth/auth.html:34 templates/auth/auth.html:40
+#: templates/auth/modal.html:32 templates/auth/modal.html:37
+#: templates/auth/register.html:35
+msgid "Restore password"
+msgstr ""
+
+#: templates/auth/auth.html:47 templates/auth/auth.html:49
+#: templates/auth/modal.html:44 templates/auth/modal.html:46
+msgid "Restore"
+msgstr ""
+
+#: templates/auth/auth.js:35 templates/auth/auth.js:170
+msgid "Enter a valid cpf"
+msgstr ""
+
+#: templates/auth/auth.js:93
+msgid "Enter your full name"
+msgstr ""
+
+#: templates/auth/auth.js:109 templates/auth/reset.js:9
+msgid "Passwords don't match"
+msgstr ""
+
+#: templates/auth/mail.html:48
+msgid "Dear"
+msgstr ""
+
+#: templates/auth/mail.html:54 templates/auth/mail.html:56
+msgid "Click"
+msgstr ""
+
+#: templates/auth/mail.html:54 templates/auth/mail.html:56
+msgid "here"
+msgstr ""
+
+#: templates/auth/mail.html:54
+msgid "to confirm your account"
+msgstr ""
+
+#: templates/auth/mail.html:56
+msgid "to reset your password"
+msgstr ""
+
+#: templates/auth/mail.html:62
+msgid "Do you have any questions"
+msgstr ""
+
+#: templates/auth/mail.html:62
+msgid "Ask your questions via WhatsApp"
+msgstr ""
+
+#: templates/auth/profile.html:19 templates/auth/register.html:7
+#: templates/booking/booking.html:39 templates/finance/devol/devol.html:17
+msgid "Name"
+msgstr ""
+
+#: templates/auth/profile.html:31
+msgid "CPF/CNPJ"
+msgstr ""
+
+#: templates/auth/profile.html:44
+msgid "Admission"
+msgstr ""
+
+#: templates/auth/profile.html:50
+msgid "Lunch"
+msgstr ""
+
+#: templates/auth/profile.html:66
+msgid "Save"
+msgstr ""
+
+#: templates/auth/register.html:4
+msgid "New user"
+msgstr ""
+
+#: templates/auth/register.html:27 templates/auth/reset.html:19
+msgid "Confirm password"
+msgstr ""
+
+#: templates/auth/register.html:31 templates/auth/register.html:33
+#: templates/settings/settings.html:159
+msgid "Register"
+msgstr ""
+
+#: templates/auth/reset.html:12
+msgid "Reset password"
+msgstr ""
+
+#: templates/auth/reset.html:15
+msgid "New password"
+msgstr ""
+
+#: templates/auth/reset.html:23 templates/auth/reset.html:25
+msgid "Reset"
+msgstr ""
+
+#: templates/booking/blacklist.html:4
+msgid "Blacklist"
+msgstr ""
+
+#: templates/booking/blacklist.html:14 templates/booking/blacklist.html:39
+#: templates/popup/popup.html:20
+msgid "Description"
+msgstr ""
+
+#: templates/booking/blacklist.html:20 templates/ferias/ferias.html:52
+#: templates/finance/finance.html:20
+msgid "Date start"
+msgstr ""
+
+#: templates/booking/blacklist.html:26 templates/ferias/ferias.html:58
+#: templates/finance/finance.html:26
+msgid "Date end"
+msgstr ""
+
+#: templates/booking/blacklist.html:40 templates/ferias/ferias.html:74
+msgid "Start"
+msgstr ""
+
+#: templates/booking/blacklist.html:41 templates/ferias/ferias.html:75
+msgid "End"
+msgstr ""
+
+#: templates/booking/booking.html:9
+msgid "Appointments"
+msgstr ""
+
+#: templates/booking/booking.html:29
+msgid "Booking"
+msgstr ""
+
+#: templates/booking/booking.html:49
+msgid "Day"
+msgstr ""
+
+#: templates/booking/booking.html:54 templates/booking/booking.js:67
+msgid "Hour"
+msgstr ""
+
+#: templates/booking/booking.html:56
+msgid "Choose a day and services"
+msgstr ""
+
+#: templates/booking/booking.html:66
+msgid "Schedule"
+msgstr ""
+
+#: templates/booking/booking.js:74
+msgid "Choose the services"
+msgstr ""
+
+#: templates/booking/booking.js:75
+msgid "Choose a day"
+msgstr ""
+
+#: templates/booking/booking.js:83
+msgid "Day in the past"
+msgstr ""
+
+#: templates/booking/booking.js:88
+msgid "Invalid time"
+msgstr ""
+
+#: templates/booking/booking.js:140
+msgid "Previous"
+msgstr ""
+
+#: templates/booking/booking.js:143
+msgid "Next"
+msgstr ""
+
+#: templates/booking/booking.js:149
+msgid "No appointments scheduled"
+msgstr ""
+
+#: templates/booking/booking_list.html:14 templates/settings/settings.html:30
+msgid "Services"
+msgstr ""
+
+#: templates/errors/500.html:4
+msgid "An unexpected error has occurred"
+msgstr ""
+
+#: templates/errors/500.html:5
+msgid "The administrator has been notified. Sorry for the inconvenience!"
+msgstr ""
+
+#: templates/errors/500.html:9
+msgid "Back"
+msgstr ""
+
+#: templates/ferias/ferias.html:8
+msgid "Approval vacation"
+msgstr ""
+
+#: templates/ferias/ferias.html:19 templates/finance/devol/devol.html:60
+msgid "Pending"
+msgstr ""
+
+#: templates/ferias/ferias.html:23
+msgid "Conflicting"
+msgstr ""
+
+#: templates/ferias/ferias.html:28
+msgid "Aproved"
+msgstr ""
+
+#: templates/ferias/ferias.html:40
+msgid "Booking vacation"
+msgstr ""
+
+#: templates/ferias/ferias.html:48
+msgid "Select the period you want"
+msgstr ""
+
+#: templates/ferias/ferias.html:76
+msgid "Days"
+msgstr ""
+
+#: templates/ferias/ferias.js:10
+msgid "Days selected"
+msgstr ""
+
+#: templates/finance/devol_info.js:17
+msgid "Bank transfer"
+msgstr ""
+
+#: templates/finance/devol_info.js:19 templates/finance/devolresp.html:51
+msgid "Bank"
+msgstr ""
+
+#: templates/finance/devol_info.js:20 templates/finance/devolresp.html:69
+msgid "Agency"
+msgstr ""
+
+#: templates/finance/devol_info.js:21 templates/finance/devolresp.html:73
+msgid "Account"
+msgstr ""
+
+#: templates/finance/devol_info.js:39
+msgid "Withdrawal at Reception"
+msgstr ""
+
+#: templates/finance/devol_info.js:44
+msgid "Reprotocol"
+msgstr ""
+
+#: templates/finance/devol_info.js:49
+msgid "Resend email"
+msgstr ""
+
+#: templates/finance/devol_info.js:109
+msgid "Please insert a file"
+msgstr ""
+
+#: templates/finance/devol_info_content.html:1
+msgid "Devolution summary"
+msgstr ""
+
+#: templates/finance/devol/devol.html:31 templates/finance/devol/devol.js:44
+#: templates/finance/devol_info_content.html:11
+#: templates/itm/service_prot.html:2 templates/settings/settings.html:60
+msgid "Protocol"
+msgstr ""
+
+#: templates/finance/devol_info_content.html:12
+msgid "Nature"
+msgstr ""
+
+#: templates/finance/devolresp.html:38
+msgid "Bank Data"
+msgstr ""
+
+#: templates/finance/devolresp.html:42
+msgid "Holder"
+msgstr ""
+
+#: templates/finance/devolresp.js:22
+msgid "Please select account type"
+msgstr ""
+
+#: templates/finance/devol/devol.html:47 templates/finance/finance.html:6
+msgid "Balance"
+msgstr ""
+
+#: templates/finance/company/company.html:4
+msgid "Company"
+msgstr ""
+
+#: templates/finance/company/company.html:13
+#: templates/finance/company/company.js:27
+msgid "CNPJ"
+msgstr ""
+
+#: templates/finance/company/company.html:35
+msgid "List"
+msgstr ""
+
+#: templates/finance/devol/devol.html:4
+msgid "Devolution"
+msgstr ""
+
+#: templates/finance/devol/devol.html:45
+msgid "Default"
+msgstr ""
+
+#: templates/finance/devol/devol.html:46
+msgid "Canceled act"
+msgstr ""
+
+#: templates/finance/devol/devol.html:49
+msgid "Reason"
+msgstr ""
+
+#: templates/finance/devol/devol.html:67
+msgid "Waiting"
+msgstr ""
+
+#: templates/finance/devol/devol.html:72
+msgid "Finished"
+msgstr ""
+
+#: templates/itm/itm.js:110
+msgid "Invalid Code"
+msgstr ""
+
+#: templates/itm/service_c_dec.html:2 templates/itm/service_c_dil.html:2
+#: templates/settings/settings.html:63
+msgid "Certificate"
+msgstr ""
+
+#: templates/itm/info/info.js:1769
+msgid "Número do pedido inválido"
+msgstr ""
+
+#: templates/popup/popup.html:4
+msgid "Pop-Up"
+msgstr ""
+
+#: templates/popup/popup.html:14
+msgid "Display page"
+msgstr ""
+
+#: templates/settings/settings.html:6
+msgid "Users"
+msgstr ""
+
+#: templates/settings/settings.html:51
+msgid "Natures"
+msgstr ""
+
+#: templates/settings/settings.html:74
+msgid "RI"
+msgstr ""
+
+#: templates/settings/settings.html:77
+msgid "RC"
+msgstr ""
+
+#: templates/settings/settings.html:80
+msgid "RTD"
+msgstr ""
+
+#: templates/settings/settings.html:110 templates/settings/settings.html:150
+msgid "Documents"
+msgstr ""
+
+#: templates/settings/settings.html:120 templates/settings/settings.html:166
+msgid "Add document"
+msgstr ""
+
+#: templates/settings/settings.html:161
+msgid "Endorsement"
+msgstr ""
+
+#: templates/settings/settings.html:198
+msgid "Showing"
+msgstr ""
+
+#: templates/settings/settings.html:198
+msgid "filtered documents from a total of"
+msgstr ""
+
+#: templates/settings/settings.html:198
+msgid "documents"
+msgstr ""
+
+#~ msgid "Sing-in"
+#~ msgstr ""
+
+#~ msgid "Keep me signed"
+#~ msgstr ""
+
+#~ msgid "Enter a valid email"
+#~ msgstr ""
+
+#~ msgid "to confirm your email"
+#~ msgstr ""
+
+#~ msgid "Not a valid date value"
+#~ msgstr ""
+
+#~ msgid "Set lunch time"
+#~ msgstr ""
+
+#~ msgid "Booking"
+#~ msgstr ""
+
+#~ msgid "Profile"
+#~ msgstr ""
+
+#~ msgid "Not Found"
+#~ msgstr ""
+
+#~ msgid "Error checking availability"
+#~ msgstr ""
+
+#~ msgid "Pay"
+#~ msgstr ""
+
+#~ msgid "RI"
+#~ msgstr ""
+
+#~ msgid "RTD"
+#~ msgstr ""
+
+#~ msgid "RC"
+#~ msgstr ""
+
+#~ msgid "Add nature "
+#~ msgstr ""
+
+#~ msgid "Add popup "
+#~ msgstr ""
+
+#~ msgid "Jusé da Silva - R$ 2.500,00"
+#~ msgstr ""
+
+#~ msgid "Add expense "
+#~ msgstr ""
+
+#~ msgid "New attendance"
+#~ msgstr ""
+
+#~ msgid "Bookings"
+#~ msgstr ""
+
+#~ msgid "Invalid CPF"
+#~ msgstr ""
+
+#~ msgid "Current attendance"
+#~ msgstr ""
+
+#~ msgid "CPF"
+#~ msgstr ""
+
+#~ msgid "Finalize"
+#~ msgstr ""
+
+#~ msgid "Select"
+#~ msgstr ""
+
+#~ msgid "Payment"
+#~ msgstr ""
+
+#~ msgid "Value"
+#~ msgstr ""
+
+#~ msgid "Comments"
+#~ msgstr ""
+
+#~ msgid "Appointments"
+#~ msgstr ""
+
+#~ msgid "Full name"
+#~ msgstr ""
+
+#~ msgid "Day"
+#~ msgstr ""
+
+#~ msgid "Choose a day and services"
+#~ msgstr ""
+
+#~ msgid "Schedule"
+#~ msgstr ""
+
+#~ msgid "Dashboard"
+#~ msgstr ""
+
+#~ msgid "Attendance"
+#~ msgstr ""
+
+#~ msgid "Blacklist"
+#~ msgstr ""
+
+#~ msgid "Vacation"
+#~ msgstr ""
+
+#~ msgid "Pop-Up"
+#~ msgstr ""
+
+#~ msgid "Comunication"
+#~ msgstr ""
+
+#~ msgid "Finance"
+#~ msgstr ""
+
+#~ msgid "Settings"
+#~ msgstr ""
+
+#~ msgid "Users"
+#~ msgstr ""
+
+#~ msgid "Per page"
+#~ msgstr ""
+
+#~ msgid "Search"
+#~ msgstr ""
+
+#~ msgid "Showing"
+#~ msgstr ""
+
+#~ msgid "filtered users from a total of"
+#~ msgstr ""
+
+#~ msgid "users"
+#~ msgstr ""
+
+#~ msgid "Natures"
+#~ msgstr ""
+
+#~ msgid "Properties"
+#~ msgstr ""
+
+#~ msgid "Certificate"
+#~ msgstr ""
+
+#~ msgid "Add nature"
+#~ msgstr ""
+
+#~ msgid "filtered natures from a total of"
+#~ msgstr ""
+
+#~ msgid "natures"
+#~ msgstr ""
+
+#~ msgid "Documents"
+#~ msgstr ""
+
+#~ msgid "Endorsement"
+#~ msgstr ""
+
+#~ msgid "Add document"
+#~ msgstr ""
+
+#~ msgid "filtered documents from a total of"
+#~ msgstr ""
+
+#~ msgid "documents"
+#~ msgstr ""
+
+#~ msgid "filtered services from a total of"
+#~ msgstr ""
+
+#~ msgid "services"
+#~ msgstr ""
+
+#~ msgid "Display page"
+#~ msgstr ""
+
+#~ msgid "Description"
+#~ msgstr ""
+
+#~ msgid "filtered popups from a total of"
+#~ msgstr ""
+
+#~ msgid "popups"
+#~ msgstr ""
+
+#~ msgid "Balance"
+#~ msgstr ""
+
+#~ msgid "Date start"
+#~ msgstr ""
+
+#~ msgid "Date end"
+#~ msgstr ""
+
+#~ msgid "Collaborator"
+#~ msgstr ""
+
+#~ msgid "filtered balances from a total of"
+#~ msgstr ""
+
+#~ msgid "balances"
+#~ msgstr ""
+
+#~ msgid "Expense"
+#~ msgstr ""
+
+#~ msgid "Recurrent"
+#~ msgstr ""
+
+#~ msgid "Single"
+#~ msgstr ""
+
+#~ msgid "Add expense"
+#~ msgstr ""
+
+#~ msgid "filtered expenses from a total of"
+#~ msgstr ""
+
+#~ msgid "expenses"
+#~ msgstr ""
+
+#~ msgid "Tipo"
+#~ msgstr ""
+
+#~ msgid "Valor"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "${ Math.abs( new Date(new_ferias.start.value) "
+#~ "- new Date(new_ferias.end.value)) /(1000 * "
+#~ "3600 * 24) + 1 } Days "
+#~ "selected"
+#~ msgstr ""
+
+#~ msgid "Name presenter"
+#~ msgstr ""
+
+#~ msgid "Unable to send recovery email. Try again."
+#~ msgstr ""
+
+#~ msgid "Presenter"
+#~ msgstr ""
+
+#~ msgid "Error saving service to database"
+#~ msgstr ""
+
+#~ msgid "Error saving devol to database"
+#~ msgstr ""
+
+#~ msgid "Titular"
+#~ msgstr ""
+
+#~ msgid "Banco"
+#~ msgstr ""
+
+#~ msgid "Agência"
+#~ msgstr ""
+
+#~ msgid "Conta"
+#~ msgstr ""
+
+#~ msgid "Approval"
+#~ msgstr ""
+
+#~ msgid "Service notes"
+#~ msgstr ""
+
+#~ msgid "Enter your CPF correctly"
+#~ msgstr ""
+
+#~ msgid "Invalid day format"
+#~ msgstr ""
+
+#~ msgid "Error checking booking availability"
+#~ msgstr ""
+
+#~ msgid "Error checking availability, please try again"
+#~ msgstr ""
+
+#~ msgid "Sign out"
+#~ msgstr ""
+
+#~ msgid "Intimation summary"
+#~ msgstr ""
+
+#~ msgid "Code"
+#~ msgstr ""
+
+#~ msgid "Estate"
+#~ msgstr ""
+
+#~ msgid "City"
+#~ msgstr ""
+
+#~ msgid "New intimation"
+#~ msgstr ""
+
+#~ msgid "GO"
+#~ msgstr ""
+
+#~ msgid "Data Inicial"
+#~ msgstr ""
+
+#~ msgid "Data Final"
+#~ msgstr ""
+
+#~ msgid "Pesquisar Pedido ONR"
+#~ msgstr ""
+
+#~ msgid "CPF Inválido"
+#~ msgstr ""
+
+#~ msgid "CPF inválido"
+#~ msgstr ""
+
+#~ msgid "Razão Social"
+#~ msgstr ""
+
+#~ msgid "CNPJ Inválido"
+#~ msgstr ""
+
+#~ msgid "Nome"
+#~ msgstr ""
+
+#~ msgid "Telefone"
+#~ msgstr ""
+
+#~ msgid "Entradas"
+#~ msgstr ""
+
+#~ msgid "Data"
+#~ msgstr ""
+
+#~ msgid "Descrição"
+#~ msgstr ""
+
+#~ msgid "Saídas"
+#~ msgstr ""
+
+#~ msgid "Protocolo"
+#~ msgstr ""
+
+#~ msgid "Novo Depósito"
+#~ msgstr ""
+
+#~ msgid "Descrição do Depósito"
+#~ msgstr ""
+
+#~ msgid "Informar Representante"
+#~ msgstr ""
+
+#~ msgid "Histórico"
+#~ msgstr ""
+
+#~ msgid "Pedido"
+#~ msgstr ""
+
+#~ msgid "Matrícula"
+#~ msgstr ""
+
+#~ msgid "Natureza"
+#~ msgstr ""
+
+#~ msgid "Total"
+#~ msgstr ""
+
+#~ msgid "Comentários"
+#~ msgstr ""
+
+#~ msgid "Intimação"
+#~ msgstr ""
+
+#~ msgid "Novo pedido ONR"
+#~ msgstr ""
+
+#~ msgid "Data pedido"
+#~ msgstr ""
+
+#~ msgid "Data Pedido"
+#~ msgstr ""
+
+#~ msgid "Decurso"
+#~ msgstr ""
+
+#~ msgid "Diligência"
+#~ msgstr ""
+
+#~ msgid "Pagamentos"
+#~ msgstr ""
+
+#~ msgid "Status"
+#~ msgstr ""
+
+#~ msgid "Serviços"
+#~ msgstr ""
+
+#~ msgid "Nome completo"
+#~ msgstr ""
+
+#~ msgid "Estado Civil"
+#~ msgstr ""
+
+#~ msgid "Razão Social do Credor"
+#~ msgstr ""
+
+#~ msgid "Dados do Contrato ou Escritura originário da dívida na matrícula"
+#~ msgstr ""
+
+#~ msgid "Endereço de Intimação"
+#~ msgstr ""
+
+#~ msgid "Cidade"
+#~ msgstr ""
+
+#~ msgid "UF"
+#~ msgstr ""
+
+#~ msgid "CEP"
+#~ msgstr ""
+
+#~ msgid "CNPJ inválido"
+#~ msgstr ""
+
+#~ msgid "Novo Endereço de Intimação"
+#~ msgstr ""
+
+#~ msgid "Mail already registered, use another or reset password."
+#~ msgstr ""
+
+#~ msgid "ID already registered"
+#~ msgstr ""
+
+#~ msgid "Email already confirmed."
+#~ msgstr ""
+
+#~ msgid "Email already registered with a User"
+#~ msgstr ""
+
+#~ msgid "Type"
+#~ msgstr ""
+

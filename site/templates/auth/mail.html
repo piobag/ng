@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="x-apple-disable-message-reformatting">
+    <title>{{ config['TITLE'] }}</title>
+    <!--[if mso]>
+    <noscript>
+        <xml>
+            <o:OfficeDocumentSettings>
+                <o:PixelsPerInch>96</o:PixelsPerInch>
+            </o:OfficeDocumentSettings>
+        </xml>
+    </noscript>
+    <![endif]-->
+    <style>
+        table, td, div, h1, p {font-family: Arial, sans-serif;}
+        /* table, td {border:1px solid #000000 !important;} */
+    </style>
+</head>
+<body style="margin:0;padding:0;">
+    <table align="center" cellpadding="0" cellspacing="0" width="600">
+        <tr>
+            <td style="padding: 30px 30px 30px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                    <td align="center">
+                        <a href="{{ url_for('base.index', _external=True) }}">
+                            <img src="{{ url_for('static', filename='/img/logo.jpg', _external=True) }}" width="300" style="height:auto;display:block;background: black;"/>
+                        </a>
+                    </td>
+                    </tr>
+                   </table>
+             </td>
+        
+        </tr>
+        <tr>
+         <td bgcolor="#6d6b6b" align="center"  style="border-radius:5px;padding: 5px 30px 5px 30px;">
+            <h3 style="font-family:Arial,sans-serif;font-size:25px;color:#ffffff;">{{ title }}</h3>
+         </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" style="padding: 40px 30px 20px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <p align="center" style="margin:0 0 15px 0;font-size:24px;line-height:24px;font-family:Arial,sans-serif;">{{ _('Dear') }} <strong>{{ user }}</strong>,</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    {% if confirm %}
+                        <p align="center" style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">{{ _('Click') }} <a href="{{ url_for('auth.confirm', token=token, _external=True) }}"><strong>{{ _('here') }}</strong></a> {{ _('to confirm your account') }}.</p>
+                    {% elif reset %}
+                        <p align="center" style="margin:0 0 15px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">{{ _('Click') }} <a href="{{ url_for('auth.reset', token=token, _external=True) }}"><strong>{{ _('here') }}</strong></a> {{ _('to reset your password') }}.</p>
+                    {% endif %}
+                    </td>
+                </tr>
+                        <tr>
+                            <td align="center" style="padding: 24px 0px 0px 0px;">
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;color:#000000;"><b> {{ _('Do you have any questions') }}? <a style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;color:#0400ff;" href="https://api.whatsapp.com/send?phone=55{{ config['WHATSAPP'] }}&text=Gostaria%20de%20iniciar%20um%20atendimento&lang=pt_br" target="_blank">{{ _('Ask your questions via WhatsApp') }}</a></b></p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        <tr>
+            <td bgcolor="#eeeeee" style="border-radius:5px;padding: 10px 30px 20px 30px;">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tr>
+                     <td>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr align="center">
+                             <td valign="top">
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;"><b><strong>{{ _('Phone') }}</strong></b></p>
+                                <p style="margin:0;font-size:12px;line-height:16px;font-family:Arial,sans-serif;">{{ config['WHATSAPP'] }}</p>
+                             </td>
+                            </tr>
+                        </table>
+                     </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

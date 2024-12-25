@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-between m-3">
+  <div>
+  </div>
+  <div>
+    <h3>
+      ${result['id'] == '{{ current_user.id }}' ? 'Meu Perfil' : `Perfil - ${result['name']}`}</h3>
+  </div>
+  <div>
+    <button id="closeprofile" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+</div>
+<div class="container">
+  <form id="profileform" class="form-floating">
+    <input name="id" type="hidden" value="${result['id']}">
+    <div class="row g-1 justify-content-center">
+      <div class="col-md-5">
+        <div class="form-floating">
+          <input type="text" class="form-control" name="name" placeholder="" value="${result['name']}">
+          <label for="name">{{ _('Name') }}</label>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-floating">
+          <input type="email" class="form-control" name="email" placeholder="" value="${result['email']}"  {% if not 'adm' in roles %} disabled{% endif %}>
+          <label for="email">{{ _('Email') }}</label>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="form-floating">
+          <input type="text" class="form-control" name="cpfcnpj" onkeyup="check_profile()" placeholder="" value="${result['cpfcnpj'] ? mask_cpfcnpj(result['cpfcnpj']) : ''}" {% if not 'adm' in roles %}{% if current_user.cpfcnpj %}disabled{% else %}required{% endif %}{% endif %}>
+          <label for="cpfcnpj">{{ _('CPF/CNPJ') }}</label>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-floating">
+          <input type="text" class="form-control" name="tel" onkeyup="mask_tel(this, mtel)" onblur="mask_tel(this, mtel)" value="${result['tel'] != 'null' ? mtel(result['tel']) : ''}"  placeholder="">
+          <label for="tel">{{ _('Phone')}}</label>
+        </div>
+      </div>
+      ${result['roles'].includes('ng')?`
+        <div class="col-md-3">
+          <div class="form-floating">
+            <input type="date" class="form-control" name="admissao" placeholder="" value="${result['admissao']}" {% if not 'adm' in roles %} disabled{% endif %}>
+            <label for="admissao">{{ _('Admission')}}</label>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-floating">
+            <input type="time" class="form-control" name="lunch" placeholder="" value="${result['lunch']}" {% if not 'adm' in roles %} disabled{% endif %}>
+            <label for="lunch">{{ _('Lunch') }}</label>
+          </div>
+        </div>
+      `:''}
+      {% if 'adm' in roles %}
+        ${! result.confirmed_at ?`
+          <div class="col-md-3 d-flex justify-content-center align-items-center">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="confirmed" id="confirmed">
+              <label class="form-check-label" for="confirmed">
+               Confirmar Usuário
+              </label>
+            </div>
+          </div>
+        `:''}
+      {% endif %}
+
+    </div>
+    {% if 'adm' in roles %}
+      <div class="m-3">
+        <div id="groups" class="btn-group btn-group-sm flex-wrap" role="group">
+          ${Object.keys(auth_groups).map(g => `
+              <input type="checkbox" class="btn-check" id="check_${g}" autocomplete="off" ${result['roles'].includes(g) ? 'checked' : '' }>
+              <label class="btn btn-outline-primary" for="check_${g}">${auth_groups[g]}</label>
+          `).join('')}
+        </div>
+      </div>
+    {% endif %}
+    <span id='profilebtn'>
+        <button class="btn btn-success text-center mt-3" onclick="save_profile()" type="button">{{ _('Save') }}</button>
+    </span>
+  </form>
+</div>

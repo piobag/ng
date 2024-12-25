@@ -1,0 +1,235 @@
+<div class=" container-flush">
+  <div class="accordion accordion-flush container-flush text-center" id="settings-accordion">
+    <div class="accordion-item  accordion-border settings_user">
+      <h2 class="accordion-header" id="user-list">
+        <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#users-accordion" aria-expanded="false" aria-controls="users-accordion">
+          <h2 class="accordion_title">{{ _('Users') }}</h2>
+        </button>
+      </h2>
+      <div id="users-accordion" class="accordion-collapse collapse" aria-labelledby="user-list" data-bs-parent="#settings-accordion">
+        <div class="accordion-body">
+          <form id="users_list" class="">
+            <div class="users_header">
+              <div class="users_search">
+                <div class="input-group">
+                  <input type="text" id="search_input" class="form-control form-control-sm border-style" name="search" placeholder="{{ _('Search') }}">
+                  <button type="button" class="input-group-text btn btn-sm btn-outline-dark border-style">x</button>
+                  <div class="btn-group roles-btns" role="group" aria-label="Basic radio toggle button group">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="users_content">
+              <div class="d-flex justify-content-center"><div class="text-center spinner-border spinner-border-sm text-dark" role="status"></div></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item  accordion-border settings_service">
+      <h2 class="accordion-header" id="service-list">
+        <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#services-accordion" aria-expanded="false" aria-controls="services-accordion">
+          <h2 class="accordion_title">{{ _('Services') }}</h2>
+        </button>
+      </h2>
+      <div id="services-accordion" class="accordion-collapse collapse show" data-bs-parent="#settings-accordion">
+        <div class="accordion-body">
+          <div class="nature_tp_content">
+            <!-- <div class="nature_tp">
+                <a class="n_item" id="show_nature">
+                  <span class="n_name"><b>RI</b></span> 
+                </a> 
+                <a class="n_item" id="show_nature">
+                  <span class="n_name"><b>RTD</b></span> 
+                </a> 
+                <a class="n_item" id="show_nature">
+                  <span class="n_name"><b>RC</b></span> 
+                </a> 
+            </div> -->
+            <div id="settings_service_accordion" class="accordion accordion-flush container-flush text-center">
+              <div class="accordion-item  accordion-border settings_nature">
+                <h2 class="accordion-header" id="nature-list">
+                  <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#natures-accordion" aria-expanded="false" aria-controls="natures-accordion">
+                    <h4 class="accordion_title">{{ _('Natures') }}</h4>
+                  </button>
+                </h2>
+                <div id="natures-accordion" class="accordion-collapse collapse show" data-bs-parent="#settings_service_accordion">
+                  <div class="accordion-body">
+                    <form id="natures_new">
+                      <div class="natures_new">
+                        <div class="btn-group btn-group-sm btn-group-vertical">
+                          <input type="radio" class="btn-check" name="nature_radio" id="ri_prot" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="ri_prot"><b>{{ _('Protocol') }}</b></label>
+                        
+                          <input type="radio" class="btn-check" name="nature_radio" id="ri_cert" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="ri_cert"><b>{{ _('Certificate') }}</b></label>
+                        </div>
+          
+                        <div class="col-md-8">
+                          <div class="form-floating">
+                            <input type="text" id="nature_input" class="form-control form-control-sm" name="name" placeholder="">
+                            <label for="name">Descrição da natureza</label>
+                          </div>
+                        </div>
+                        <div class="btn-group btn-group-sm mx-4">
+                          <input type="radio" class="btn-check" name="nature_group_radio" id="nature_ri_group" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="nature_ri_group"><b>{{ _('RI') }}</b></label>
+                        
+                          <input type="radio" class="btn-check" name="nature_group_radio" id="nature_rc_group" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="nature_rc_group"><b>{{ _('RC') }}</b></label>
+                          
+                          <input type="radio" class="btn-check" name="nature_group_radio" id="nature_rtd_group" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="nature_rtd_group"><b>{{ _('RTD') }}</b></label>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-success" name="btn" onclick="add_nature()"><i class="fa fa-sm fa-save"></i></button>
+                      </div>
+                    </form>
+                    <div>
+                      <div id="settings_natures_error"></div>
+                      <div class="filter_list_nature">
+                        <div class="btn btn-sm btn-outline-primary" id="filter_natures_btn" name="btn">
+                          <i class="fas fa-sm fa-search"></i>
+                        </div>
+                        <div class="form-floating col">
+                          <input type="text" onkeyup="dashboard_filter(event, nature_table.loadItems())" class="form-control" id="settings_natures_search" name="settings_natures_search" placeholder="" value="">
+                          <label for="settings_natures_search">Pesquisar natureza</label>
+                        </div>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-outline-dark" id="settings_natures_loading" onclick="nature_table.loadItems()"></button>
+                      <div id="settings_natures_error"></div>
+                      <div id="settings_natures_pagination"></div>
+                      <div class="natures_list">
+                        <table id="settings_natures_table" class="table table-sm table-hover table-responsive"></table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item  accordion-border settings_document">
+                <h2 class="accordion-header" id="document-list">
+                  <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#documents-accordion" aria-expanded="false" aria-controls="documents-accordion">
+                    <h4 class="accordion_title">{{ _('Documents') }}</h4>
+                  </button>
+                </h2>
+                <div id="documents-accordion" class="accordion-collapse collapse show" data-bs-parent="#settings_service_accordion">
+                  <div class="accordion-body">
+                    <form id="documents_new">
+                      <div class="documents_new">
+                        <div class="col-md-9">
+                          <div class="form-floating">
+                            <input type="text" id="document_input" class="form-control form-control-sm" name="name" placeholder="">
+                            <label for="name">{{ _('Add document') }}</label>
+                          </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-success" name="btn" onclick="add_document()"><i class="fa fa-sm fa-save"></i></button>
+                      </div>
+                    </form>
+                    <div class="filter_list_document">
+                      <div class="btn btn-sm btn-outline-primary" id="filter_documents_btn" name="btn">
+                        <i class="fas fa-sm fa-search"></i>
+                      </div>
+                      <div class="form-floating col">
+                        <input type="text" class="form-control" id="settings_documents_search" name="settings_documents_search" onkeyup="dashboard_filter(event, document_table.loadItems())" placeholder="" value="">
+                        <label for="settings_documents_search">Pesquisar documento</label>
+                      </div>
+                    </div>
+                    <div>
+                      <div id="settings_documents_loading"></div>
+                      <div id="settings_documents_error"></div>
+                      <div id="settings_documents_pagination"></div>
+                      <div class="documents_list">
+                        <table id="settings_documents_table" class="table table-sm table-hover table-responsive"></table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="accordion-item  accordion-border settings_document">
+                <h2 class="accordion-header" id="document-list">
+                  <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#documents-accordion" aria-expanded="false" aria-controls="documents-accordion">
+                    <h2 class="accordion_title">{{ _('Documents') }}</h2>
+                  </button>
+                </h2>
+                <div id="documents-accordion" class="accordion-collapse collapse" data-bs-parent="#settings_service_accordion">
+                  <div class="accordion-body">
+                    <form id="documents_new">
+                      <div class="documents_new">
+                        <div class="btn-group btn-group-sm btn-group-vertical">
+                          <input type="radio" class="btn-check" name="document_tp" id="ri_reg" autocomplete="off">
+                          <label class="btn btn-outline-dark" for="ri_reg">{{ _('Register') }}</label>
+                          <input type="radio" class="btn-check" name="document_tp" id="ri_averb" autocomplete="off">
+                          <label class="btn btn-outline-dark" for="ri_averb">{{ _('Endorsement') }}</label>
+                        </div>
+                        <div class="col-md-9">
+                          <div class="form-floating">
+                            <input type="text" class="form-control form-control-sm" name="desc" placeholder="">
+                            <label for="desc">{{ _('Add document') }}</label>
+                          </div>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-success" name="btn" onclick="add_document()"><i class="fas fa-sm fa-save"></i></button>
+                      </div>
+                    </form>
+                    <form id="documents_list"  class="">
+                        <input name="start" type="hidden" value="0">
+                        <div class="documents_header">
+                          <div class="documents_perpage">
+                            <b>{{ _('Per page') }}:</b>
+                            <div>
+                              <select name="per_page" class="form-select form-select-sm change-documents border-style">
+                                <option value="10" selected>10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="documents_search">
+                            <div class="input-group">
+                              <input type="text" class="form-control form-control-sm border-style" name="search" placeholder="{{ _('Search') }}">
+                              <button type="button" class="input-group-text btn btn-sm btn-outline-dark border-style">x</button>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="documents_content">
+                          <div class="d-flex justify-content-center"><div class="text-center spinner-border spinner-border-sm text-dark" role="status"></div></div>
+                        </div>
+                        <div class="documents_footer">
+                          <div>
+                            <p><b>{{ _('Showing') }} <span id="filtered_documents"></span> {{ _('filtered documents from a total of') }} <span id="total_documents"></span> {{ _('documents') }}</b></p>
+                          </div>
+                          <div>
+                            <nav aria-label="Page navigation example">
+                              <ul class="pagination">
+                                <li class="page-item">
+                                  <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                  </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                  <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </nav>
+                          </div>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% include 'popup/popup.html' %}
+    {% include 'booking/blacklist.html' %}
+  </div>
+</div>
+</div>

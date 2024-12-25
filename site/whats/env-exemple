@@ -1,0 +1,29 @@
+### Emails de Administrador separados por ","
+MAIL_ADMIN=web@boragora.app,adm@boragora.app
+### Emails de Usuário para testes offline, separados por ","
+MAIL_USERS=user@boragora.app,user2@boragora.app
+
+### MongoDB
+MONGO_URI=mongodb://user:password@mongo/sad?authSource=admin&connectTimeoutMS=10000
+
+### Chave secreta do APP
+# App gera uma aleatório se estiver em branco
+SECRET_KEY=
+
+### Título (no html e no remetente dos emails)
+TITLE=Whats Boragora
+
+### Domínio
+DOMAIN=localhost
+
+### SMTP - Dados do servidor de email
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_SERVER=
+
+### Modo Desenvolvimento do Flask
+FLASK_DEBUG=1
+
+### Diretório do docker compose
+# Diretório atual se tiver em branco
+DIR=

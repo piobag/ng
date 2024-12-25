@@ -1,0 +1,49 @@
+<div class="accordion-body">
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="card-body">
+                <h5>Serviços </h5>
+                <span id="services_{{ id }}">
+                {% for s in services %}
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label">{{ config['BOOKING_SERVICES'][s] }}</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="prot" class="form-control" placeholder="Protocolo">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" id="valor" onchange="calc_services('{{ id }}')" class="form-control" placeholder="Valor">
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="btn-group btn-group-sm d-grid d-md-flex justify-content-md-end">
+                                <button class="btn btn-sm btn-outline-danger" id="{{ id }}" onclick="remove_service(this)"><i class="fas fa-sm fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </span>
+                <div>
+                    <button class="btn btn-sm btn-outline-success" onclick="add_service('{{ id }}')"><i class="fa fa-sm fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card-body">
+                <div class="btn-group btn-group-sm d-grid d-md-flex justify-content-md-end">
+                    <span id="startstop_{{ id }}"><button id="{{ id }}" class="btn btn-sm btn-outline-warning started" onclick="stop_booking('{{ id }}')" role="button"><i class="far fa-stop-circle"></i></button></span>
+                </div>
+                <div id="total_{{ id }}">Total:</div>
+                <div>
+                    Forma de Pagamento
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-body">
+                <div class="mb-3">
+                    <h5>Observações</h5>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">{{ obs }}</textarea>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>

@@ -1,0 +1,41 @@
+<h2 class="pt-3">Intimação</h2>
+<form id='new_itm' class="itm_home">
+  <div class="new_itm">
+    <div class="form-floating col-md-3">
+      <input id="new_itm_cod" type="text" class="form-control" name="itm_cod" placeholder="" maxlength="11" required>
+      <label for="itm_cod">Novo pedido ONR</label>
+    </div>
+    <div class="form-floating">
+      <input type="date" class="form-control" name="itm_date" placeholder="" required>
+      <label for="itm_date">Data pedido</label>
+    </div>
+    <div>
+      <input type="file" id="itm_file" multiple name="itm_file" accept=".jpg,.jpeg,.png,.gif,.pdf,.p7s" style="display: none;">
+      <label tabindex="0" class="btn m-2 btn-sm btn-outline-primary" for="itm_file">
+        <i class="fas fa-sm fa-upload"></i> Arquivos
+      </label>
+    </div>
+    <ol class="list-group list-group-numbered" id="itm_file_list"></ol>
+    <div>
+      <button onclick="start_itm(this)" type="button" name="btnstart" class="btn btn-sm btn-success text-center" onclick="">
+        <i class="fas fa-sm fa-play-circle"></i>
+      </button>
+    </div>
+  </div>
+  <div id="chart_itm" class="chart_itm">
+    ${spinner_w}
+  </div>
+  <button type="button" class="btn btn-sm btn-outline-dark" id="itm_update_btn" onclick="load_itms()"><i class="fas fa-sm fa-sync"></i></button>
+  <div class="content_itm">
+    <div class="list_itm">
+      <div class="content_itm_list">
+        <div id="itm_list_loading"></div>
+        <div id="itm_list_error"></div>
+        <div id="itm_list_pagination"></div>
+        <div class="itm_list">
+          <table id="itm_list_table" class="table table-sm table-hover table-responsive"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

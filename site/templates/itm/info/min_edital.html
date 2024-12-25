@@ -1,0 +1,76 @@
+<div class="accordion-item accordion-border">
+    <h2 class="accordion-header" id="itm-edital-prot-accordion-item">
+        <button class="accordion-button text-center  collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#itm-edital-prot-accordion-body" aria-expanded="false">
+        <h5 class="accordion_title">Publicação de Edital</h5>
+        </button>
+    </h2>
+<div id="itm-edital-prot-accordion-body" class="accordion-collapse collapse ${!intimacao.services[0].edital.dia1 ? 'show' : '' }" data-bs-parent="#itm-edital-prot-accordion">
+    <div class="accordion-body">
+        ${intimacao.s_edital ? `
+            <div class="col-md-12 d-flex justify-content-center align-items-center">
+                <button tabindex="-1" type="button" class="btn mt-3 btn-sm btn-outline-success itm_info_btn_save" onclick="orc_edital_itm_info(this)">Orçamento Edital <i class="fas fa-sm fa-send"></i></button>
+            </div>
+            ` : intimacao.services[0].edital.selo ? `
+            ${edital ? edital : ''}
+            ${intimacao.services[0].edital && intimacao.services[0].edital.dia3 ? `
+                <div class="new_itm_edital_date">
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="info_itm_edital_date_0" disabled value="${intimacao.services[0].edital.dia1}" name="date-0" placeholder="">
+                        <label for="info_itm_edital_date_0">Primeira</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="info_itm_edital_date_1" disabled value="${intimacao.services[0].edital.dia2}" name="date-1" placeholder="">
+                        <label for="info_itm_edital_date_1">Segunda</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="date" class="form-control" id="info_itm_edital_date_2" disabled value="${intimacao.services[0].edital.dia3}" name="date-2" placeholder="">
+                        <label for="info_itm_edital_date_2">Terceira</label>
+                    </div>
+                </div>
+                ` : `
+                    <div class="info_itm_service_edital_publicacao">
+                        <h5 class="my-3"><b>Informar Publicação</b></h5>
+                        <div class="new_itm_edital_date">
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="info_itm_edital_date_0" name="date-0" placeholder="">
+                                <label for="info_itm_edital_date_0">Primeira</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="info_itm_edital_date_1" name="date-1" placeholder="">
+                                <label for="info_itm_edital_date_1">Segunda</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="info_itm_edital_date_2" name="date-2" placeholder="">
+                                <label for="info_itm_edital_date_2">Terceira</label>
+                            </div>
+                            <div>
+                                <input onchange="new_edital_file_info_preview(event)" type="file" id="edital_file_info" multiple name="edital_itm_file" accept=".jpg,.jpeg,.png,.gif,.pdf,.p7s" style="display: none;">
+                                <label tabindex ="0" class="btn m-2 btn-sm btn-outline-primary" for="edital_file_info">
+                                    <i class="fas fa-sm fa-upload"></i> Arquivos
+                                </label>
+                            </div>
+                            <ol class="list-group list-group-numbered mx-3" id="edital_file_info_list"></ol>
+                            <div>
+                                <button onclick="save_dates_edital_info(this, '${intimacao.id}', '${intimacao.services[0].id}')" type="button" name="btnstart" class="btn btn-sm btn-outline-success text-center" >
+                                    <i class="fas fa-sm fa-save"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ` }
+
+            ` : !show_payments ? `
+            <div class="info_itm_service_edital_selo">
+                <h5>Informar Selo</h5>    
+                <div style="max-width: 250px; margin:8px auto;" class="form-floating">
+                    <input style="text-align: center;" id="info_itm_edital_selo"  class="form-control" name="selo" placeholder="" onkeyup="check_selo_itm(this)" maxlength="24" type="text">
+                    <label for="info_itm_edital_selo">Publicação de Edital</label>
+                </div>        
+                <button onclick="save_selo_edital_info(this, '${intimacao.id}', '${intimacao.services[0].id}')" type="button" name="btnstart" class="btn btn-sm mx-2 btn-outline-success text-center" onclick="">
+                    <i class="fas fa-sm fa-save"></i>
+                </button>
+            </div>
+        ` : ``}
+    </div>
+</div>
+</div>

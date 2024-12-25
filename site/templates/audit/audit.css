@@ -1,0 +1,9 @@
+.dash_content .devreport_header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dash_content .devreport_header .form-floating {
+    margin: 0 4px;
+}

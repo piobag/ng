@@ -1,0 +1,85 @@
+<nav class="navbar bg-light fixed-top itm_info_navbar">
+  <div class="container">
+      <div>
+          {% if 'adm' in roles %}
+              <button tabindex="-1" type="button" class="btn btn-sm btn-outline-danger" onclick="del_company(this, '${id}')"><i class="fas fa-sm fa-trash"></i></button>
+          {% endif %}
+      </div>
+      <div>
+        <b>${result.name} - ${mask_cpfcnpj(result.cpfcnpj)}  |  ${result.email}</b>
+          <!-- <button tabindex="-1" type="button" class="btn btn-sm btn-outline-success itm_info_btn_save" onclick="save_company_info(this, '${id}')"><i class="fas fa-sm fa-save"></i></button> -->
+      </div>
+      <div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+  </div>
+</nav>
+
+<div class="info_fin_company">
+  <!-- <div class="info_company_header">
+     
+  </div> -->
+  <div>    
+    <form id="info_comp_content" class="info_company_content">
+      <h5>Novo Depósito</h5>
+      <div class="info_company_deposit"> 
+        <div class="form-floating col-md-5">
+          <input type="text" class="form-control" name="comp_desc" placeholder="" required>
+          <label for="comp_desc">Descrição do Depósito</label>
+        </div>
+        <div class="form-floating" style="max-width: 120px;">
+          <input type="text" onkeyup="mask_value(this)" class="form-control" name="comp_value" placeholder="" required>
+          <label for="comp_value">Valor</label>
+        </div>
+        <div>
+          <input tabindex="-1" type="file" id="comp_comprov" name="comp_comprov" accept=".jpg,.jpeg,.png,.gif,.pdf,.p7s" style="display: none;">
+          <label class="btn mx-4 btn-sm btn-outline-primary" for="comp_comprov">
+            <i class="fas fa-sm fa-upload"></i> Comprovante
+          </label>
+        </div>
+        <ol class="list-group list-group-numbered" id="info_comp_file_list"></ol>
+        <div>
+            <button tabindex="-1" type="button" class="btn btn-success mx-2 itm_info_btn_save" onclick="deposit_company_info(this, '${id}')"><i class="fas fa-sm fa-dollar-sign"></i></button>
+        </div>
+      </div>
+      <h5>Saldo<br> <b>${balance}</b></h5>
+      <div class="info_company_details">
+        ${entradas}
+        ${saidas}
+      </div>
+      <div>      
+        <h5>Informar Representante</h5>
+        <div class="new_company_rep">
+          <div class="form-floating" style="max-width: 160px;">
+            <input maxlength="14" type="text" class="form-control" id="cpf" onkeyup="check_company_rep(this)" onblur="check_company_rep(this)" name="cpf" placeholder="" required>
+            <label for="cpf">CPF</label>
+          </div>
+          <div class="form-floating col-md-4">
+            <input type="name" class="form-control" id="name" name="name" placeholder="" disabled>
+            <label for="name">{{ _('Full name') }}</label>
+          </div>
+          <div>
+            <input tabindex="-1" type="file" id="comp_rep_comp" name="comp_rep_comp" accept=".jpg,.jpeg,.png,.gif,.pdf,.p7s" style="display: none;">
+            <label class="btn mx-4 btn-sm btn-outline-primary" for="comp_rep_comp">
+              <i class="fas fa-sm fa-upload"></i> Comprovante
+            </label>
+          </div>
+          <ol class="list-group list-group-numbered" id="comp_rep_file"></ol>
+          <button type="button" name="btn" class="btn btn-success text-center m-3" onclick="create_company_rep(this, '${result.id}')">
+            <i class="fas fa-sm fa-user-plus"></i>
+          </button>
+        </div>
+      </div>
+      ${users}
+      <h5><b>Histórico</b></h5>
+      <div class="info_company_history">
+        <div class="form-floating">
+            <textarea class="form-control textarea" placeholder="" id="info_company_comment"></textarea>
+            <label for="info_company_comment">Comentário</label>
+        </div>
+        <ul class="list-group">
+        </ul>
+      </div>
+    </form>
+  </div>
+</div>

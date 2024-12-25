@@ -1,0 +1,141 @@
+/* Modal prot */
+
+.finance_balance_itens .user_balance_amount .item {
+    border: 2px solid var(--first-color-dark);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+}
+
+
+.prot_info_body {
+    padding: 2rem;
+}  
+
+.prot_modal_body > h4 {
+    margin: 24px;
+}
+
+.prot_modal_hearder {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.prot_modal_hearder > div {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 4px;
+}
+
+.prot_modal_content {
+    padding: 12px;
+}
+
+.prot_content_exig {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+    margin: 12px auto;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 560px;
+}
+
+.prot_modal_payment {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 8px;
+}
+
+
+.prot_modal_recibo {
+    padding: 16px;
+    margin: 30px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.prot_modal_recibo_header {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.prot_modal_recibo .prot_modal_title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prot_modal_recibo .modal_end {
+    font-size: 0.79rem;
+}
+
+.prot_modal_recibo img {
+    max-width: 260px;
+}
+
+.prot_modal_recibo table {
+    margin: 12px auto;
+}
+
+
+.prot_modal_payment .item {
+    border: 2px solid var(--first-color-dark);
+    padding: 10px;
+    border-radius: 2em / 5em;
+    margin: 10px;
+}
+
+
+/* Payments modal */
+.prot_modal_new_pay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 480px;
+    padding: 12px;
+    margin: 0 auto;
+    margin-bottom: 36px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.prot_modal_new_pay .form-floating {
+    margin: 0 4px;
+}
+
+/* prot History */
+
+.prot_info_history {
+    display: flex;
+    flex-direction: column;
+}
+
+.prot_info_history .textarea {
+    height: 73px;
+}
+
+.prot_info_history .list-group {
+    max-height: 420px;
+    overflow-x: hidden;
+    overflow-y: auto; 
+}
+.prot_info_history .list-group .list-group-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.prot_info_history .list-group .list-group-item .item-header {
+    justify-content: space-around;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin: 4px;
+}
+

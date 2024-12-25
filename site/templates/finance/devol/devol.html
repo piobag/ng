@@ -1,0 +1,78 @@
+<div class="accordion-item settings_devol accordion-border">
+    <h2 class="accordion-header" id="devol-list">
+    <button class="accordion-button collapsed text-center" type="button" data-bs-toggle="collapse" data-bs-target="#devol-accordion" aria-expanded="false" aria-controls="devol-accordion">
+        <h2 class="accordion_title">{{ _('Devolution') }}</h2>
+    </button>
+    </h2>
+    <div id="devol-accordion" class="accordion-collapse collapse" aria-labelledby="devol-list" data-bs-parent="#finance-accordion">
+    <div class="accordion-body">
+        <form id="devol_new" class="devol_new">
+        <div class="row g-2">
+            <div class="form-floating col-md-2">
+            <input maxlength="14" type="text" class="form-control form-control-sm" name="cpf" placeholder="">
+            <label for="cpf">{{ _('CPF') }}</label>
+            </div>
+            <div class="form-floating col">
+            <input type="text" class="form-control form-control-sm" name="name" placeholder="" disabled>
+            <label for="name">{{ _('Name') }}</label>
+            </div>
+            <div class="form-floating col-md-2">
+            <input type="text" class="form-control form-control-sm" name="tel" onkeypress="mask_tel(this, mtel)" onblur="mask_tel(this, mtel)" placeholder="" disabled>
+            <label for="tel">{{ _('Phone') }}</label>
+            </div>
+            <div class="form-floating col">
+            <input type="email" class="form-control form-control-sm" name="email" placeholder="" disabled>
+            <label for="email">{{ _('Email') }}</label>
+            </div>
+        </div>
+        <div class="row g-2">
+            <div class="form-floating col-md-2">
+            <input maxlength="5" type="text" class="form-control form-control-sm" name="prot" onkeyup="mask_upcase(this)" placeholder="">
+            <label for="prot">{{ _('Protocol') }}</label>
+            </div>
+            <div class="form-floating col-md-5">
+                <input class="form-control form-control-sm" placeholder="" type="text" list="devol_nature_list" name="nature"/>
+                <label for="nature">Natureza</label>
+                <datalist id="devol_nature_list">
+                </datalist>
+            </div>
+            <div class="form-floating col-md-2">
+            <input onkeyup="mask_value(this)" type="text" class="form-control form-control-sm" name="value" placeholder="">
+            <label for="value">{{ _('Value') }}</label>
+            </div>
+            <div class="form-floating col-md-2">
+            <select class="form-select form-select-sm" id="devol_tp">
+                <option value="1" selected>{{ _('Default') }}</option>
+                <!-- <option value="2">{{ _('Canceled act') }}</option>
+                <option value="3">{{ _('Balance') }}</option> -->
+            </select>
+            <label for="devol_tp">{{ _('Reason') }}</label>
+            </div>
+
+            <div class="form-floating col-1">
+            <button type="button" class="btn btn-sm btn-outline-success" name="btn" onclick="save_devol(this)"><i class="fas fa-sm fa-save"></i></button>
+            </div>
+        </div>
+        </form>
+        <div class="devol_lists">
+            <div>
+                <button type="button" class="btn btn-sm btn-outline-dark m-2" id="devol_update_btn" onclick="devol_update()"><i class="fas fa-sm fa-sync"></i></button>
+                <div id="devol_list_pending">
+                </div>
+
+            </div>
+            <div class="devol_list">
+                <div>
+                    <div id="devol_list_waiting">
+                    </div>
+                </div>
+                <div>
+                    <div id="devol_list_finished">
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+    </div>
+    </div>
+</div>

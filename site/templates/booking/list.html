@@ -1,0 +1,57 @@
+<div class="d-flex m-4 justify-content-between">
+  <div>
+    <button class="btn btn-outline-success" data-bs-target="#blacklistnew" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fas fa-plus" style="font-size: 1em;"></i></button>
+  </div>
+  <div>
+      <p class="fw-bold fs-3 mx-auto text-center">Blacklists</p>
+  </div>
+  <div>
+    <button type="button" class="btn-sm btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Nome</th>
+      <th scope="col">Início</th>
+      <th scope="col">Fim</th>
+      <th scope="col">Cadastrado</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if blacklists %}
+      {% for b in blacklists %}
+        <tr id="blacklist_{{ b.id }}">
+          
+          <th scope="row">{{ b.name }}</th>
+          <td>{{ b.start.strftime('%d/%m/%Y') }}</td>
+          <td>{{ b.end.strftime('%d/%m/%Y') }}</td>
+          <td>{{ b.created_by.name }}</td>
+          
+          <td>
+            <div class="btn-group btn-group-sm d-grid d-md-flex justify-content-md-end">
+              <span id="blacklistdelete_{{ b.id }}">
+                  <button class="btn btn-sm btn-outline-danger" onclick="deleteBlacklist('{{b.id}}')"><i class="fa fa-sm fa-trash"></i></button>
+              </span>
+            </div>
+
+          </td>
+        </tr>
+      {% endfor %}
+    {% endif %}
+  </tbody>
+</table>
+{% if next_url or prev_url %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+      <li class="page-item previous{% if not prev_url %} disabled{% endif %}">
+        <a class="page-link" href="{{ prev_url or '#' }}" tabindex="-1" aria-disabled="true">Anterior</a>
+      </li>
+      <li class="page-item next{% if not next_url %} disabled{% endif %}">
+        <a class="page-link" href="{{ next_url or '#' }}">Próximo</a>
+      </li>
+    </ul>
+  </nav>
+{% endif %}

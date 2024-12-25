@@ -1,0 +1,22 @@
+<div class="d-flex justify-content-between m-3">
+    <div>
+        <button type="button" class="btn btn-sm btn-outline-danger" onclick="disable_nature(this, '${id}')"><i class="fas fa-trash"></i></button>
+    </div>
+    <div>
+        <h3>
+            ${result['type'] === 'prot' ? 'Protocolo' : 'Certidão' } - ${result['group'].toUpperCase()} - ${result['name']}
+        </h3>
+    </div>
+    <div>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+</div>
+<div class="container">
+    <h4><b>Vincular documentos</b></h4>
+    <div id="nature_info_doc"></div>
+    <div>
+    <button type="button" class="btn btn-sm btn-outline-success" onclick="edit_nature(this, '${id}')" role="button"><i class="fas fa-sm fa-save"></i></button>
+    </div>
+
+</div>
+  

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>
+      {% if title %}
+        {{ title }}
+      {% else %}
+        {{ config.TITLE }}
+      {% endif %}
+    </title>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="author" content="Baag Services">
+    <meta name="generator" content="Baag">
+    <link href="{{ url_for('static', filename='img/favicon.ico') }}" rel="icon">
+    {% block styles %}
+      <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+      <link href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" rel="stylesheet" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+      <style>
+        {% include 'pagination.css' %}
+
+        {% if not current_user.is_authenticated %}
+          {% include 'auth/auth_modal.css' %}
+        {% endif %}
+      </style>
+    {% endblock %}
+  </head>
+  <body id="body-pd" class="text-center">
+    {% block navbar %}
+      <header id="header" class="d-flex align-items-center">
+        <div class="container-fluid mx-4 d-flex align-items-center justify-content-between">
+          <div class="logo">
+            <a href="/"><img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="SAD" class="img-fluid"></a>
+          </div>
+          {% include 'navbar.html' %}
+        </div>
+      </header>
+    {% endblock %}
+    
+    {% block content %}{% endblock %}
+
+    {% if current_user.is_authenticated %}
+      {% include 'auth/profile_modal.html' %}
+      {% include 'booking/booking.html' %}
+    {% else %}
+      {% include 'auth/modal.html' %}
+    {% endif %}
+  </body>
+  {% block scripts %}
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <!-- <script type="module" src="{{ url_for('static', filename='js/jspdf.es.min.js') }}"></script> -->
+    <script>
+      {% include 'base.js' %}
+      {% include 'cpfcnpj.js' %}
+    </script>
+    {% if current_user.is_authenticated %}
+      <script>
+        {% include 'auth/profile.js' %}
+      </script>
+    {% else %}
+      {% if not config.DEBUG %}
+        <script src="https://www.google.com/recaptcha/api.js"></script>
+      {%  endif %}
+      <script>
+        {% include "auth/auth.js" %}
+      </script>
+    {% endif %}
+  {% endblock %}
+</html>
