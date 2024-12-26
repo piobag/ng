@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", (event) => {
     load_attend()
      {% if config.DEBUG %}
-        // open_attend_info('6476f1e4eb068b3203ceb823')
+        open_attend_info('676b2f9827e62729356efad3')
     {% endif %}
 })
 
@@ -39,25 +39,16 @@ attend_table.init(
 )
 
 function load_attend() {
-    let api_url = "{{ url_for('attend.index') }}?" + new URLSearchParams({
-        'start': booking_list_start,
-        'length': booking_list_perpage,
-    })
+    let api_url = "{{ url_for('attend.index') }}"
     fetch(api_url)
     .then(response => response.json()).then(data => {
         let result = data['result']
         if (result) {
             attend = result
             cur_attend.innerHTML = `{% include 'attend/cur_attend.html' %}`
-
             new_attend.hidden = true
-            bookings.hidden = true
             cur_attend.hidden = false
         } else if (data['noresult']) {
-            result = data['booking']
-            if (result) {
-                bookings.hidden = false
-            } else { bookings.hidden = true }
             new_attend.hidden = false
             cur_attend.hidden = true
 
@@ -91,80 +82,77 @@ function cancel_attend(that) {
     }
 }
 
-function save_attend(that) {
-
-    let oparent = that.closest('.service')
+const save_attend = (that) => {
 
     let btn_html = that.innerHTML
     that.innerHTML = spinner_w
     
     let to_send = {}
+    let erro_form
     cur_attend.querySelectorAll('input').forEach(elem => {
         if(elem.value){
             if(elem.name === 'prot_val' || elem.name === 'prot_tot_c' || elem.name === 'prot_tot_p'){
-                to_send[elem.name] = parseFloat(elem.value.replace('.', '').replace(',', '.'))
+                to_send[elem.name] = parseFloat(elem.value.replace(/[^\d.,]/g, '').replace('.', '').replace(',', '.'))
             } else if (elem.name === 'prot_emi' || elem.name === 'prot_date' || elem.name === 'prot_ven') {
                 // Criar um objeto ajustado para Brasília
                 let date = new Date(`${elem.value}T00:00:00-03:00`);
-                to_send[elem.name] = date.getTime()
+                to_send[elem.name] = date.getTime() / 1000
                 // Obter o timestamp (em milissegundos desde 1970)
+            } else if (elem.name === 'prot_cod' || elem.name === 'prot_num') {
+                to_send[elem.name] = parseFloat(elem.value)
             } else if (elem.name === 'end_cep') {
-                to_send[elem.name] = elem.value.replace(/[\D]+/g,'')
+                to_send[elem.name] = parseFloat(elem.value.replace(/[\D]+/g,''))
             } else if (elem.name === 'id') {
                 to_send['attend'] = elem.value
             } else {
                 to_send[elem.name] = elem.value
             }
+        } else {
+            if(elem.name !== 'prot_ven') {
+                erro_form = true
+                that.innerHTML = btn_html;
+                return
+            }
         }
     })
-
-    let api_url = "{{ url_for('attend.post_service') }}"
+    if (erro_form) {
+        alert('Preencha todos os campos do formulário')
+        return
+    }
+    let api_url = "{{ url_for('attend.post_service') }}";
     fetch(api_url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', "X-CSRFToken": csrf_token },
-        body: JSON.stringify(to_send) })
-    .then(response => response.json()).then(data => {
-        result = data['result']
-        if (result) {
-            load_attend()
-            get_attend_balance_info(args=false)
-            open_attend_info(cur_attend.id.value.trim())
-        } else {
-            data['error'] ? alert(data['error']) : console.error('Unknown data:', data)
-            that.innerHTML = btn_html
-        }})
-    .catch(error => {
-        alert(`{{ _('Error in API') }}: settings.document ${error}`)
-        that.innerHTML = btn_html
+        headers: { 
+            'Content-Type': 'application/json', 
+            "X-CSRFToken": csrf_token 
+        },
+        body: JSON.stringify(to_send)
     })
-}
-
-
-function get_attend_balance_info(args=false){
-    let api_url = "{{ url_for('attend.finance') }}"
-    if (args) api_url += `?${args}`
-    fetch(api_url)
-    .then(response => response.json()).then(data => {
-        let result = data['result']
+    .then(response => {
+        if (!response.ok) {
+            // Levanta um erro se o status não for 2xx
+            return response.json().then(err => {
+                throw new Error(err.message || `API error: ${response.status}`);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        let result = data['result'];
         if (result) {
-
-            let func_caixa = sec_attend.querySelector('.attend_amount')
-            let user_payments = ''
-            for (ptype of Object.keys(data['total_payments'])) {
-
-                user_payments += `
-                    <div class="item">
-                        <span>${all_payments[ptype.split('_')[0]].name} ${ptype.split('_').length > 1 ? ptype.split('_')[1] : '' }</span>
-                        <b>${data['total_payments'][ptype].toLocaleString('pt-BR', currency_br)}</b>
-                    </div>
-                `
-            }
-
-            func_caixa.innerHTML = user_payments
+            load_attend();
+            open_attend_info(cur_attend.id.value.trim());
         } else {
-            data['error'] ? alert(data['error']) : console.error('Unknown data:', data)
-        } })
-    .catch(error => { alert(`{{ _('Error in API') }} ${api_url}`)})
+            let errorMessage = data['message'] || 'Unknown error occurred.';
+            alert(`Error: ${errorMessage}`);
+            that.innerHTML = btn_html;
+        }
+    })
+    .catch(error => {
+        // Exibe alertas para erros que ocorreram durante a solicitação
+        alert(`Erro na API: ${error.message}`);
+        that.innerHTML = btn_html;
+    });
 }
 
 let filter_attend = function(that, filter) {
@@ -188,7 +176,6 @@ let filter_attend = function(that, filter) {
     }
 
     let args = `${from ? `from=${from}` : ''}${end ? `&end=${end}` : ''}`
-    get_attend_balance_info(args ? args : false)
     attend_table.loadItems(args ? args : false)
 
     that.innerHTML = btn_html

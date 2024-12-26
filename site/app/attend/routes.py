@@ -51,44 +51,10 @@ def index():
     attend = Attend.objects.filter(func=current_user.id, end=None).first()
     if attend:
         result = attend.to_dict()
-        result['company'] = []
-        saldo = 0.0
-        if attend.user.pj:
-            # Balance
-            payments = sum([x.value for x in Payment.objects.filter(user=attend.user, confirmed__ne=None).only('value')])
-            services = 0.0
-            for a in Attend.objects.filter(user=attend.user, end__ne=None).only('id'):
-                services += sum([float(x.paid) for x in Service.objects.filter(attend=a.id).only('paid')])
-        else:
-            for company in CompanyBind.objects.filter(user=attend.user):
-                result['company'].append({
-                    'id': str(company.company.id),
-                    'name': company.company.name,
-                    'cpfcnpj': company.company.cpfcnpj,
-                })
-            # Buscar serviços e pagamentos vinculados
-            services = 0.0
-            # services = sum([x.paid for x in Service.objects.filter(attend=attend).only('paid')])
-            payments = sum([x.value for x in Payment.objects.filter(attend=attend, confirmed__ne=None).only('value')])
-
-        saldo = round(float(payments - services), 2)
-        result['balance'] = saldo
         return {'result': result}
     else:
-        start = request.args.get('start', 0, type=int)
-        length = request.args.get('length', 1, type=int)
-        day = datetime.fromisoformat(f"{datetime.now(tz).date()} 00:00").astimezone(pytz.utc).timestamp()
-        total = Booking.objects(func=current_user.id, start__gt=day, attend=None).count()
-        bookings = Booking.objects(func=current_user.id, start__gt=day, attend=None).\
-                        skip(start).limit(length).order_by('start') #.paginate(page=page, per_page=1)
-        # next_url = bookings.next_num if bookings.has_next else None
-        # prev_url = bookings.prev_num if bookings.has_prev else None
         return {
             'noresult': True,
-            'total': total,
-            'booking': [b.to_dict() for b in bookings], # if len(bookings.items) > 0 else False,
-            # 'next': next_url,
-            # 'prev': prev_url,
         }
 
 @bp.get('/info') # Get Attend Info
@@ -486,19 +452,11 @@ def get_docs_qrcode():
 @get_json
 def new(data):
     start = datetime.utcnow().timestamp()
-
-    email = data['email'].strip().lower()
-    if not email:
-        email = None
-    if email and not re.fullmatch('^[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*@(?:\w+\.)+[A-Za-z0-9]+$', email):
-        return {'error': _('Enter a valid email address')}, 400
-
     cpf = re.sub('\D', '', data['cpf'])
     if not verify_cpfcnpj(cpf):
         return {'error': _('Invalid CPF')}, 400
 
     name = data['name'].strip().title()
-    tel = re.sub('\D', '', data['tel'])
 
     if Attend.objects.filter(func=current_user.id, end=None).first():
         return {'error': _('There is a service in progress')}
@@ -514,14 +472,6 @@ def new(data):
         if user.name != name:
             print(f'Mudando nome de {user.name} para {name}')
             user.name = name
-            save = True
-        if email and user.email != email:
-            print(f'Mudando email de {user.email} para {email}')
-            user.email = email
-            save = True
-        if user.tel != tel:
-            print(f'Mudando tel de {user.tel} para {tel}')
-            user.tel = tel
             save = True
         if save:
             user.save()
@@ -543,8 +493,6 @@ def new(data):
             cpfcnpj=cpf,
             pj=pj,
             name=name,
-            email=email,
-            tel=tel,
         )
         user.save()
     try:
@@ -645,43 +593,66 @@ def post_service(data):
         abort(400)
     attend = Attend.objects.get_or_404(id=id)
 
-    new_s = Service(
-        prot_cod=str(data.get('prot_cod').strip().upper()),
-        attend=attend.id,
-        end_bai=data.get('end_bai'),
-        end_cep=data.get('end_cep'),
-        end_cid=data.get('end_cid'),
-        end_log=data.get('end_log'),
-        end_uf=data.get('end_uf'),
-        prot_emi=data.get('prot_emi'),
-        prot_esp=data.get('prot_esp'),
-        prot_fls=data.get('prot_fls'),
-        prot_liv=data.get('prot_liv'),
-        prot_num=data.get('prot_num'),
-        prot_tot_c=data.get('prot_tot_c'),
-        prot_tot_p=data.get('prot_tot_p'),
-        prot_val=data.get('prot_val'),
-        prot_ven=data.get('prot_ven'),
-        prot_date=data.get('prot_date'),
-        s_start=True,
-        timestamp = datetime.now(timezone.utc).timestamp(),
-    )
+    try:
+        new_s = Service(
+            prot_cod=int(data.get('prot_cod')),
+            attend=attend.id,
+            end_bai=data.get('end_bai'),
+            end_cep=int(data.get('end_cep')),
+            end_cid=data.get('end_cid'),
+            end_log=data.get('end_log'),
+            end_uf=data.get('end_uf'),
+            prot_emi=int(data.get('prot_emi')),
+            prot_esp=data.get('prot_esp'),
+            prot_fls=data.get('prot_fls'),
+            prot_liv=data.get('prot_liv'),
+            prot_num=int(data.get('prot_num')),
+            prot_tot_c=data.get('prot_tot_c'),
+            prot_tot_p=data.get('prot_tot_p'),
+            prot_val=data.get('prot_val'),
+            prot_ven=int(data.get('prot_ven')) if data.get('prot_ven') else None,
+            prot_date=int(data.get('prot_date')),
+            s_start=True,
+            timestamp=datetime.now(timezone.utc).timestamp(),
+        )
 
-    new_s.save()
+        new_s.save()
 
-    attend.end = datetime.now(timezone.utc).timestamp()
-    attend.save()
-    # Evento
-    event = Event(
-        timestamp = datetime.utcnow().timestamp(),
-        actor = current_user.id,
-        action = 'create',
-        object = 'service',
-        target = new_s.to_list(),
-    )
-    event.save()
+        attend.end = datetime.now(timezone.utc).timestamp()
+        attend.save()
 
-    return {'result': str(new_s.id)}
+        # Evento
+        event = Event(
+            timestamp=datetime.utcnow().timestamp(),
+            actor=current_user.id,
+            action='create',
+            object='service',
+            target=new_s.to_list(),
+        )
+        event.save()
+
+        return jsonify({'result': str(new_s.id)}), 201
+
+    except NotUniqueError:
+        # Mensagem amigável para erro de duplicação
+        return jsonify({
+            'status': 'error',
+            'message': f"Numero de protocolo '{data.get('prot_cod')}' já cadastrado no sistema."
+        }), 409  # HTTP 409 Conflict
+
+    except ValidationError as ve:
+        # Mensagem amigável para erros de validação
+        return jsonify({
+            'status': 'error',
+            'message': f"Validation error: {str(ve)}"
+        }), 400  # HTTP 400 Bad Request
+
+    except Exception as e:
+        # Erros inesperados
+        return jsonify({
+            'status': 'error',
+            'message': f"An unexpected error occurred: {str(e)}"
+        }), 500  # HTTP 500 Internal Server Error
 
 @bp.post('/payment') # New Payment
 @login_required
@@ -1076,27 +1047,6 @@ def put_prot(roles, data):
             return {'error': 'Serviço não é do Atendimento'}, 400
         to_event = svc.to_event()
         e_created = []
-        # try:
-        # if data['action'] == 'value':
-        #     value = data.get('value')
-        #     if not (value):
-        #         abort(400)
-        #     to_event['new_value'] = float(value)
-        #     if svc.total == float(value):
-        #         return {'error': 'Não alterado'}, 400
-        #     svc.total = float(value)
-        #     svc.save()
-        #     event = Event(
-        #         timestamp = datetime.utcnow().timestamp(),
-        #         actor = current_user.id,
-        #         action = data['action'],
-        #         object = 'service',
-        #         target = to_event,
-        #     )
-        #     event.save()
-        #     e_created.append(str(event.id))
-        #     return {'result': 'Ok'}
-
 
         # Cria um dicionário com os valores convertidos e validados
         service_data = {
@@ -1125,7 +1075,6 @@ def put_prot(roles, data):
             for key, value in filtered_data.items():
                 setattr(svc, key, value)
             svc.save()
-            print(f"Service {svc.id} atualizado com sucesso.")
             event = Event(
                 timestamp = datetime.utcnow().timestamp(),
                 actor = current_user.id,

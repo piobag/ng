@@ -7,6 +7,8 @@ window.addEventListener("load", (event) => {
 const attend_modal = new bootstrap.Modal(sec_info.querySelector('#attend_info_modal'))
 const attend_info_body = sec_info.querySelector('#attend_info_body')
 
+let info_valid_form_erro = false
+
 function open_attend_info(id) {
     let api_url = `{{ url_for('attend.get_info') }}?id=${id}`
     fetch(api_url)
@@ -96,31 +98,39 @@ function open_attend_info(id) {
 }
 
 function info_attend_print(that) {
-    let btn_html = that.innerHTML
-    that.innerHTML = spinner_w
+    info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'))
+    if (info_valid_form_erro) {
+        return
+    } else {
+        let btn_html = that.innerHTML
+        that.innerHTML = spinner_w
+    
+        var doc = new jsPDF({
+            unit: "pt",
+            format: "a4"
+            
+        })
 
-    var doc = new jsPDF({
-        unit: "pt",
-        format: "a4"
-        
-    })
-    
-    let print_content = `{% include 'attend/info/print_attend.html' %}`
-    that.innerHTML = btn_html
-    doc.html(print_content, {
-      callback: function () {
-        doc.save("recibo.pdf")
-      },
-    })
-    
+        setTimeout(function() {
+            let print_content = `{% include 'attend/info/print_attend.html' %}`
+            that.innerHTML = btn_html
+            doc.html(print_content, {
+              callback: function () {
+                doc.save("recibo.pdf")
+              },
+            })
+        }, 1000)
+
+    }
 }
 
 function info_save_attend(that) {
     
+    info_valid_form_erro = false
     let attend_info_form = document.forms.info_attend
     let btn_html = that.innerHTML
     that.innerHTML = spinner_w
-    
+
     let to_send = {
         'id': s.id,
         'action': 'edit',
@@ -143,8 +153,18 @@ function info_save_attend(that) {
             } else {
                 to_send[elem.name] = elem.value
             }
+        } else {
+            if(elem.name !== 'prot_ven') {
+                info_valid_form_erro = true
+                that.innerHTML = btn_html;
+                return
+            }
         }
     })
+    if (info_valid_form_erro) {
+        alert('Preencha todos os campos do formulário')
+        return
+    }
     let api_url = "{{ url_for('attend.put_prot') }}"
     fetch(api_url, {
         method: 'PUT',
