@@ -283,73 +283,12 @@ def finance(dt):
 @get_roles
 def search(roles):
     text = request.args.get('text')
-    text = text.strip().upper()
+    text = str(text)
     if not text:
         return {'result': []}
-    prots = Service.objects.search_text(text).order_by('$text_score')
+    prots = Service.objects.filter(prot_cod=text)
     return {'result': [x.to_event() for x in prots]}
 
-
-    # fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
-    # enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
-    # if enddate and not fromdate:
-    #     return {'error': 'Selecione a data inicial.'}, 400
-
-    prots = {}
-
-    ### Atendimentos
-    result = {
-        'name': current_user.name,
-        'attends': [],
-        # 'itms': [],
-        'payments': {},
-        'services': [],
-    }
-
-    for a in Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate):
-        attend = {
-            'id': str(a.id),
-
-            'name': a.user.name,
-            'cpf': a.user.cpfcnpj,
-            'end': a.end,
-            'email': a.user.email,
-
-            'paid': 0.0,
-            'to_pay': 0.0,
-            'total': 0.0,
-        }
-        for p in Payment.objects.filter(attend=a.id, confirmed__ne=None):
-            attend['paid'] += p.value
-            if total_payments.get(p.type):
-                total_payments[p.type] += p.value
-            else:
-                total_payments[p.type] = p.value
-            if result['payments'].get(p.type):
-                result['payments'][p.type] += p.value
-            else:
-                result['payments'][p.type] = p.value
-
-        for s in Service.objects(attend=a):
-            attend['total'] += s.total
-            attend['to_pay'] += s.paid
-        # Uso de Saldo
-        saldo_usado = float(attend['to_pay'] - attend['paid'])
-        if saldo_usado > 0:
-            if total_payments.get('cred'):
-                total_payments['cred'] += saldo_usado
-            else:
-                total_payments['cred'] = saldo_usado
-            if result['payments'].get('cred'):
-                result['payments']['cred'] += saldo_usado
-            else:
-                result['payments']['cred'] = saldo_usado
-        result['attends'].append(attend)
-    users[str(current_user.id)] = result
-    return {'result': {
-        'total_payments': total_payments,
-        'users': users,
-    }}
 
 @bp.get('/exig') # Abrir arquivo da exigência (func)
 @login_required
