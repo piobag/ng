@@ -42,6 +42,107 @@ def import_carta():
         return jsonify({"message": "No response from import_xls"}), 500
 
 
+### Calc Emolumentos XLSX
+@bp.get('/calc')
+@login_required
+def calc_value():
+    # Dados fornecidos
+    atos_old = {
+        'correio': 18.05,
+        'taxa': 16.87,
+        'intimacao': 10.01,
+        'cancelamento': 49.99,
+        'faixa': {
+            '3132': {58.7: 22.48},
+            '3133': {117.41: 32.51},
+            '3134': {234.81: 59.98},
+            '3135': {352.22: 92.98},
+            '3136': {469.63: 147.45},
+            '3137': {587.03: 167.45},
+            '3138': {1174.07: 227.44},
+            '3139': {2348.13: 307.43},
+            '3140': {5870.33: 407.39},
+            '3141': {11740.65: 617.32},
+            '3142': {23481.31: 814.76},
+            '3143': {float('inf'): 1019.69},
+        },
+    }
+
+    # Função para calcular o valor final
+    def calcular_valor(valor_input, codigo):
+        resultado = {}
+        valor_base = 0
+
+        if codigo in atos_old['faixa']:
+            faixas = atos_old['faixa'][codigo]
+
+            # Encontra o menor limite maior ou igual ao valor_input
+            limite_mais_proximo = min((limite for limite in faixas if limite >= valor_input), default=None)
+
+            if limite_mais_proximo is not None:
+                valor_base = faixas[limite_mais_proximo]
+                resultado['valor_base'] = valor_base
+            else:
+                return None  # Nenhuma faixa válida encontrada
+
+        elif codigo in atos_old:  # Para valores diretos ('correio', 'taxa', etc.)
+            valor_base = atos_old[codigo]
+            resultado['valor_base'] = valor_base
+        else:
+            return None  # Código inválido
+
+        # Calcula os incrementos e o valor final
+        if codigo in ['correio', 'taxa']:
+            resultado['incremento_21'] = 0
+            resultado['incremento_5'] = 0
+            resultado['valor_final'] = valor_base
+        else:
+            incremento_21 = round(valor_base * 0.2125, 2)
+            incremento_5 = round(valor_base * 0.05, 2)
+            resultado['incremento_21'] = incremento_21
+            resultado['incremento_5'] = incremento_5
+            resultado['valor_final'] = round(valor_base + incremento_21 + incremento_5, 2)
+
+        return resultado
+
+    # Valor de entrada
+    valor_input = 62.80
+
+    # Códigos a serem considerados
+    codigos_a_considerar = [
+        'correio', 'taxa', 'intimacao', 'cancelamento',
+        '3132', '3133', '3134', '3135', '3136', '3137', 
+        '3138', '3139', '3140', '3141', '3142', '3143'
+    ]
+
+    total_valores_finais = 0  # Acumula o total
+    faixa_selecionada = False  # Controla se já encontrou a faixa válida
+
+    # Calcula e exibe os resultados
+    for codigo in codigos_a_considerar:
+        if faixa_selecionada and codigo in atos_old['faixa']:
+            break  # Para de iterar após encontrar e calcular a faixa válida
+
+        resultado = calcular_valor(valor_input, codigo)
+
+        if resultado is not None:
+            print(f"Código: {codigo}")
+            print(f"Valor Base: {resultado['valor_base']}")
+            print(f"Incremento de 21,25% (Arredondado): {resultado['incremento_21']}")
+            print(f"Incremento de 5% (Arredondado): {resultado['incremento_5']}")
+            print(f"Valor Final: {resultado['valor_final']:.2f}")
+            print('-' * 30)
+
+            total_valores_finais += resultado['valor_final']
+
+            # Marca a faixa como selecionada
+            if codigo in atos_old['faixa']:
+                faixa_selecionada = True
+
+    # Exibe o total final
+    print(f"Total dos Valores Finais: {total_valores_finais:.2f}")
+    return f"Total dos Valores Finais: {total_valores_finais:.2f}"
+
 
 ### Attend
 @bp.get('/') # Get Attends

@@ -13,13 +13,100 @@ from flask_login import current_user
 
 def import_xls():
     FILE = 'app/attend/cartas.xlsx'
-    df = pd.read_excel(FILE)#, sheet_name=None)
+    df = pd.read_excel(FILE)
     results = []
-    
-    # for index, row in df.iterrows():
-    #     if pd.notna(row['Apresentante']) and str(row['Apresentante']).strip():
-    #         print(f"Linha {index}: Apresentante válido: {row['Apresentante']}")
+
+    def calcular_total(val_input):
+        """Calcula o total baseado no valor de entrada."""
+        atos = {
+            'correio': 18.05,
+            'taxa': 16.87,
+            'intimacao': 10.01,
+            'cancelamento': 49.99,
+            'faixa': {
+                '3132': {58.7: 22.48},
+                '3133': {117.41: 32.51},
+                '3134': {234.81: 59.98},
+                '3135': {352.22: 92.98},
+                '3136': {469.63: 147.45},
+                '3137': {587.03: 167.45},
+                '3138': {1174.07: 227.44},
+                '3139': {2348.13: 307.43},
+                '3140': {5870.33: 407.39},
+                '3141': {11740.65: 617.32},
+                '3142': {23481.31: 814.76},
+                '3143': {float('inf'): 1019.69},
+            },
+        }
         
+        # Função para calcular o valor final
+        def calcular_valor(val_input, codigo):
+            resultado = {}
+            valor_base = 0
+
+            if codigo in atos['faixa']:
+                faixas = atos['faixa'][codigo]
+
+                # Encontra o menor limite maior ou igual ao val_input
+                limite_mais_proximo = min((limite for limite in faixas if limite >= val_input), default=None)
+
+                if limite_mais_proximo is not None:
+                    valor_base = faixas[limite_mais_proximo]
+                    resultado['valor_base'] = valor_base
+                else:
+                    return None  # Nenhuma faixa válida encontrada
+
+            elif codigo in atos:  # Para valores diretos ('correio', 'taxa', etc.)
+                valor_base = atos[codigo]
+                resultado['valor_base'] = valor_base
+            else:
+                return None  # Código inválido
+
+            # Calcula os incrementos e o valor final
+            if codigo in ['correio', 'taxa']:
+                resultado['incremento_21'] = 0
+                resultado['incremento_5'] = 0
+                resultado['valor_final'] = valor_base
+            else:
+                incremento_21 = round(valor_base * 0.2125, 2)
+                incremento_5 = round(valor_base * 0.05, 2)
+                resultado['incremento_21'] = incremento_21
+                resultado['incremento_5'] = incremento_5
+                resultado['valor_final'] = round(valor_base + incremento_21 + incremento_5, 2)
+
+            return resultado
+
+
+        # Códigos a serem considerados
+        codigos_a_considerar = [
+            'correio', 'taxa', 'intimacao', 'cancelamento',
+            '3132', '3133', '3134', '3135', '3136', '3137', 
+            '3138', '3139', '3140', '3141', '3142', '3143'
+        ]
+
+        total_valores_finais = 0  # Acumula o total
+        faixa_selecionada = False  # Controla se já encontrou a faixa válida
+
+        # Calcula os valores
+        for codigo in codigos_a_considerar:
+            if faixa_selecionada and codigo in atos['faixa']:
+                break  # Para de iterar após encontrar e calcular a faixa válida
+
+            resultado = calcular_valor(val_input, codigo)
+
+            if resultado is not None:
+                # Soma apenas os valores finais dos resultados válidos
+                total_valores_finais += resultado['valor_final']
+
+                # Marca a faixa como selecionada
+                if codigo in atos['faixa']:
+                    faixa_selecionada = True
+
+        # Retorna o total final
+        return round(total_valores_finais, 2)
+
+
+
     # return
     for index, row in df.iterrows():
         # if str(row['Apresentante']):
@@ -101,6 +188,12 @@ def import_xls():
                 if pd.isna(value):  # Se o valor for nulo, retorna None
                     return None
                 return str(value).strip().upper() if isinstance(value, str) else str(value).strip()
+            # Adiciona o cálculo do total
+            saldo = row.get('Saldo', 0)
+            total_valores_finais = calcular_total(saldo)
+            prot_num = to_string(row.get('Número do título', ''))
+            numero_tratado = re.sub('\D', '', prot_num)
+
             # Cria um dicionário com os valores convertidos e validados
             service_data = {
                 "prot_cod": int(row.get('Protocolo')),
@@ -110,12 +203,17 @@ def import_xls():
                 "end_cid": to_string(row.get('Cidade')),
                 "end_log": to_string(row.get('Endereço')),
                 "end_uf": to_string(row.get('UF')),
+                "prot_apr": to_string(row.get('Apresentante')),
+                "prot_ced": to_string(row.get('Cedente')),
+                "prot_sac": to_string(row.get('Sacador')),
+                "prot_sac_doc": int(re.sub('\D', '', row.get('Documento sacador'))),
                 "prot_emi": to_timestamp(row.get('Data emissão')),
                 "prot_esp": to_string(row.get('Espécie')),
-                "prot_num": int(row.get('Número do título')),
+                "prot_num":  int(numero_tratado),
                 "prot_val": row.get('Saldo'),      # Mantém o valor original se for numérico
                 "prot_ven": to_timestamp(row.get('Vencimento')),
-                "prot_date": to_timestamp(row.get('Data protocolo')),
+                "prot_date": to_timestamp(row.get('Data ocorrência')),
+                "prot_tot_c": total_valores_finais,
                 "s_start": True,
                 "timestamp": datetime.now(timezone.utc).timestamp(),
             }
@@ -131,6 +229,8 @@ def import_xls():
                     'line': index,
                     'status': 'success',
                     'name': name,
+                    'saldo': saldo,
+                    'total pagar': total_valores_finais,
                     'message': 'Service created successfully',
                     'service_id': str(new_s.id),
                 })
@@ -160,5 +260,7 @@ def import_xls():
                 print(f"Linha {index}: Apresentante vazio ou inválido")
     # Retornar o resumo da operação
     return jsonify(results), 200
+
+
 
         

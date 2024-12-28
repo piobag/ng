@@ -257,7 +257,11 @@ class Service(db.Document):
     prot_val = db.FloatField()
     prot_tot_c = db.FloatField()
     prot_tot_p = db.FloatField()
-    
+    prot_apr = db.StringField()
+    prot_ced = db.StringField()
+    prot_sac = db.StringField()
+    prot_sac_doc = db.FloatField()
+   
     # Dados Endereço
     end_cep = db.FloatField()
     end_log = db.StringField()
@@ -378,6 +382,10 @@ class Service(db.Document):
             'prot_val':  self.prot_val if self.prot_val else '',
             'prot_tot_c':  self.prot_tot_c if self.prot_tot_c else '',
             'prot_tot_p':  self.prot_tot_p if self.prot_tot_p else '',
+            "prot_apr": self.prot_apr if self.prot_apr else '',
+            "prot_ced": self.prot_ced if self.prot_ced else '',
+            "prot_sac": self.prot_sac if self.prot_sac else '',
+            "prot_sac_doc": self.prot_sac_doc if self.prot_sac_doc else '',
             'end_cep':  self.end_cep if self.end_cep else '',
             'end_log':  self.end_log if self.end_log else '',
             'end_bai':  self.end_bai if self.end_bai else '',
