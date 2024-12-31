@@ -260,7 +260,7 @@ class Service(db.Document):
     prot_apr = db.StringField()
     prot_ced = db.StringField()
     prot_sac = db.StringField()
-    prot_sac_doc = db.FloatField()
+    prot_sac_doc = db.StringField()
    
     # Dados Endereço
     end_cep = db.FloatField()

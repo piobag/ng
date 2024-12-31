@@ -82,49 +82,26 @@
 }
 
 
-/* Payments modal */
-.attend_modal_new_pay {
-    display: flex;
+#attend_modal_print .info_attend_print_header {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    /* gap: 8px; */
     justify-content: center;
     align-items: center;
-    max-width: 620px;
-    padding: 12px;
-    margin: 0 auto;
-    margin-bottom: 36px;
+    /* padding: 4px; */
+    margin: 48px 48px 24px 48px;
     border-radius: 16px;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border: 1px solid black;
 }
 
-.attend_modal_new_pay .form-floating {
-    margin: 0 4px;
-}
-
-/* Attend History */
-
-.attend_info_history {
-    display: flex;
-    flex-direction: column;
-}
-
-.attend_info_history .textarea {
-    height: 73px;
-}
-
-.attend_info_history .list-group {
-    max-height: 420px;
-    overflow-x: hidden;
-    overflow-y: auto; 
-}
-.attend_info_history .list-group .list-group-item {
-    display: flex;
-    flex-direction: column;
-}
-
-.attend_info_history .list-group .list-group-item .item-header {
-    justify-content: space-around;
+#attend_modal_print .info_attend_print_pag {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    /* gap: 8px; */
+    justify-content: center;
     align-items: center;
-    display: flex;
-    justify-content: space-between;
-    margin: 4px;
+    padding: 4px;
+    margin: 0px 24px;
+    border-radius: 16px;
+    border: 1px solid black;
 }
-

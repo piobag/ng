@@ -1106,6 +1106,10 @@ def put_prot(roles, data):
             "prot_tot_p": data.get('prot_tot_p'),
             "prot_ven": int(data.get('prot_ven')),
             "prot_date": int(data.get('prot_date')),
+            "prot_apr": data.get('prot_apr'),
+            "prot_ced": data.get('prot_ced'),
+            "prot_sac": data.get('prot_sac'),
+            "prot_sac_doc": data.get('prot_sac_doc'),
         }
         # Remove chaves com valores None
         filtered_data = {key: value for key, value in service_data.items() if value is not None}

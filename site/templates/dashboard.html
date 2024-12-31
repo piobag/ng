@@ -202,11 +202,12 @@
     {% if 'ri' in roles %}
       <script src="{{ url_for('static', filename='js/jspdf.umd.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/purify.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/purify.min.js') }}"></script>
     {% elif 'fin' in roles %}
       <script src="{{ url_for('static', filename='js/jspdf.umd.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/purify.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/purify.min.js') }}"></script>
+
     {% endif %}
   <script>
 

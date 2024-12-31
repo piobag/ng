@@ -1,90 +1,143 @@
-<div style="display: block; width: 595px; height: 800px;">
-    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100px; margin: 30px 20px; border: 1px solid black; border-radius: 16px;">
-        <span style="font-size: 13px;">
-            <b>TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;,&nbsp;&nbsp;PROTESTO&nbsp;&nbsp;E&nbsp;&nbsp;REGISTRO&nbsp;&nbsp;DE&nbsp;&nbsp;CONTRATOS&nbsp;&nbsp;MARÍTIMOS <br> NOVO&nbsp;&nbsp;GAMA/GO</b>
-        </span>
-        <span style="font-size: 10px;">
-            <b>Rua&nbsp;&nbsp;43,&nbsp;&nbsp;Quadra&nbsp;&nbsp;473,&nbsp;&nbsp;Lote&nbsp;&nbsp;06,&nbsp;&nbsp;Loja&nbsp;&nbsp;14,&nbsp;&nbsp;2°&nbsp;&nbsp;Piso&nbsp;&nbsp;-&nbsp;&nbsp;Shopping&nbsp;&nbsp;Outlet&nbsp;&nbsp;Brasil
-            <br>Parque&nbsp;&nbsp;Estrela&nbsp;&nbsp;Dalva&nbsp;&nbsp;VI,&nbsp;&nbsp;Novo&nbsp;&nbsp;Gama/GO,&nbsp;&nbsp;72860-436</b>
-        </span>        
-        <span style="font-size: 11px;">
-            <b>Contato&nbsp;&nbsp;-&nbsp;&nbsp;(61)&nbsp;&nbsp;99322-5955&nbsp;&nbsp;(WhatsApp)&nbsp;&nbsp;e&nbsp;&nbsp;(61)&nbsp;&nbsp;3060-6366&nbsp;&nbsp;(Fixo)&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ&nbsp;&nbsp;-&nbsp;&nbsp;56.987.452/0001-63</b>
-        </span>
+<div id="attend_modal_print" style="display: block; width: 515px; height: 755px; margin: 38px 40px;">
+    <div class="info_attend_print_header">
+        <div style="margin: 0px -6px 0px 0">
+            <img style="width: 48px;" src="{{ url_for('static', filename='img/brasao.jpg') }}" alt="NG">
+        </div>
+        <div style="margin: -4px 40px 4px 0px;">
+            <span style="font-size: 10px;">
+                <b>REPÚBLICA&nbsp;&nbsp;FEDERATIVA&nbsp;&nbsp;DO&nbsp;&nbsp;BRASIL&nbsp;&nbsp;-&nbsp;&nbsp;ESTADO&nbsp;&nbsp;DE&nbsp;&nbsp;GOIÁS</b>
+            </span>
+            <p style="font-size: 6px; margin:0;">
+                <b>TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;,&nbsp;&nbsp;PROTESTO&nbsp;&nbsp;E&nbsp;&nbsp;REGISTRO&nbsp;&nbsp;DE&nbsp;&nbsp;CONTRATOS&nbsp;&nbsp;MARÍTIMOS&nbsp;&nbsp;-&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO</b><br>
+                <b>Frediano&nbsp;&nbsp;Benvindo&nbsp;&nbsp;de&nbsp;&nbsp;Sousa&nbsp;&nbsp;-&nbsp;&nbsp;Tabelião&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ&nbsp;&nbsp;-&nbsp;&nbsp;56.987.452/0001-63</b><br>
+                <b>Rua&nbsp;&nbsp;43,&nbsp;&nbsp;Quadra&nbsp;&nbsp;473,&nbsp;&nbsp;Lote&nbsp;&nbsp;06,&nbsp;&nbsp;Loja&nbsp;&nbsp;14,&nbsp;&nbsp;2°&nbsp;&nbsp;Piso&nbsp;&nbsp;-&nbsp;&nbsp;Shopping&nbsp;&nbsp;Outlet&nbsp;&nbsp;Brasil<br>
+                Parque&nbsp;&nbsp;Estrela&nbsp;&nbsp;Dalva&nbsp;&nbsp;VI,&nbsp;&nbsp;Novo&nbsp;&nbsp;Gama/GO,&nbsp;&nbsp;72860-436</b><br>
+                <b>Contato&nbsp;&nbsp;-&nbsp;&nbsp;(61)&nbsp;&nbsp;99322-5955&nbsp;&nbsp;(WhatsApp)&nbsp;&nbsp;e&nbsp;&nbsp;(61)&nbsp;&nbsp;3060-6366&nbsp;&nbsp;(Fixo)</b>
+            </p>
+        </div>
     </div>
-    <span style="display: flex; justify-content: center; font-size: 20px;"><b>AUTORIZAÇÃO&nbsp;&nbsp;DE&nbsp;&nbsp;CANCELAMENTO&nbsp;&nbsp;DO&nbsp;&nbsp;PROTESTO</b></span>
+    <span style="display: flex; justify-content: center; font-size: 15px; margin: 20px;"><b>AUTORIZAÇÃO&nbsp;&nbsp;DE&nbsp;&nbsp;CANCELAMENTO&nbsp;&nbsp;DO&nbsp;&nbsp;PROTESTO</b></span>
+    <span style="display: flex; justify-content: center; font-size: 12px; margin: 6px 0;"><b>DADOS&nbsp;&nbsp;DAS&nbsp;&nbsp;PARTES</b></span>
 
-    <div style="display: flex; flex-direction: column; justify-content: center; height: 110px; margin: 24px 20px; border: 1px solid black; border-radius: 16px;">
-        <h6><b>DESTINATÁRIO&nbsp;&nbsp;/&nbsp;&nbsp;PAGADOR</b></h6>
-        <span style="font-size: 15px;">Nome:&nbsp;&nbsp;<b>${attend.name}</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;CPF:&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b></span>
-        <span style="font-size: 11px;">Endereço:&nbsp;&nbsp;<b>${s.end_log}</b><br>${s.end_bai},&nbsp;&nbsp;${s.end_cid}/${s.end_uf}.&nbsp;&nbsp;CEP:&nbsp;&nbsp;<b>${s.end_cep}</b></span>
+    <div style="display: flex; flex-direction: column; justify-content: center; margin: 0px 24px; border: 1px solid black; border-radius: 16px; padding: 12px 0px;">
+        <span style="font-size: 9px;">DESTINATÁRIO&nbsp;&nbsp;/&nbsp;&nbsp;PAGADOR:&nbsp;&nbsp;<b>${attend.name.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;CPF/CNPJ :&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b></span>
+        <span style="font-size: 8px;">Endereço:&nbsp;&nbsp;<b>${s.end_log.replace(/ /g, "&nbsp;&nbsp;")}</b>,&nbsp;&nbsp;${s.end_bai},&nbsp;&nbsp;${s.end_cid}/${s.end_uf}.&nbsp;&nbsp;CEP :&nbsp;&nbsp;<b>${s.end_cep}</b></span>
+        <hr style="margin: 6px 0px;">
+        <span style="font-size: 8px;">Apresentante:&nbsp;&nbsp;<b>${s.prot_apr.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Cedente:&nbsp;&nbsp;<b>${s.prot_ced.replace(/ /g, "&nbsp;&nbsp;")}</b></span>
+        <span style="font-size: 8px;">Sacador:&nbsp;&nbsp;<b>${s.prot_sac.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;|&nbsp;&nbsp;CPF/CNPJ :&nbsp;&nbsp;<b>${mask_cpfcnpj(s.prot_sac_doc)}</b></span>
     </div>
-    <div style="display: flex; flex-direction: column; justify-content: center; height: 340px; margin: 16px 20px; border: 1px solid black; border-radius: 16px;">
-        <h6><b>CARACTERÍSTICA&nbsp;&nbsp;DO&nbsp;&nbsp;TÍTULO&nbsp;&nbsp;PROTESTADO</b></h6>
-        <form class="row g-1" style="display: flex; flex-wrap: wrap; justify-content: center; font-size: 13px;">
-                <div class="form-floating" style="width: 106px;">
-                    <input style="font-size: 12px;" type="text" class="form-control" name="prot_cod" placeholder="" value="${s['prot_cod']}">
-                    <label  for="prot_cod">Protocolo</label>
-                </div>
-                <div class="form-floating" style="width: 80px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_esp" placeholder="" value="${s['prot_esp']}">
-                    <label for="prot_esp">Espécie</label>
-                </div>
-                <div class="form-floating" style="width: 116px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_num" placeholder="" value="${s['prot_num']}">
-                    <label for="prot_num">Número do Título</label>
-                </div>
-                <div class="form-floating" style="width: 110px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_val" placeholder="" value="${s['prot_val'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
-                    <label for="prot_val">Valor do Título</label>
-                </div>
-                <div class="form-floating" style="width: 94px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_emi" placeholder="" value="${s.prot_emi ? new Date(s.prot_emi * 1000).toLocaleDateString('pt-BR') : ''}">
-                    <label for="prot_emi">Emissão</label>
-                </div>
-                <div class="form-floating" style="width: 94px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_ven" placeholder="" value="${s.prot_ven ? new Date(s.prot_ven * 1000).toLocaleDateString('pt-BR') : 'A VISTA'}">
-                    <label for="prot_ven">Vencimento</label>
-                </div>
-                <div class="form-floating" style="width: 94px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_date" placeholder="" value="${s.prot_date ? new Date(s.prot_date * 1000).toLocaleDateString('pt-BR') : ''}">
-                    <label for="prot_date">Data Protesto</label>
-                </div>
-                <div class="form-floating" style="width: 50px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_liv" placeholder="" value="${s['prot_liv']}">
-                    <label for="prot_liv">Livro</label>
-                </div>
-                <div class="form-floating" style="width: 50px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_fls" placeholder="" value="${s['prot_fls']}">
-                    <label for="prot_fls">Folha</label>
-                </div>
-                <div class="form-floating" style="width: 122px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_tot_c" placeholder="" value="${s['prot_tot_c'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
-                    <label  style="font-size: 12px;" for="prot_tot_c">Total Cancelamento</label>
-                </div>
-                <div class="form-floating" style="width: 96px;">
-                    <input style="font-size: 12px;" type="text" class="form-control form-control-sm" name="prot_tot_p" placeholder="" value="${s['prot_tot_p'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
-                    <label for="prot_tot_p">Total a Pagar</label>
-                </div>
-        </form>
-        <span style="font-size: 10px; margin: 8px; text-align: justify;" >Comunicamos que já foi disponibilizada pelo credor Autorização para o Cancelamento do Protesto do título acima discriminado, no qual V.(s) Sª(s) figurou(aram) como devedor(es). Diante do informado, para darmos andamento ao referido cancelamento do protesto será necessário o pagamento das custas e emolumentos devidos, que poderá ser realizado através do <b>pagamento via pix, depósito e/ou transferência bancária</b>, ou diretamente no CARTÓRIO DO NOVO GAMA/GO – TABELIONATO DE NOTAS E PROTESTO, mediante <b>cartão de débito ou crédito</b>.</span>
-        <span style="font-size: 10px; margin: 8px; text-align: justify;">
+    <span style="display: flex; justify-content: center; font-size: 12px; margin: 6px 0"><b>DADOS&nbsp;&nbsp;DO&nbsp;&nbsp;TÍTULO</b></span>
+    
+    <div style="display: flex; flex-direction: column; justify-content: center; margin: 0px 24px; border: 1px solid black; border-radius: 16px; padding: 12px 0px;">
+        <span style="font-size: 10px;">
+            Número do Título:&nbsp;&nbsp;<b>${s['prot_num']}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Espécie :&nbsp;&nbsp;<b>${s['prot_esp']}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Emissão:&nbsp;&nbsp;<b>${s.prot_emi ? new Date(s.prot_emi * 1000).toLocaleDateString('pt-BR') : ''}</b><br>
+            Valor do Título:&nbsp;&nbsp;<b>${s['prot_val'].toLocaleString('pt-BR', currency_br)}</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;Vencimento:&nbsp;&nbsp;<b>${s.prot_ven ? new Date(s.prot_ven * 1000).toLocaleDateString('pt-BR') : 'A VISTA'}</b>
+        </span>
+        <hr style="margin: 6px 0px;">
+        <span style="font-size: 10px;">
+            Data Protesto:&nbsp;&nbsp;<b>${s.prot_date ? new Date(s.prot_date * 1000).toLocaleDateString('pt-BR') : ''}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Número do Protocolo:&nbsp;&nbsp;<b>${s['prot_cod']}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Livro:&nbsp;&nbsp;<b>${s['prot_liv']}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Folha:&nbsp;&nbsp;<b>${s['prot_fls']}</b><br>
+            Total Cancelamento:&nbsp;&nbsp;<b>${s['prot_tot_c'].toLocaleString('pt-BR', currency_br)}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Total a Pagar:&nbsp;&nbsp;<b>${s['prot_tot_p'].toLocaleString('pt-BR', currency_br)}</b>
+        </span>
+        <hr style="margin: 6px 0px;">
+        <span style="font-size: 9px; margin: 8px; text-align: justify;" >Comunicamos que já foi disponibilizada pelo credor Autorização para o Cancelamento do Protesto do título acima discriminado, no qual V.(s) Sª(s) figurou(aram) como devedor(es). Diante do informado, para darmos andamento ao referido cancelamento do protesto será necessário o pagamento das custas e emolumentos devidos, que poderá ser realizado através do <b>pagamento via pix, depósito e/ou transferência bancária</b>, ou diretamente no CARTÓRIO DO NOVO GAMA/GO – TABELIONATO DE NOTAS E PROTESTO, mediante <b>cartão de débito ou crédito</b>.</span>
+        <hr style="margin: 6px 0px;">
+        <span style="font-size: 9px; margin: 8px; text-align: justify;">
             1- Eventuais dúvidas poderão ser esclarecidas com o setor de Cancelamento de Protesto deste Tabelionato, através do telefone <b>(61) 99322-5955 (whatsapp) e (61) 3060-6366 (fixo) ou diretamente no Cartório</b>;
             <br>2- O pagamento equivalerá à solicitação do cancelamento do protesto, nos termos do artigo 26 da lei federal nº 9.492/1997. 
         </span>
     </div>
-    <!-- <div style="display: flex; flex-direction: column; justify-content: center; height: 160px; margin: 16px 20px; border: 1px solid black; border-radius: 16px;">
-    </div> -->
-    
-    <div style="display: flex; flex-direction: column; justify-content: center; height: 110px; margin: 16px 20px; border: 1px solid black; border-radius: 16px;">
-        <span style="display: flex; justify-content: center; font-size: 14px;"><b>DADOS&nbsp;&nbsp;BANCÁRIOS&nbsp;&nbsp;PARA&nbsp;&nbsp;PAGAMENTO</b></span>
-        <span style="font-size: 10px; text-align: justify; margin: 4px;">
-            Beneficiário: <b>CARTÓRIO DO NOVO GAMA/GO - TABELIONATO DE NOTAS E PROTESTO </b><br>
-            Chave Pix: <b>56.987.452/0001-63 (CNPJ )</b><br>
-            Banco: <b>CAIXA ECONOMICA FEDERAL</b> | Agência: <b>3189</b> | Conta Corrente: <b>000577522893-2</b>
-        </span>
-        <span style="font-size: 10px; text-align: justify; margin: 4px;">
-            <b>ATENÇÃO:</b> Lembre-se de enviar o comprovante de pagamento para o Cartório <b>pelo WhatsApp (61) 99322-5955</b>.
-        </span>
 
+    <span style="display: flex; justify-content: center; font-size: 12px; margin: 6px 0"><b>DADOS&nbsp;&nbsp;BANCÁRIOS&nbsp;&nbsp;PARA&nbsp;&nbsp;PAGAMENTO</b></span>
+    
+    <div class="info_attend_print_pag">
+        <div>
+            <p style="font-size: 8px; text-align: center; margin: 4px;">
+               <span style="font-size: 12px;"> Chave&nbsp;&nbsp;Pix:&nbsp;&nbsp;<b>56.987.452/0001-63&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ</b></span><br>
+                Beneficiário: <b>CARTÓRIO&nbsp;&nbsp;DO&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO&nbsp;&nbsp;-&nbsp;&nbsp;TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;&nbsp;E&nbsp;&nbsp;PROTESTO </b><br>
+                Banco: <b>CAIXA&nbsp;&nbsp;ECONOMICA&nbsp;&nbsp;FEDERAL</b>&nbsp;&nbsp;|&nbsp;&nbsp;Agência:&nbsp;&nbsp;<b>3189</b>&nbsp;&nbsp;|&nbsp;&nbsp;Conta&nbsp;&nbsp;Corrente:&nbsp;&nbsp;<b>000577522893-2</b><br>
+                <b>ATENÇÃO:</b> Lembre-se de enviar o comprovante de pagamento <br> para o Cartório <b>pelo WhatsApp (61) 99322-5955</b>.
+            </p>
+
+        </div>
+        <div>
+            <img style="width: 70px;" src="{{ url_for('static', filename='img/qrcode_pix.png') }}" alt="NG">
+        </div>
+    </div>
+</div>
+<div style=" width: 515px; height: 747px; margin: 88px 40px 38px 40px; page-break-before: always;">
+    <div style="display: flex; flex-direction: column; justify-content: center;">
+        <span style="display: flex; justify-content: start; font-size: 12px; margin: 6px 0"><b>DESTINATÁRIO</b></span>
+        <div style="display: flex; flex-direction: column; justify-content: center;  border: 1px solid black; border-radius: 16px; padding: 8px;">
+            <span style="font-size: 9px;text-align: start;">PAGADOR :&nbsp;&nbsp;<b>${attend.name.replace(/ /g, "&nbsp;&nbsp;")}</b><br>
+                CPF/CNPJ  :&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b><br>
+                ENDEREÇO :&nbsp;&nbsp;<b>${s.end_log.replace(/ /g, "&nbsp;&nbsp;")},&nbsp;&nbsp;${s.end_bai},&nbsp;&nbsp;${s.end_cid}/${s.end_uf}.&nbsp;&nbsp;CEP :&nbsp;&nbsp;${s.end_cep}</b>
+            </span>
+        </div>
+        <span style="display: flex; justify-content: start; font-size: 12px; margin: 6px 0"><b>REMETENTE</b></span>
+        <div style="display: flex; flex-direction: column; justify-content: center;  border: 1px solid black; border-radius: 16px; padding: 8px;">
+            <span style="font-size: 8.5px;text-align: start;">
+                CARTÓRIO : <b>TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;,&nbsp;&nbsp;PROTESTO&nbsp;&nbsp;E&nbsp;&nbsp;REGISTRO&nbsp;&nbsp;DE&nbsp;&nbsp;CONTRATOS&nbsp;&nbsp;MARÍTIMOS&nbsp;&nbsp;-&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO</b><br>
+                TABELIÃO : <b>Frediano&nbsp;&nbsp;Benvindo&nbsp;&nbsp;de&nbsp;&nbsp;Sousa&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ&nbsp;&nbsp;-&nbsp;&nbsp;56.987.452/0001-63</b><br>
+                ENDEREÇO : <b>Rua&nbsp;&nbsp;43,&nbsp;&nbsp;Quadra&nbsp;&nbsp;473,&nbsp;&nbsp;Lote&nbsp;&nbsp;06,&nbsp;&nbsp;Loja&nbsp;&nbsp;14,&nbsp;&nbsp;2°&nbsp;&nbsp;Piso&nbsp;&nbsp;,&nbsp;&nbsp;Shopping&nbsp;&nbsp;Outlet&nbsp;&nbsp;Brasil,&nbsp;&nbsp;Parque&nbsp;&nbsp;Estrela&nbsp;&nbsp;Dalva&nbsp;&nbsp;VI <br>
+                    Novo&nbsp;&nbsp;Gama/GO.&nbsp;&nbsp;CEP :&nbsp;&nbsp;72860-436</b><br>
+                CONTATO : <b>(61)&nbsp;&nbsp;99322-5955&nbsp;&nbsp;(WhatsApp)&nbsp;&nbsp;e&nbsp;&nbsp;(61)&nbsp;&nbsp;3060-6366&nbsp;&nbsp;(Fixo)&nbsp;&nbsp;|&nbsp;&nbsp;EMAIL:&nbsp;&nbsp;cartoriodonovogama@gmail.com</b>
+                
+            </span>
+        </div>
+        <span style="display: flex; justify-content: start; font-size: 12px; margin: 6px 0"><b>PARA&nbsp;&nbsp;USO&nbsp;&nbsp;DO&nbsp;&nbsp;ENTREGADOR</b></span>
+        <div style="display: grid; grid-template-columns: 1.5fr 4.5fr; justify-content: center; border: 1px solid black; border-radius: 16px; font-size: 9px; padding: 4px;">
+            <div style="display: flex;flex-direction: column;align-content: center;justify-content: space-between;text-align: end;">
+                <span>
+                    MOTIVOS&nbsp;&nbsp;DA&nbsp;&nbsp;DEVOLUÇÃO :<br><br>
+                </span>
+                <span>
+                    TENTATIVAS&nbsp;&nbsp;DE&nbsp;&nbsp;VISITA :
+                </span>
+            </div>
+            <div style="display: flex;flex-direction: column;align-content: center;justify-content: space-between;">
+                <span>
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Mudou-se&nbsp;&nbsp;&nbsp;
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Ausente&nbsp;&nbsp;&nbsp;
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Recusado&nbsp;&nbsp;&nbsp;
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Não procurado&nbsp;&nbsp;&nbsp;
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Falecido&nbsp;&nbsp;&nbsp;<br>
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Desconhecido&nbsp;&nbsp;&nbsp;
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Não existe o número&nbsp;&nbsp;&nbsp;
+                    [&nbsp;&nbsp;&nbsp;&nbsp;] Endereço insuficiente&nbsp;&nbsp;&nbsp;
+                    <br><br>1ª____/____/________:____h&nbsp;&nbsp;&nbsp;&nbsp;2ª____/____/________:____h&nbsp;&nbsp;&nbsp;&nbsp;3ª____/____/________:____h
+                </span>
+            </div>
+        </div>
+    </div>
+    <p style="margin-top: 60px;">
+        <b style="font-size: 18px;">TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;,&nbsp;&nbsp;PROTESTO&nbsp;&nbsp;E&nbsp;&nbsp;REGISTRO&nbsp;&nbsp;DE&nbsp;&nbsp;<br>CONTRATOS&nbsp;&nbsp;MARÍTIMOS&nbsp;&nbsp;-&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO</b><br>
+    </p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; justify-content: center; gap: 8px;">
+        <div style="border: 1px solid black; border-radius: 16px; padding: 8px;">
+            <h5><b>ATENÇÃO</b></h5>
+            <p style="font-size: 12px; text-align: justify;">
+                Ao negociar, quitar ou parcelar, sua dívida protestada procure o tabelionato (Cartório) para realizar o <b>Cancelamento do Prostesto.</b> Não havendo o cancelamento, o protesto permanacerá ativo no <b>Catório</b>, na <b>Consulta Gratuita de Protesto</b> e nos órgãos de proteção ao crédito <b>(SPC/SERASA)</b>. <br><br>
+                CUIDADO COM O GOLPE DO <b>PROTESTO,</b> CARTÓRIO NÃO FAZ COBRANÇA <b>POR EMAIL, TELEFONE E NEM POR WHATASPP.</b>
+            </p>
+
+        </div>
+        <div style="border: 1px solid black; border-radius: 16px; padding: 8px;">
+            <h5 style="font-size: 22px;">
+                CONSULTA <b>&nbsp;GRATUITA</b> DE PROTESTO !
+            </h5>
+            <p style="font-size: 12px;">Para consultas em editais de intimação e ter acesso a mais atualizas noticias sobre o protesto, acesse o site: <br> <b>https://www.pesquisaprotesto.com.br/</b> <br> e informe seu CPF ou CNPJ.</p>
+            <div style="display: grid; grid-template-columns: 2fr 1fr;">
+                <p style="font-size: 11px;">
+                    PARA MAIS INFORMAÇÕES : <br><br>
+                    (61) 99322-5955 (WhatsApp) <br>
+                    (61)  3060-6366 (Fixo)
+                </p>
+                <span>
+                    <img style="width: 70px;" src="{{ url_for('static', filename='img/whats-prot.jpg') }}" alt="NG">
+                </span>
+            </div>
+            
+        </div>
     </div>
 </div>

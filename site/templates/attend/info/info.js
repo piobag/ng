@@ -16,6 +16,7 @@ function open_attend_info(id) {
         let result = data['result']
         if (result) {
             attend = result
+            console.log(attend)
             // History
             attend_comments = ''
             for (e of result['history']) {
@@ -97,32 +98,82 @@ function open_attend_info(id) {
                         that.innerHTML = btn_html})
 }
 
+
+function info_attend_cpfcnpj(that) {
+    let cpfcnpj = mask_cpfcnpj(that.value);
+
+    // Atualiza o valor do campo com a máscara aplicada
+    that.value = cpfcnpj;
+
+    // Remove caracteres não numéricos
+    cpfcnpj = cpfcnpj.replace(/\D/g, "");
+
+    if (cpfcnpj.length === 14) {
+        // Validação para CNPJ
+        if (!check_cpfcnpj(cpfcnpj)) {
+            that.value = that.value.slice(0, -1);
+            alert("CNPJ Inválido");
+        }
+    } else if (cpfcnpj.length > 14) {
+        // Impede a inserção de mais caracteres além do limite
+        that.value = that.value.slice(0, -1);
+    }
+}
+
 function info_attend_print(that) {
     info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'))
     if (info_valid_form_erro) {
-        return
+        return;
     } else {
-        let btn_html = that.innerHTML
-        that.innerHTML = spinner_w
+        let btn_html = that.innerHTML;
+        that.innerHTML = spinner_w;
     
         var doc = new jsPDF({
-            unit: "pt",
-            format: "a4"
-            
-        })
+            unit: "pt", // Unidade em pontos
+            format: "a4" // Formato A4
+        });
 
         setTimeout(function() {
             let print_content = `{% include 'attend/info/print_attend.html' %}`
-            that.innerHTML = btn_html
-            doc.html(print_content, {
-              callback: function () {
-                doc.save("recibo.pdf")
-              },
-            })
-        }, 1000)
+            that.innerHTML = btn_html;
 
+            doc.html(print_content, {
+                // x: 40, // Margem esquerda (40pt)
+                // y: 40, // Margem superior (40pt)
+                callback: function () {
+                    doc.save(`${s.prot_cod}.pdf`);
+                },
+                // autoPaging: true // Garante que o conteúdo seja paginado automaticamente
+            });
+        }, 1000);
     }
 }
+
+// function info_attend_print(that) {
+//     info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'))
+//     if (info_valid_form_erro) {
+//         return
+//     } else {
+//         let btn_html = that.innerHTML
+//         that.innerHTML = spinner_w
+    
+//         var doc = new jsPDF({
+//             unit: "pt",
+//             format: "a4"
+            
+//         })
+
+//         setTimeout(function() {
+//             that.innerHTML = btn_html
+//             doc.html(print_content, {
+//               callback: function () {
+//                 doc.save("recibo.pdf")
+//               },
+//             })
+//         }, 1000)
+
+//     }
+// }
 
 function info_save_attend(that) {
     
@@ -144,10 +195,12 @@ function info_save_attend(that) {
                 let date = new Date(`${elem.value}T00:00:00-03:00`);
                 to_send[elem.name] = date.getTime() / 1000
                 // Obter o timestamp (em milissegundos desde 1970)
-            } else if (elem.name === 'prot_cod' || elem.name === 'prot_num') {
+            } else if (elem.name === 'prot_cod') {
                 to_send[elem.name] = parseFloat(elem.value)
-            } else if (elem.name === 'end_cep') {
+            } else if (elem.name === 'end_cep' || elem.name === 'prot_num') {
                 to_send[elem.name] = parseFloat(elem.value.replace(/[\D]+/g,''))
+            } else if (elem.name === 'prot_sac_doc') {
+                to_send[elem.name] = elem.value.replace(/[\D]+/g,'')
             } else if (elem.name === 'id') {
                 to_send['attend'] = elem.value
             } else {

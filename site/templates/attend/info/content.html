@@ -3,7 +3,7 @@
 <div class="attend_modal_hearder">
     <div>
         <div><b>${result['name']}</b></div>
-        <div>{{ _('CPF') }} | <b>${mask_cpfcnpj(result['cpf'])}</b></div>
+        <div>CPF / CNPJ | <b>${mask_cpfcnpj(result['cpf'])}</b></div>
         ${result['email'] ? `<div>{{ _('Email') }} | <b>${result['email']}</b></div>`  : ''}
         ${result['tel'] ? `<div>{{ _('Phone') }} | <b>${mtel(result['tel'])}</b></div>`  : ''}
     </div>
@@ -19,98 +19,95 @@
         <div class="info_attend container">
             <h5>Endereço</h5>
             <div class="info_attend_end d-flex flex-wrap">
-            <div class="form-floating col-md-3">
-                <input type="text" class="form-control form-control-sm" name="end_cep" placeholder="" value="${s['end_cep']}">
-                <label for="end_cep">CEP</label>
-            </div>
-            <div class="form-floating col-md-9">
-                <input type="text" class="form-control form-control-sm" name="end_log" placeholder="" value="${s['end_log']}">
-                <label for="end_log">Logradouro</label>
-            </div>
-            <div class="form-floating col-md-5">
-                <input type="text" class="form-control form-control-sm" name="end_bai" placeholder="" value="${s['end_bai']}">
-                <label for="end_bai">Bairro</label>
-            </div>
-            <div class="form-floating col-md-5">
-                <input type="text" class="form-control form-control-sm" name="end_cid" placeholder="" value="${s['end_cid']}">
-                <label for="end_cid">Cidade</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control form-control-sm" name="end_uf" placeholder="" value="${s['end_uf']}">
-                <label for="end_uf">UF</label>
-            </div>
+                <div class="form-floating col-md-3">
+                    <input type="text" class="form-control form-control-sm" name="end_cep" placeholder="" value="${s['end_cep']}">
+                    <label for="end_cep">CEP</label>
+                </div>
+                <div class="form-floating col-md-9">
+                    <input type="text" class="form-control form-control-sm" name="end_log" placeholder="" value="${s['end_log']}">
+                    <label for="end_log">Logradouro</label>
+                </div>
+                <div class="form-floating col-md-5">
+                    <input type="text" class="form-control form-control-sm" name="end_bai" placeholder="" value="${s['end_bai']}">
+                    <label for="end_bai">Bairro</label>
+                </div>
+                <div class="form-floating col-md-5">
+                    <input type="text" class="form-control form-control-sm" name="end_cid" placeholder="" value="${s['end_cid']}">
+                    <label for="end_cid">Cidade</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="text" class="form-control form-control-sm" name="end_uf" placeholder="" value="${s['end_uf']}">
+                    <label for="end_uf">UF</label>
+                </div>
             </div>
             <hr>
             <h5>Título Protestado</h5>
             <div class="info_attend_prot d-flex flex-wrap">
-            <div class="form-floating col-md-3">
-                <input type="text" class="form-control form-control-sm" name="prot_cod" placeholder="" value="${s['prot_cod']}">
-                <label for="prot_cod">Protocolo</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control form-control-sm" name="prot_esp" placeholder="" value="${s['prot_esp']}">
-                <label for="prot_esp">Espécie</label>
-            </div>
-            <div class="form-floating col-md-3">
-                <input type="text" class="form-control form-control-sm" name="prot_num" placeholder="" value="${s['prot_num']}">
-                <label for="prot_num">Número do Título</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control form-control-sm" name="prot_val" placeholder="" value="${s['prot_val'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
-                <label for="prot_val">Valor do Título</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="date" class="form-control form-control-sm" name="prot_emi" placeholder="" value="${prot_emi ? prot_emi.toLocaleDateString('en-CA') : ''}">
-                <label for="prot_emi">Emissão</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="date" class="form-control form-control-sm" name="prot_ven" placeholder="" value="${prot_ven ? prot_ven.toLocaleDateString('en-CA') : ''}">
-                <label for="prot_ven">Vencimento</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="date" class="form-control form-control-sm" name="prot_date" placeholder="" value="${prot_date ? prot_date.toLocaleDateString('en-CA') : ''}">
-                <label for="prot_date">Data Protesto</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control form-control-sm" name="prot_liv" placeholder="" value="${s['prot_liv']}">
-                <label for="prot_liv">Livro</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control form-control-sm" name="prot_fls" placeholder="" value="${s['prot_fls']}">
-                <label for="prot_fls">Folha</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control form-control-sm" name="prot_tot_c" placeholder="" value="${s['prot_tot_c'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
-                <label for="prot_tot_c">Total Cancelamento</label>
-            </div>
-            <div class="form-floating col-md-2">
-                <input type="text" class="form-control form-control-sm" name="prot_tot_p" placeholder="" value="${s['prot_tot_p'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
-                <label for="prot_tot_p">Total a Pagar</label>
-            </div>
-            
+                <div class="form-floating col-md-3">
+                    <input type="text" class="form-control form-control-sm" name="prot_cod" placeholder="" value="${s['prot_cod']}">
+                    <label for="prot_cod">Protocolo</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="text" class="form-control form-control-sm" name="prot_esp" placeholder="" value="${s['prot_esp']}">
+                    <label for="prot_esp">Espécie</label>
+                </div>
+                <div class="form-floating col-md-3">
+                    <input type="text" class="form-control form-control-sm" name="prot_num" placeholder="" value="${s['prot_num']}">
+                    <label for="prot_num">Número do Título</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="text" class="form-control form-control-sm" name="prot_val" placeholder="" value="${s['prot_val'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
+                    <label for="prot_val">Valor do Título</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="date" class="form-control form-control-sm" name="prot_emi" placeholder="" value="${prot_emi ? prot_emi.toLocaleDateString('en-CA') : ''}">
+                    <label for="prot_emi">Emissão</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="date" class="form-control form-control-sm" name="prot_ven" placeholder="" value="${prot_ven ? prot_ven.toLocaleDateString('en-CA') : ''}">
+                    <label for="prot_ven">Vencimento</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="date" class="form-control form-control-sm" name="prot_date" placeholder="" value="${prot_date ? prot_date.toLocaleDateString('en-CA') : ''}">
+                    <label for="prot_date">Data Protesto</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="text" class="form-control form-control-sm" name="prot_liv" placeholder="" value="${s['prot_liv']}">
+                    <label for="prot_liv">Livro</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="text" class="form-control form-control-sm" name="prot_fls" placeholder="" value="${s['prot_fls']}">
+                    <label for="prot_fls">Folha</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="text" class="form-control form-control-sm" name="prot_tot_c" placeholder="" value="${s['prot_tot_c'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
+                    <label for="prot_tot_c">Total Cancelamento</label>
+                </div>
+                <div class="form-floating col-md-2">
+                    <input type="text" class="form-control form-control-sm" name="prot_tot_p" placeholder="" value="${s['prot_tot_p'].toLocaleString('pt-BR', currency_br)}" onkeyup="mask_value(this)">
+                    <label for="prot_tot_p">Total a Pagar</label>
+                </div>
+                <div class="form-floating col-md-6">
+                    <input type="text" class="form-control form-control-sm" name="prot_apr" placeholder="" value="${s['prot_apr']}">
+                    <label for="prot_apr">Apresentante</label>
+                </div>
+                <div class="form-floating col-md-6">
+                    <input type="text" class="form-control form-control-sm" name="prot_ced" placeholder="" value="${s['prot_ced']}">
+                    <label for="prot_ced">Cedente</label>
+                </div>
+                <div class="form-floating col-md-6">
+                    <input type="text" class="form-control form-control-sm" name="prot_sac" placeholder="" value="${s['prot_sac']}"> 
+                    <label for="prot_sac">Sacador</label>
+                </div>
+                <div class="form-floating col-md-6">
+                    <input type="text" class="form-control form-control-sm" name="prot_sac_doc" placeholder="" value="${mask_cpfcnpj(s['prot_sac_doc'])}" onkeyup="info_attend_cpfcnpj(this)">
+                    <label for="prot_sac_doc">CNPJ</label>
+                </div>
             </div>
             <div class="col">
-            <button id="info_save_btn_attend" name="btn" type="button" class="btn btn-sm btn-outline-success m-2" onclick="info_save_attend(this)" role="button">Salvar <i class="far fa-sm fa-check-circle"></i></button>
+                <button id="info_save_btn_attend" name="btn" type="button" class="btn btn-sm btn-outline-success m-2" onclick="info_save_attend(this)" role="button">Salvar <i class="far fa-sm fa-check-circle"></i></button>
             </div>
         </div>
     </form>
 </div>
 
-
-<!-- 
-<div class="attend_info_history">
-    <h4 class="my-2"><b>Histórico</b></h4>
-    <div class="form-floating">
-        <textarea class="form-control textarea" placeholder="" id="itm_info_comment"></textarea>
-        <label for="itm_info_comment">Comentário</label>
-    </div>
-    <div>
-        <button type="button" name="btn" title="Enviar comentário" class="btn btn-outline-success text-center m-3" onclick="info_attend_comment(this, '${result.id}')">
-            <i class="fas fa-sm fa-paper-plane"></i>
-        </button>
-    </div>
-    <ul class="list-group">
-        ${attend_comments}
-    </ul>
-
-</div> -->

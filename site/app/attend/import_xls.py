@@ -206,7 +206,7 @@ def import_xls():
                 "prot_apr": to_string(row.get('Apresentante')),
                 "prot_ced": to_string(row.get('Cedente')),
                 "prot_sac": to_string(row.get('Sacador')),
-                "prot_sac_doc": int(re.sub('\D', '', row.get('Documento sacador'))),
+                "prot_sac_doc":to_string(re.sub('\D', '', row.get('Documento sacador'))),
                 "prot_emi": to_timestamp(row.get('Data emissão')),
                 "prot_esp": to_string(row.get('Espécie')),
                 "prot_num":  int(numero_tratado),
@@ -214,6 +214,7 @@ def import_xls():
                 "prot_ven": to_timestamp(row.get('Vencimento')),
                 "prot_date": to_timestamp(row.get('Data ocorrência')),
                 "prot_tot_c": total_valores_finais,
+                "prot_tot_p": total_valores_finais,
                 "s_start": True,
                 "timestamp": datetime.now(timezone.utc).timestamp(),
             }
