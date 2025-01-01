@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", (event) => {
     load_attend()
      {% if config.DEBUG %}
-        open_attend_info('677078ffec0022bcfc1851f7')
+        // open_attend_info('677078ffec0022bcfc1851f7')
     {% endif %}
 })
 

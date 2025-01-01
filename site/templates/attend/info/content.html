@@ -3,7 +3,7 @@
 <div class="attend_modal_hearder">
     <div>
         <div><b>${result['name']}</b></div>
-        <div>CPF / CNPJ | <b>${mask_cpfcnpj(result['cpf'])}</b></div>
+        <div>${result['cpf'].length < 12 ? 'CPF' : 'CNPJ'} | <b>${mask_cpfcnpj(result['cpf'])}</b></div>
         ${result['email'] ? `<div>{{ _('Email') }} | <b>${result['email']}</b></div>`  : ''}
         ${result['tel'] ? `<div>{{ _('Phone') }} | <b>${mtel(result['tel'])}</b></div>`  : ''}
     </div>

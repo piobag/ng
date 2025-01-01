@@ -16,15 +16,15 @@
             </p>
         </div>
     </div>
-    <span style="display: flex; justify-content: center; font-size: 15px; margin: 20px;"><b>AUTORIZAÇÃO&nbsp;&nbsp;DE&nbsp;&nbsp;CANCELAMENTO&nbsp;&nbsp;DO&nbsp;&nbsp;PROTESTO</b></span>
+    <span style="display: flex; justify-content: center; font-size: 15px; margin: 12px;"><b>AUTORIZAÇÃO&nbsp;&nbsp;DE&nbsp;&nbsp;CANCELAMENTO&nbsp;&nbsp;DO&nbsp;&nbsp;PROTESTO</b></span>
     <span style="display: flex; justify-content: center; font-size: 12px; margin: 6px 0;"><b>DADOS&nbsp;&nbsp;DAS&nbsp;&nbsp;PARTES</b></span>
 
     <div style="display: flex; flex-direction: column; justify-content: center; margin: 0px 24px; border: 1px solid black; border-radius: 16px; padding: 12px 0px;">
-        <span style="font-size: 9px;">DESTINATÁRIO&nbsp;&nbsp;/&nbsp;&nbsp;PAGADOR:&nbsp;&nbsp;<b>${attend.name.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;CPF/CNPJ :&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b></span>
+        <span style="font-size: 9px;">DESTINATÁRIO&nbsp;&nbsp;/&nbsp;&nbsp;PAGADOR:&nbsp;&nbsp;<b>${attend.name.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;${attend.cpf.length < 12 ? 'CPF' : 'CNPJ'} :&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b></span>
         <span style="font-size: 8px;">Endereço:&nbsp;&nbsp;<b>${s.end_log.replace(/ /g, "&nbsp;&nbsp;")}</b>,&nbsp;&nbsp;${s.end_bai},&nbsp;&nbsp;${s.end_cid}/${s.end_uf}.&nbsp;&nbsp;CEP :&nbsp;&nbsp;<b>${s.end_cep}</b></span>
         <hr style="margin: 6px 0px;">
         <span style="font-size: 8px;">Apresentante:&nbsp;&nbsp;<b>${s.prot_apr.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Cedente:&nbsp;&nbsp;<b>${s.prot_ced.replace(/ /g, "&nbsp;&nbsp;")}</b></span>
-        <span style="font-size: 8px;">Sacador:&nbsp;&nbsp;<b>${s.prot_sac.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;|&nbsp;&nbsp;CPF/CNPJ :&nbsp;&nbsp;<b>${mask_cpfcnpj(s.prot_sac_doc)}</b></span>
+        <span style="font-size: 8px;">Sacador:&nbsp;&nbsp;<b>${s.prot_sac.replace(/ /g, "&nbsp;&nbsp;")}</b>&nbsp;&nbsp;|&nbsp;&nbsp;${s.prot_sac_doc.length < 12 ? 'CPF' : 'CNPJ'} :&nbsp;&nbsp;<b>${mask_cpfcnpj(s.prot_sac_doc)}</b></span>
     </div>
     <span style="display: flex; justify-content: center; font-size: 12px; margin: 6px 0"><b>DADOS&nbsp;&nbsp;DO&nbsp;&nbsp;TÍTULO</b></span>
     
@@ -52,7 +52,7 @@
     <div class="info_attend_print_pag">
         <div>
             <p style="font-size: 8px; text-align: center; margin: 4px;">
-               <span style="font-size: 12px;"> Chave&nbsp;&nbsp;Pix:&nbsp;&nbsp;<b>56.987.452/0001-63&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ</b></span><br>
+               <span style="font-size: 12px;"> Chave&nbsp;&nbsp;Pix&nbsp;&nbsp;-&nbsp;&nbsp;CNPJ&nbsp;&nbsp;:&nbsp;&nbsp;<b>56.987.452/0001-63&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;QR&nbsp;&nbsp;CODE&nbsp;&nbsp;PIX:</b></span><br>
                 Beneficiário: <b>CARTÓRIO&nbsp;&nbsp;DO&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO&nbsp;&nbsp;-&nbsp;&nbsp;TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;&nbsp;E&nbsp;&nbsp;PROTESTO </b><br>
                 Banco: <b>CAIXA&nbsp;&nbsp;ECONOMICA&nbsp;&nbsp;FEDERAL</b>&nbsp;&nbsp;|&nbsp;&nbsp;Agência:&nbsp;&nbsp;<b>3189</b>&nbsp;&nbsp;|&nbsp;&nbsp;Conta&nbsp;&nbsp;Corrente:&nbsp;&nbsp;<b>000577522893-2</b><br>
                 <b>ATENÇÃO:</b> Lembre-se de enviar o comprovante de pagamento <br> para o Cartório <b>pelo WhatsApp (61) 99322-5955</b>.
@@ -69,15 +69,14 @@
         <span style="display: flex; justify-content: start; font-size: 12px; margin: 6px 0"><b>DESTINATÁRIO</b></span>
         <div style="display: flex; flex-direction: column; justify-content: center;  border: 1px solid black; border-radius: 16px; padding: 8px;">
             <span style="font-size: 9px;text-align: start;">PAGADOR :&nbsp;&nbsp;<b>${attend.name.replace(/ /g, "&nbsp;&nbsp;")}</b><br>
-                CPF/CNPJ  :&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b><br>
+                ${attend.cpf.length < 12 ? 'CPF' : 'CNPJ'}  :&nbsp;&nbsp;<b>${mask_cpfcnpj(attend.cpf)}</b><br>
                 ENDEREÇO :&nbsp;&nbsp;<b>${s.end_log.replace(/ /g, "&nbsp;&nbsp;")},&nbsp;&nbsp;${s.end_bai},&nbsp;&nbsp;${s.end_cid}/${s.end_uf}.&nbsp;&nbsp;CEP :&nbsp;&nbsp;${s.end_cep}</b>
             </span>
         </div>
         <span style="display: flex; justify-content: start; font-size: 12px; margin: 6px 0"><b>REMETENTE</b></span>
         <div style="display: flex; flex-direction: column; justify-content: center;  border: 1px solid black; border-radius: 16px; padding: 8px;">
             <span style="font-size: 8.5px;text-align: start;">
-                CARTÓRIO : <b>TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;,&nbsp;&nbsp;PROTESTO&nbsp;&nbsp;E&nbsp;&nbsp;REGISTRO&nbsp;&nbsp;DE&nbsp;&nbsp;CONTRATOS&nbsp;&nbsp;MARÍTIMOS&nbsp;&nbsp;-&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO</b><br>
-                TABELIÃO : <b>Frediano&nbsp;&nbsp;Benvindo&nbsp;&nbsp;de&nbsp;&nbsp;Sousa&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ&nbsp;&nbsp;-&nbsp;&nbsp;56.987.452/0001-63</b><br>
+                CARTÓRIO : <b>CARTÓRIO&nbsp;&nbsp;DO&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO&nbsp;&nbsp;-&nbsp;&nbsp;TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;&nbsp;E&nbsp;&nbsp;PROTESTO</b>&nbsp;&nbsp;|&nbsp;&nbsp;CNPJ&nbsp;&nbsp;-&nbsp;&nbsp;<b>56.987.452/0001-63</b><br>
                 ENDEREÇO : <b>Rua&nbsp;&nbsp;43,&nbsp;&nbsp;Quadra&nbsp;&nbsp;473,&nbsp;&nbsp;Lote&nbsp;&nbsp;06,&nbsp;&nbsp;Loja&nbsp;&nbsp;14,&nbsp;&nbsp;2°&nbsp;&nbsp;Piso&nbsp;&nbsp;,&nbsp;&nbsp;Shopping&nbsp;&nbsp;Outlet&nbsp;&nbsp;Brasil,&nbsp;&nbsp;Parque&nbsp;&nbsp;Estrela&nbsp;&nbsp;Dalva&nbsp;&nbsp;VI <br>
                     Novo&nbsp;&nbsp;Gama/GO.&nbsp;&nbsp;CEP :&nbsp;&nbsp;72860-436</b><br>
                 CONTATO : <b>(61)&nbsp;&nbsp;99322-5955&nbsp;&nbsp;(WhatsApp)&nbsp;&nbsp;e&nbsp;&nbsp;(61)&nbsp;&nbsp;3060-6366&nbsp;&nbsp;(Fixo)&nbsp;&nbsp;|&nbsp;&nbsp;EMAIL:&nbsp;&nbsp;cartoriodonovogama@gmail.com</b>
@@ -109,27 +108,27 @@
             </div>
         </div>
     </div>
-    <p style="margin-top: 60px;">
-        <b style="font-size: 18px;">TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;,&nbsp;&nbsp;PROTESTO&nbsp;&nbsp;E&nbsp;&nbsp;REGISTRO&nbsp;&nbsp;DE&nbsp;&nbsp;<br>CONTRATOS&nbsp;&nbsp;MARÍTIMOS&nbsp;&nbsp;-&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO</b><br>
+    <p style="margin-top: 100px;">
+        <b style="font-size: 18px;">CARTÓRIO&nbsp;&nbsp;DO&nbsp;&nbsp;NOVO&nbsp;&nbsp;GAMA/GO<br>TABELIONATO&nbsp;&nbsp;DE&nbsp;&nbsp;NOTAS&nbsp;&nbsp;E&nbsp;&nbsp;PROTESTO</b>
     </p>
 
     <div style="display: grid; grid-template-columns: 1fr 1fr; justify-content: center; gap: 8px;">
         <div style="border: 1px solid black; border-radius: 16px; padding: 8px;">
             <h5><b>ATENÇÃO</b></h5>
-            <p style="font-size: 12px; text-align: justify;">
+            <p style="font-size: 11px; margin: 0; text-align: justify;">
                 Ao negociar, quitar ou parcelar, sua dívida protestada procure o tabelionato (Cartório) para realizar o <b>Cancelamento do Prostesto.</b> Não havendo o cancelamento, o protesto permanacerá ativo no <b>Catório</b>, na <b>Consulta Gratuita de Protesto</b> e nos órgãos de proteção ao crédito <b>(SPC/SERASA)</b>. <br><br>
-                CUIDADO COM O GOLPE DO <b>PROTESTO,</b> CARTÓRIO NÃO FAZ COBRANÇA <b>POR EMAIL, TELEFONE E NEM POR WHATASPP.</b>
+                CUIDADO COM O GOLPE DO <b>PROTESTO</b> , CARTÓRIO NÃO FAZ COBRANÇA <b>POR EMAIL, TELEFONE E NEM POR WHATASPP.</b>
             </p>
 
         </div>
         <div style="border: 1px solid black; border-radius: 16px; padding: 8px;">
             <h5 style="font-size: 22px;">
-                CONSULTA <b>&nbsp;GRATUITA</b> DE PROTESTO !
+                CONSULTA <b>&nbsp;GRATUITA</b> DE PROTESTO&nbsp;&nbsp;!
             </h5>
-            <p style="font-size: 12px;">Para consultas em editais de intimação e ter acesso a mais atualizas noticias sobre o protesto, acesse o site: <br> <b>https://www.pesquisaprotesto.com.br/</b> <br> e informe seu CPF ou CNPJ.</p>
+            <p style="font-size: 11px; margin: 0;">Para consultas em editais de intimação e ter acesso a mais atualizas noticias sobre o protesto, acesse o site: <br> <b>https://www.pesquisaprotesto.com.br/</b> <br> e informe seu ${s.prot_sac_doc.length < 12 ? 'CPF' : 'CNPJ'} .</p>
             <div style="display: grid; grid-template-columns: 2fr 1fr;">
                 <p style="font-size: 11px;">
-                    PARA MAIS INFORMAÇÕES : <br><br>
+                    <b>PARA MAIS INFORMAÇÕES :</b> <br><br>
                     (61) 99322-5955 (WhatsApp) <br>
                     (61)  3060-6366 (Fixo)
                 </p>
