@@ -203,15 +203,18 @@ def list(dt):
     if enddate and not fromdate:
         return {'error': 'Selecione a data inicial.'}, 400
     
-    attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
+    # attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
+    attends = Service.objects(s_print=True)
     total_filtered = attends.count()
-    list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+    # list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
 
-    return {
-        'result': [x.to_list() for x in list],
-        'total': total_filtered,
-    }
+    list = attends.order_by('-timestamp').skip(dt['start'])
 
+    # return {
+    #     'result': [x.to_info() for x in list],
+    #     'total': total_filtered,
+    # }
+    return jsonify([attend.to_info() for attend in attends])
 
     if dt['search']:
         total_filtered = Attend.objects.search_text(dt['search']).count()
@@ -268,113 +271,11 @@ def finance(dt):
 
     total_payments = {}
 
-    # result = {
-    #     'name': current_user.name,
-    #     'result': [],
-    #     'total': 0,
-    #     # 'itms': [],
-    #     'payments': {},
-    #     'services': [],
-    # }
-
     for p in Payment.objects.filter(func=current_user.id, attend__ne=None, confirmed__gt=fromdate, confirmed__lt=enddate):
         if total_payments.get(p.type):
             total_payments[p.type] += p.value
         else:
             total_payments[p.type] = p.value
-
-
-    # attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
-    # result['total'] += attends.count()
-    # ### Atendimentos
-    # for a in attends.order_by('-timestamp').skip(dt['start']).limit(dt['length']):
-    #     attend = {
-    #         'id': str(a.id),
-
-    #         'name': a.user.name,
-    #         'cpf': a.user.cpfcnpj,
-    #         'end': a.end,
-    #         'email': a.user.email,
-
-    #         'paid': 0.0,
-    #         'to_pay': 0.0,
-    #         'total': 0.0,
-    #     }
-    #     for p in Payment.objects.filter(attend=a.id, confirmed__ne=None):
-    #         attend['paid'] += float(p.value)
-    #         # Boleto
-    #         if current_app.config['PAYMENTS'][p.type].get('pending'):
-    #             # print(f'Pulando Boleto {p.value}') 
-    #             ### Pode ter sido confirmado por outra pessoa
-    #             ### É incluído depois
-    #             continue
-    #         if total_payments.get(p.type):
-    #             total_payments[p.type] += p.value
-    #         else:
-    #             total_payments[p.type] = p.value
-    #         if result['payments'].get(p.type):
-    #             result['payments'][p.type] += p.value
-    #         else:
-    #             result['payments'][p.type] = p.value
-
-    #     for s in Service.objects(attend=a):
-    #         attend['total'] += s.total
-    #         attend['to_pay'] += s.paid
-    #     # Uso de Saldo
-    #     saldo_usado = float(attend['to_pay'] - attend['paid'])
-    #     if saldo_usado > 0:
-    #         if total_payments.get('cred'):
-    #             total_payments['cred'] += saldo_usado
-    #         else:
-    #             total_payments['cred'] = saldo_usado
-    #         if result['payments'].get('cred'):
-    #             result['payments']['cred'] += saldo_usado
-    #         else:
-    #             result['payments']['cred'] = saldo_usado
-    #     result['result'].append(attend)
-
-    # # Boletos confirmados
-    # for e in Event.objects.filter(action='confirm', object='payment',
-    #                                 actor=current_user.id,
-    #                                 target__attend__ne=None,
-    #                                 timestamp__gt=fromdate, timestamp__lt=enddate,
-    #                               ).order_by('-timestamp').skip(dt['start']).limit(dt['length']):
-
-    #     # Adicionar o atendimento na lista do usuário
-    #     if not e.target['attend'] in [x['id'] for x in result['result']]:
-    #         result['result'].append(get_attend_info(e.target['attend']))
-    #         result['total'] += 1
-
-    #     # Adicionar valor do pagamento no total do usuário
-    #     if total_payments.get(e.target['type']):
-    #         total_payments[e.target['type']] += e.target['value']
-    #     else:
-    #         total_payments[e.target['type']] = e.target['value']
-    #     if result['payments'].get(e.target['type']):
-    #         result['payments'][e.target['type']] += e.target['value']
-    #     else:
-    #         result['payments'][e.target['type']] = e.target['value']
-
-
-    # # Protocolos confirmados
-    # for e in Event.objects.filter(action='pay', object='service',
-    #                               target__attend__ne=None, actor=current_user.id,
-    #                               timestamp__gt=fromdate, timestamp__lt=enddate
-    #                             ).order_by('-timestamp').skip(dt['start']).limit(dt['length']):
-
-    #     # Adicionar o atendimento na lista do usuário
-    #     if not e.target['attend'] in [x['id'] for x in result['result']]:
-    #         result['result'].append(get_attend_info(e.target['attend']))
-    #         result['total'] += 1
-
-    #     if total_payments.get('prot'):
-    #         total_payments['prot'] += e.target['paying']
-    #     else:
-    #         total_payments['prot'] = e.target['paying']
-    #     if result['payments'].get('prot'):
-    #         result['payments']['prot'] += e.target['paying']
-    #     else:
-    #         result['payments']['prot'] = e.target['paying']
     
     return {'result': 1, 'total_payments': total_payments}
 
@@ -391,99 +292,6 @@ def search(roles):
     return {'result': [x.to_event() for x in prots]}
 
 
-@bp.get('/exig') # Abrir arquivo da exigência (func)
-@login_required
-@check_roles(['ri'])
-def get_exig():
-    id = request.args.get('id')
-    exig = request.args.get('exig')
-    if not (id and len(id) == 24 and exig):
-        abort(400)
-    svc = Service.objects.get_or_404(id=id)
-    if exig == 'exig_resp':
-        file = File.objects.get_or_404(id=svc.exig_resp.id)
-        return send_file(
-            file.file.get(),
-            mimetype=file.content_type,
-        )
-    else:
-        file = File.objects.get_or_404(id=svc.exig.id)
-        return send_file(
-            file.file.get(),
-            mimetype=file.content_type,
-        )
-
-@bp.get('/exig/<token>') # Página de resposta Exigência
-def resp_exig(token):
-    try:
-        data_token = jwt.decode(
-            token,
-            current_app.config['SECRET_KEY'],
-            algorithms=['HS256']
-        )
-    except Exception as e:
-        notify('Erro decodificando token', e)
-        abort(400)
-    if not data_token:
-        abort(404)
-    id = data_token.get('exig')
-    if not (id and len(id) == 24):
-        abort(400)
-    svc = Service.objects.get_or_404(id=id)
-
-    if svc.exig_resp:
-        return render_template(
-            'landingpage.html',
-            message='Exigência já respondida!' )
-    exig = {
-        'id': str(svc.id),
-        'name': svc.attend.user.name if svc.attend else '',
-        'prot': svc.prot,
-    }
-    return render_template(
-        'landingpage.html',
-        roles=[],
-        exig=exig,
-        token=token,
-    )
-
-@bp.get('/exig_user/<token>') # Abrir arquivo da exigência (user)
-def get_exig_user(token):
-    try:
-        data_token = jwt.decode(
-            token,
-            current_app.config['SECRET_KEY'],
-            algorithms=['HS256']
-        )
-    except Exception as e:
-        notify('Erro decodificando token', e)
-        abort(400)
-    if not data_token:
-        abort(404)
-    id = data_token.get('exig')
-    if not (id and len(id) == 24):
-        abort(400)
-    svc = Service.objects.get_or_404(id=id)
-    if not svc.exig:
-        return {'error': 'Serviço sem exigência'}, 400
-    return send_file(
-        svc.exig.file.get(),
-        mimetype=svc.exig.file.content_type,
-    )
-
-@bp.get('/docs/qrcode') # QRCode para cliente fazer upload de documentos faltantes
-def get_docs_qrcode():
-    id = request.args.get('id')
-    if not (id and len(id) == 24):
-        abort(400)
-    svc = Service.objects.get_or_404(id=id)
-    response = svc.docs_token()
-    if response.get('result'):
-        img_src = get_qrcode(response['result'], docs=True)
-        return {'result': img_src}
-    else:
-        return {'error': response['error'] if response.get('error') else 'Erro desconhecido gerando qrcode'}, 400
-    
 
 # POST
 @bp.post('/') # New Attend
@@ -500,10 +308,6 @@ def new(data):
 
     if Attend.objects.filter(func=current_user.id, end=None).first():
         return {'error': _('There is a service in progress')}
-
-    # bk = Booking.objects.filter(func=current_user.id, start__lte=start + timedelta(minutes=10), attend=None).first()
-    # if bk:
-    #     return {'error': f"{_('Conflict with scheduling for')} {str(bk.start.time()).split('.')[0]}"}
 
     # Salvar dados atualizados
     user = User.objects.filter(cpfcnpj=cpf).first()

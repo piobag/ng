@@ -272,6 +272,7 @@ class Service(db.Document):
 
     # Status do gráfico
     s_ended = db.BooleanField()
+    s_print = db.BooleanField()
     s_start = db.BooleanField()
 
     meta = {

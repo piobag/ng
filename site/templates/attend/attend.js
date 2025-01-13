@@ -16,6 +16,8 @@ let booking_list_perpage = 1
 
 // Attend List Datatable
 const attend_rowtemplate = (data) => {
+    console.log(data)
+
     // let paid = data['paid'] + (data['to_pay'] - data['paid'])
     return `
         <tr onclick="open_attend_info('${data['id']}')">
@@ -37,6 +39,27 @@ attend_table.init(
     '#attend_list_table', '#attend_list_pagination',
     '#attend_list_loading', '#attend_list_error', false,
 )
+
+
+function groupByNeighborhood(attends) {
+    return attends.reduce((grouped, attend) => {
+        const neighborhood = attend.end_bai; // Substitua pelo campo correto
+        if (!grouped[neighborhood]) {
+            grouped[neighborhood] = [];
+        }
+        grouped[neighborhood].push(attend);
+        return grouped;
+    }, {});
+}
+
+let api_url = "{{ url_for('attend.list') }}"
+fetch(api_url)
+    .then(response => response.json())
+    .then(data => {
+        console.log(data)
+        const groupedData = groupByNeighborhood(data);
+        console.log(groupedData);
+});
 
 function load_attend() {
     let api_url = "{{ url_for('attend.index') }}"
@@ -655,129 +678,6 @@ function select_service (type) {
     `
 }
 
-let service_count = 0
-function add_service(type, group, service=false) {
-    let service_list = sec_attend.querySelector('#service_list') 
-    // Sempre o ultimo elemento com name cod
-    switch (type) {
-        case 'prot':
-            service_list.insertAdjacentHTML('beforeend', `{% include 'attend/info/service_prot.html' %}`)
-            break
-        case 'cert':
-            service_list.insertAdjacentHTML('beforeend', `{% include 'attend/info/service_cert.html' %}`)
-            break
-        case 'repr':
-            service_list.insertAdjacentHTML('beforeend', `{% include 'attend/info/service_repr.html' %}`)
-            break
-        case 'ec':
-            service_list.insertAdjacentHTML('beforeend', `{% include 'attend/info/service_ec.html' %}`)
-            break
-        default:
-            alert('Tipo de serviço inválido')
-            return
-            break
-    }
-    service_count += 1
-    let svc_elm = service_list.lastElementChild
-    if (service) {
-        if (service.docs.length) {
-            let entregue = ''
-            let faltante = ''
-
-            for (d of service.docs) {
-                if (d.entregue) {
-                    entregue += `<a class="list-group-item list-group-item-action list-group-item-success"><b>${d.name}</b><a>`
-                } else {
-                    faltante += `<a href="" class="list-group-item list-group-item-action list-group-item-danger"><b>${d.name}</b><a>`
-                }
-            }  
-
-            svc_elm.insertAdjacentHTML('beforeend',
-            `  
-                <h5 class='py-2'>Documentos Entregues</h5>
-                <ul style="max-width: 50%; margin: 0 auto;" class="list-group">
-                    ${entregue}
-                </ul>
-                ${faltante ? `
-                    <div class='d-flex justify-content-center gap-1 py-2'>
-                        <h5>Documentos Faltantes</h5>
-                        <a id=${service.id} class='btn btn-sm btn-danger' onclick='attend_qrcode(this)'> <i class='fas fa-sm fa-upload'></i> </a>
-                   </div>
-                    <ul style="max-width: 50%; margin: 0 auto;" class="list-group">
-                        ${faltante}
-                    </ul>
-                ` : ''}
-            `)
-        }
-
-        for (i of svc_elm.querySelectorAll('input')) {
-            i.disabled = true
-            if (i.name === 'cod') {
-                i.value = service.prot
-            }
-            if (i.name === 'val') {
-                i.value = service.total.toLocaleString('pt-BR', currency_br)
-                mask_value(i)
-            }
-            if (i.name === 'val_pg') {
-                i.value = service.paid.toLocaleString('pt-BR', currency_br)
-                mask_value(i)
-            }
-            if (i.name === 'natureza') {
-                i.value = service.nature
-            }
-        }
-        for (i of svc_elm.querySelectorAll('button')) {
-            if(i.classList.contains('del-service')) {
-                i.addEventListener("click", () => del_cur_service(service.id, attend.id, svc_elm))
-            } else {
-                i.disabled = true
-            }
-        }
-    } else {
-        sec_attend.querySelector('.cur_attend_content').style.display = "none"
-    }
-    svc_elm.querySelector('.cod').focus()
-    calc_services()
-}
-
-function attend_qrcode(that) {
-    let btn_default = that.innerHTML
-    that.innerHTML = spinner_w
-
-    let api_url = `{{ url_for('attend.get_docs_qrcode') }}?id=${that.id}`
-    fetch(api_url)
-    .then(response => response.json()).then(data => {
-        result = data['result']
-        if(result) {
-            sec_attend.insertAdjacentHTML('beforeend', 
-            `
-                <div id="myModal" class="modal" tabindex="-1">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title"> Leia o QRCode para enviar os arquivos </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <img src="data:image/jpeg;base64,${result}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `
-            )
-            const qrcode_modal = new bootstrap.Modal(document.getElementById('myModal'))
-            qrcode_modal.show()
-        } else {
-            data['error'] ? alert(data['error']) : console.error('Unknown data:', data) }
-        }).catch(error => {
-            alert(`{{ _('Error in API') }}: auth.login ${error}`)
-            location.reload()
-        }).finally(() => {
-            that.innerHTML = btn_default
-        })
-}
 
 function attend_start_enter(event) {
     event.preventDefault()
@@ -792,11 +692,6 @@ function pay_enter(event) {
     }
 }
 
-function add_service_enter(event) {
-    if (event.key === 'Enter') {
-      add_service()
-    }
-}
 
 function add_pay_enter(event) {
     

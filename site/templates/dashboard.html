@@ -17,7 +17,6 @@
     {% endif %}
 
     {% if 'fin' in roles %}
-      {% include 'attend/prot/info.css' %}
       {% include 'itm/info/info.css' %}
     {% elif 'itm' in roles %}
       {% include 'itm/info/info.css' %}
@@ -25,7 +24,6 @@
 
     {% if 'ri' in roles %}
       {% include 'attend/attend.css' %}
-      {% include 'attend/prot/info.css' %}
       {% include 'attend/info/info.css' %}
 
     {% endif %}
@@ -173,7 +171,6 @@
   </section>
   <div id="sec_info">
       {% include 'attend/info/info.html' %}
-      {% include 'attend/prot/info.html' %}
       {% include 'itm/info/info.html' %}
       {% include 'finance/devol_info.html' %}
       {% if 'itm' in roles %} 
@@ -220,15 +217,12 @@
       const { jsPDF } = window.jspdf
       {% include 'attend/info/info.js' %}  
       {% include 'attend/attend.js' %}
-      {% include 'attend/prot/info.js' %} 
     {% elif 'fin' in roles %}
       const { jsPDF } = window.jspdf
       {% include 'attend/info/info.js' %} 
-      {% include 'attend/prot/info.js' %} 
       {% include 'attend/attend.js' %} 
     {% elif 'itm' in roles %}
       {% include 'attend/info/info.js' %}
-      {% include 'attend/prot/info.js' %} 
     {% elif 'settings' in roles %}
       {% include 'attend/info/info.js' %}
     {% endif %}

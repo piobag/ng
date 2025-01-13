@@ -149,32 +149,6 @@ function info_attend_print(that) {
     }
 }
 
-// function info_attend_print(that) {
-//     info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'))
-//     if (info_valid_form_erro) {
-//         return
-//     } else {
-//         let btn_html = that.innerHTML
-//         that.innerHTML = spinner_w
-    
-//         var doc = new jsPDF({
-//             unit: "pt",
-//             format: "a4"
-            
-//         })
-
-//         setTimeout(function() {
-//             that.innerHTML = btn_html
-//             doc.html(print_content, {
-//               callback: function () {
-//                 doc.save("recibo.pdf")
-//               },
-//             })
-//         }, 1000)
-
-//     }
-// }
-
 function info_save_attend(that) {
     
     info_valid_form_erro = false
