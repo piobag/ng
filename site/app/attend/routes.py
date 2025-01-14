@@ -47,24 +47,24 @@ def import_carta():
 @login_required
 def calc_value():
     # Dados fornecidos
-    atos_old = {
+    atos = {
         'correio': 18.05,
         'taxa': 16.87,
-        'intimacao': 10.01,
-        'cancelamento': 49.99,
+        'intimacao': 10.67,
+        'cancelamento': 53.30,
         'faixa': {
-            '3132': {58.7: 22.48},
-            '3133': {117.41: 32.51},
-            '3134': {234.81: 59.98},
-            '3135': {352.22: 92.98},
-            '3136': {469.63: 147.45},
-            '3137': {587.03: 167.45},
-            '3138': {1174.07: 227.44},
-            '3139': {2348.13: 307.43},
-            '3140': {5870.33: 407.39},
-            '3141': {11740.65: 617.32},
-            '3142': {23481.31: 814.76},
-            '3143': {float('inf'): 1019.69},
+            '3132': {62.59: 23.97},
+            '3133': {125.18: 34.66},
+            '3134': {250.35: 63.95},
+            '3135': {375.54: 98.60},
+            '3136': {500.72: 157.21},
+            '3137': {625.89: 178.54},
+            '3138': {1251.79: 242.50},
+            '3139': {2503.58: 327.78},
+            '3140': {6258.95: 434.36},
+            '3141': {12517.88: 658.19},
+            '3142': {25035.77: 868.70},
+            '3143': {float('inf'): 1087.19},
         },
     }
 
@@ -73,8 +73,8 @@ def calc_value():
         resultado = {}
         valor_base = 0
 
-        if codigo in atos_old['faixa']:
-            faixas = atos_old['faixa'][codigo]
+        if codigo in atos['faixa']:
+            faixas = atos['faixa'][codigo]
 
             # Encontra o menor limite maior ou igual ao valor_input
             limite_mais_proximo = min((limite for limite in faixas if limite >= valor_input), default=None)
@@ -85,28 +85,57 @@ def calc_value():
             else:
                 return None  # Nenhuma faixa válida encontrada
 
-        elif codigo in atos_old:  # Para valores diretos ('correio', 'taxa', etc.)
-            valor_base = atos_old[codigo]
+        elif codigo in atos:  # Para valores diretos ('correio', 'taxa', etc.)
+            valor_base = atos[codigo]
             resultado['valor_base'] = valor_base
         else:
             return None  # Código inválido
 
+        # # Calcula os incrementos e o valor final
+        # if codigo in ['correio', 'taxa']:
+        #     resultado['incremento_21'] = 0
+        #     resultado['iss_5'] = 0
+        #     resultado['valor_final'] = valor_base
+        # else:
+        #     incremento_21 = round(valor_base * 0.2125, 2)
+        #     iss_5 = round(valor_base * 0.05, 2)
+        #     resultado['incremento_21'] = incremento_21
+        #     resultado['iss_5'] = iss_5
+        #     resultado['valor_final'] = round(valor_base + incremento_21 + iss_5, 2)
+
+
+
         # Calcula os incrementos e o valor final
         if codigo in ['correio', 'taxa']:
-            resultado['incremento_21'] = 0
-            resultado['incremento_5'] = 0
+            resultado['fundesp_10'] = 0
+            resultado['funemp_3'] = 0
+            resultado['fucomp_3'] = 0
+            resultado['fepasaj_2'] = 0
+            resultado['funproge_2'] = 0
+            resultado['fundepeg_1_25'] = 0
+            resultado['iss_5'] = 0
             resultado['valor_final'] = valor_base
         else:
-            incremento_21 = round(valor_base * 0.2125, 2)
-            incremento_5 = round(valor_base * 0.05, 2)
-            resultado['incremento_21'] = incremento_21
-            resultado['incremento_5'] = incremento_5
-            resultado['valor_final'] = round(valor_base + incremento_21 + incremento_5, 2)
+            fundesp_10 = round(valor_base * 0.1, 2)
+            funemp_3 = round(valor_base * 0.03, 2)
+            fucomp_3 = round(valor_base * 0.03, 2)
+            fepasaj_2 = round(valor_base * 0.02, 2)
+            funproge_2 = round(valor_base * 0.02, 2)
+            fundepeg_1_25 = round(valor_base * 0.0125, 2)
+            iss_5 = round(valor_base * 0.05, 2)
+            resultado['fundesp_10'] = fundesp_10
+            resultado['funemp_3'] = funemp_3
+            resultado['fucomp_3'] = fucomp_3
+            resultado['fepasaj_2'] = fepasaj_2
+            resultado['funproge_2'] = funproge_2
+            resultado['fundepeg_1_25'] = fundepeg_1_25
+            resultado['iss_5'] = iss_5
+            resultado['valor_final'] = round(valor_base + fundesp_10 + funemp_3 + fucomp_3 + fepasaj_2 + funproge_2 + fundepeg_1_25 + iss_5, 2)
 
         return resultado
 
     # Valor de entrada
-    valor_input = 62.80
+    valor_input = 25030
 
     # Códigos a serem considerados
     codigos_a_considerar = [
@@ -120,7 +149,7 @@ def calc_value():
 
     # Calcula e exibe os resultados
     for codigo in codigos_a_considerar:
-        if faixa_selecionada and codigo in atos_old['faixa']:
+        if faixa_selecionada and codigo in atos['faixa']:
             break  # Para de iterar após encontrar e calcular a faixa válida
 
         resultado = calcular_valor(valor_input, codigo)
@@ -128,15 +157,15 @@ def calc_value():
         if resultado is not None:
             print(f"Código: {codigo}")
             print(f"Valor Base: {resultado['valor_base']}")
-            print(f"Incremento de 21,25% (Arredondado): {resultado['incremento_21']}")
-            print(f"Incremento de 5% (Arredondado): {resultado['incremento_5']}")
+            # print(f"Incremento de 21,25% (Arredondado): {resultado['incremento_21']}")
+            print(f"Incremento de 5% (Arredondado): {resultado['iss_5']}")
             print(f"Valor Final: {resultado['valor_final']:.2f}")
             print('-' * 30)
 
             total_valores_finais += resultado['valor_final']
 
             # Marca a faixa como selecionada
-            if codigo in atos_old['faixa']:
+            if codigo in atos['faixa']:
                 faixa_selecionada = True
 
     # Exibe o total final
@@ -203,18 +232,18 @@ def list(dt):
     if enddate and not fromdate:
         return {'error': 'Selecione a data inicial.'}, 400
     
-    # attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
-    attends = Service.objects(s_print=True)
+    attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
+    # attends = Service.objects(s_print=True)
     total_filtered = attends.count()
-    # list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+    list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
 
-    list = attends.order_by('-timestamp').skip(dt['start'])
+    # list = attends.order_by('-timestamp').skip(dt['start'])
 
-    # return {
-    #     'result': [x.to_info() for x in list],
-    #     'total': total_filtered,
-    # }
-    return jsonify([attend.to_info() for attend in attends])
+    return {
+        'result': [x.to_info() for x in list],
+        'total': total_filtered,
+    }
+    # return jsonify([attend.to_info() for attend in attends])
 
     if dt['search']:
         total_filtered = Attend.objects.search_text(dt['search']).count()

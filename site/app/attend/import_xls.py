@@ -62,17 +62,45 @@ def import_xls():
             else:
                 return None  # Código inválido
 
-            # Calcula os incrementos e o valor final
+            # # Calcula os incrementos e o valor final
+            # if codigo in ['correio', 'taxa']:
+            #     resultado['incremento_21'] = 0
+            #     resultado['incremento_5'] = 0
+            #     resultado['valor_final'] = valor_base
+            # else:
+            #     incremento_21 = round(valor_base * 0.2125, 2)
+            #     incremento_5 = round(valor_base * 0.05, 2)
+            #     resultado['incremento_21'] = incremento_21
+            #     resultado['incremento_5'] = incremento_5
+            #     resultado['valor_final'] = round(valor_base + incremento_21 + incremento_5, 2)
+
+                # Calcula os incrementos e o valor final
             if codigo in ['correio', 'taxa']:
-                resultado['incremento_21'] = 0
-                resultado['incremento_5'] = 0
+                resultado['fundesp_10'] = 0
+                resultado['funemp_3'] = 0
+                resultado['fucomp_3'] = 0
+                resultado['fepasaj_2'] = 0
+                resultado['funproge_2'] = 0
+                resultado['fundepeg_1_25'] = 0
+                resultado['iss_5'] = 0
                 resultado['valor_final'] = valor_base
             else:
-                incremento_21 = round(valor_base * 0.2125, 2)
-                incremento_5 = round(valor_base * 0.05, 2)
-                resultado['incremento_21'] = incremento_21
-                resultado['incremento_5'] = incremento_5
-                resultado['valor_final'] = round(valor_base + incremento_21 + incremento_5, 2)
+                fundesp_10 = round(valor_base * 0.1, 2)
+                funemp_3 = round(valor_base * 0.03, 2)
+                fucomp_3 = round(valor_base * 0.03, 2)
+                fepasaj_2 = round(valor_base * 0.02, 2)
+                funproge_2 = round(valor_base * 0.02, 2)
+                fundepeg_1_25 = round(valor_base * 0.0125, 2)
+                iss_5 = round(valor_base * 0.05, 2)
+                resultado['fundesp_10'] = fundesp_10
+                resultado['funemp_3'] = funemp_3
+                resultado['fucomp_3'] = fucomp_3
+                resultado['fepasaj_2'] = fepasaj_2
+                resultado['funproge_2'] = funproge_2
+                resultado['fundepeg_1_25'] = fundepeg_1_25
+                resultado['iss_5'] = iss_5
+                resultado['valor_final'] = round(valor_base + fundesp_10 + funemp_3 + fucomp_3 + fepasaj_2 + funproge_2 + fundepeg_1_25 + iss_5, 2)
+
 
             return resultado
 
