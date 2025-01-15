@@ -227,37 +227,65 @@ def prot_info():
 @check_roles(['ri', 'fin', 'itm', 'settings'])
 @get_datatable
 def list(dt):
-    fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
-    enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
-    if enddate and not fromdate:
-        return {'error': 'Selecione a data inicial.'}, 400
+    # fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
+    # enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
+    # if enddate and not fromdate:
+    #     return {'error': 'Selecione a data inicial.'}, 400
     
-    attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
-    # attends = Service.objects(s_print=True)
-    total_filtered = attends.count()
-    list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+    # attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
+    attends = Service.objects(s_print__ne=True)
+    # total_filtered = attends.count()
+    # list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
 
-    # list = attends.order_by('-timestamp').skip(dt['start'])
+    list = attends.order_by('-timestamp').skip(dt['start'])
 
-    return {
-        'result': [x.to_info() for x in list],
-        'total': total_filtered,
-    }
-    # return jsonify([attend.to_info() for attend in attends])
+    # return {
+    #     'result': [x.to_info() for x in list],
+    #     'total': total_filtered,
+    # }
+    return jsonify([attend.to_list() for attend in attends])
 
-    if dt['search']:
-        total_filtered = Attend.objects.search_text(dt['search']).count()
-        list = Attend.objects.search_text(dt['search']).skip(dt['start']).limit(dt['length'])
-        return {
-            'result': [x.to_list() for x in list],
-            'total': total_filtered,
-        }
-    total_filtered = Attend.objects().count()
-    list = Attend.objects().order_by('-timestamp').skip(dt['start']).limit(dt['length'])
-    return {
-        'result': [x.to_list() for x in list],
-        'total': total_filtered,
-    }
+
+
+# @bp.get('/list') # Get Documents
+# @login_required
+# @check_roles(['ri', 'fin', 'itm', 'settings'])
+# @get_datatable
+# def list(dt):
+#     fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
+#     enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
+#     if enddate and not fromdate:
+#         return {'error': 'Selecione a data inicial.'}, 400
+    
+#     attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
+#     # attends = Service.objects(s_print=True)
+#     total_filtered = attends.count()
+#     list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+
+#     # list = attends.order_by('-timestamp').skip(dt['start'])
+
+#     return {
+#         'result': [x.to_info() for x in list],
+#         'total': total_filtered,
+#     }
+#     # return jsonify([attend.to_info() for attend in attends])
+
+#     if dt['search']:
+#         total_filtered = Attend.objects.search_text(dt['search']).count()
+#         list = Attend.objects.search_text(dt['search']).skip(dt['start']).limit(dt['length'])
+#         return {
+#             'result': [x.to_list() for x in list],
+#             'total': total_filtered,
+#         }
+#     total_filtered = Attend.objects().count()
+#     list = Attend.objects().order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+#     return {
+#         'result': [x.to_list() for x in list],
+#         'total': total_filtered,
+#     }
+
+
+
 
 def get_attend_info(id):
     a = Attend.objects.get_or_404(id=id)
@@ -937,7 +965,7 @@ def put_prot(roles, data):
             "prot_val": data.get('prot_val'),
             "prot_tot_c": data.get('prot_tot_c'),
             "prot_tot_p": data.get('prot_tot_p'),
-            "prot_ven": int(data.get('prot_ven')),
+            "prot_ven": int(data.get('prot_ven')) if data.get('prot_ven') else None,
             "prot_date": int(data.get('prot_date')),
             "prot_apr": data.get('prot_apr'),
             "prot_ced": data.get('prot_ced'),
@@ -983,7 +1011,16 @@ def put_prot(roles, data):
                 'message': 'An unexpected error occurred',
                 'details': str(e),
             }
+    if data['action'] == 'print':
+         svc = Service.objects.get_or_404(id=data['id'])
+    try:
+        svc.s_print = True
+        svc.save()
+        return {'result': 'ok'}
 
+    except Exception as e:
+        notify('Erro alterando serviço', e)
+        abort(400)
 
     # except Exception as e:
     #     msg = f"{_('Error saving to database')} | {status}"

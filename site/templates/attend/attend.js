@@ -16,34 +16,17 @@ let booking_list_perpage = 1
 
 // Attend List Datatable
 const attend_rowtemplate = (data) => {
-    console.log(data)
-
-    // let paid = data['paid'] + (data['to_pay'] - data['paid'])
     return `
-        <tr onclick="open_attend_info('${data['id']}')">
-            <td>${new Date(data['end'] * 1000).toLocaleString('default', { dateStyle: 'short', timeZone: 'America/Sao_Paulo' })}</td>
-            <td>${data['name']}</td>
-            <td>${mask_cpfcnpj(data['cpf'])}</td>
+        <tr onclick="open_attend_info('${data['attend']}')">
+            <td>${data['prot_cod']}</td>
+            <td>${data['end_bai']}</td>
         </tr>
     `
 }
 
-const attend_table = new DataTable({
-    name: 'attend',
-    apiEndpoint: "{{ url_for('attend.list') }}",
-    headers: ['Data', 'Nome', 'CPF'],
-    rowTemplate: attend_rowtemplate,
-    spinner: true,
-})
-attend_table.init(
-    '#attend_list_table', '#attend_list_pagination',
-    '#attend_list_loading', '#attend_list_error', false,
-)
-
-
 function groupByNeighborhood(attends) {
     return attends.reduce((grouped, attend) => {
-        const neighborhood = attend.end_bai; // Substitua pelo campo correto
+        const neighborhood = attend.end_bai; 
         if (!grouped[neighborhood]) {
             grouped[neighborhood] = [];
         }
@@ -56,10 +39,83 @@ let api_url = "{{ url_for('attend.list') }}"
 fetch(api_url)
     .then(response => response.json())
     .then(data => {
-        console.log(data)
         const groupedData = groupByNeighborhood(data);
-        console.log(groupedData);
-});
+
+        // Substituir valores de bairro vazio por "Sem bairro definido"
+        const formattedGroupedData = Object.keys(groupedData).reduce((acc, bairro) => {
+            const key = bairro.trim() === '' ? '0 - SEM BAIRRO DEFINIDO' : bairro;
+            acc[key] = groupedData[bairro];
+            return acc;
+        }, {});
+
+        // Ordenar os bairros em ordem alfabética
+        const sortedNeighborhoods = Object.keys(formattedGroupedData).sort((a, b) => a.localeCompare(b));
+
+        // Criar o filtro
+        const filterContainer = document.createElement('div');
+        filterContainer.classList.add('form-floating');
+        filterContainer.innerHTML = `
+            <select class="form-select" id="neighborhood_filter">
+                <option value="">Selecione um bairro</option>
+                ${sortedNeighborhoods
+                    .map(bairro => `<option value="${bairro}">${bairro}</option>`)
+                    .join('')}
+            </select>
+            <label for="neighborhood_filter">Filtrar Bairro</label>
+        `;
+        document.querySelector('.filter_list_attend').appendChild(filterContainer);
+
+        // Encontrar ou criar o tbody da tabela
+        const attendListTable = document.querySelector('#attend_list_table');
+        let attendListTableBody = attendListTable.querySelector('tbody');
+        if (!attendListTableBody) {
+            attendListTableBody = document.createElement('tbody');
+            attendListTable.appendChild(attendListTableBody);
+        }
+
+        // Função para adicionar o thead dinamicamente
+        function addTableHead() {
+            let tableHead = attendListTable.querySelector('thead');
+            if (!tableHead) {
+                tableHead = document.createElement('thead');
+                tableHead.innerHTML = `
+                    <tr>
+                        <th>Protocolo</th>
+                        <th>Bairro</th>
+                    </tr>
+                `;
+                attendListTable.insertBefore(tableHead, attendListTableBody);
+            }
+        }
+
+        // Atualizar a tabela
+        function updateTable(filteredData) {
+            // Adicionar thead antes de atualizar os dados
+            addTableHead();
+
+            // Limpar tabela
+            attendListTableBody.innerHTML = '';
+            filteredData.forEach(item => {
+                attendListTableBody.innerHTML += attend_rowtemplate(item);
+            });
+        }
+
+        // Filtro de bairros
+        document.querySelector('#neighborhood_filter').addEventListener('change', event => {
+            const selectedNeighborhood = event.target.value;
+            if (selectedNeighborhood) {
+                const filteredData = formattedGroupedData[selectedNeighborhood] || [];
+                updateTable(filteredData);
+            } else {
+                attendListTable.innerHTML = ''; // Limpar a tabela completamente se nenhum bairro for selecionado
+            }
+        });
+
+        // Não preencher a tabela inicialmente
+        attendListTableBody.innerHTML = ''; // Garantir que a tabela inicie vazia
+    })
+    .catch(error => console.error('Erro ao carregar os dados:', error));
+
 
 function load_attend() {
     let api_url = "{{ url_for('attend.index') }}"

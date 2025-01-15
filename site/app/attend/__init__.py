@@ -273,6 +273,7 @@ class Service(db.Document):
     # Status do gráfico
     s_ended = db.BooleanField()
     s_print = db.BooleanField()
+    s_paid = db.BooleanField()
     s_start = db.BooleanField()
 
     meta = {
@@ -292,8 +293,8 @@ class Service(db.Document):
     def to_list(self):
         return {
             'id': str(self.id),
-            'prot': self.prot_cod,
-            'date': self.timestamp,
+            'prot_cod': self.prot_cod,
+            'end_bai':  self.end_bai if self.end_bai else '',
             'attend': str(self.attend.id) if self.attend else None,
         }
     # def get_history(self):

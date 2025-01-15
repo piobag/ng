@@ -1,6 +1,6 @@
 window.addEventListener("load", (event) => {
     {% if config.DEBUG %}
-        // open_attend_info('676b2f9827e62729356efad9')
+        // open_attend_info('6786ce2569baa7e297e66c6b')
     {% endif %}
 })
 
@@ -16,7 +16,6 @@ function open_attend_info(id) {
         let result = data['result']
         if (result) {
             attend = result
-            console.log(attend)
             // History
             attend_comments = ''
             for (e of result['history']) {
@@ -120,34 +119,65 @@ function info_attend_cpfcnpj(that) {
     }
 }
 
+
 function info_attend_print(that) {
-    info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'))
+    info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'));
+    
     if (info_valid_form_erro) {
         return;
     } else {
         let btn_html = that.innerHTML;
         that.innerHTML = spinner_w;
-    
+
         var doc = new jsPDF({
             unit: "pt", // Unidade em pontos
             format: "a4" // Formato A4
         });
 
-        setTimeout(function() {
-            let print_content = `{% include 'attend/info/print_attend.html' %}`
+        setTimeout(function () {
+            let print_content = `{% include 'attend/info/print_attend.html' %}`;
             that.innerHTML = btn_html;
 
             doc.html(print_content, {
-                // x: 40, // Margem esquerda (40pt)
-                // y: 40, // Margem superior (40pt)
                 callback: function () {
+                    // Salvar o PDF
                     doc.save(`${s.prot_cod}.pdf`);
-                },
-                // autoPaging: true // Garante que o conteúdo seja paginado automaticamente
+                    
+                    // Informar à API que o documento foi impresso
+                    let to_send = {
+                        'id': s.id,
+                        'action': 'print',
+                    };
+
+                    let api_url = "{{ url_for('attend.put_prot') }}";
+                    fetch(api_url, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            "X-CSRFToken": csrf_token
+                        },
+                        body: JSON.stringify(to_send)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            let result = data['result'];
+                            if (! result) {
+                                // Exibir erro
+                                data['error'] ? alert(data['error']) : console.error('Unknown data:', data);
+                                that.innerHTML = btn_html;
+                            }
+                        })
+                        .catch(error => {
+                            alert(`{{ _('Error in API') }}: settings.document ${error}`);
+                            that.innerHTML = btn_html;
+                        });
+                }
             });
         }, 1000);
     }
 }
+
+
 
 function info_save_attend(that) {
     
