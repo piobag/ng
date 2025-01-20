@@ -101,10 +101,10 @@
           <i class="fas fa-plane nav_icon"></i> 
           <span class="nav_name">{{ _('Vacation') }}</span> 
         </a>
-        <a class="nav_link" id="show_support">
+        <!-- <a class="nav_link" id="show_support">
           <i class="fas fa-info-circle nav_icon"></i>
           <span class="nav_name">{{ _('Support') }}</span> 
-        </a>
+        </a> -->
             {% endif %}
       {% if 'settings' in roles %}
         <a class="nav_link" id="show_settings">
@@ -200,11 +200,6 @@
       <script src="{{ url_for('static', filename='js/jspdf.umd.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
       <script src="{{ url_for('static', filename='js/purify.min.js') }}"></script>
-    {% elif 'fin' in roles %}
-      <script src="{{ url_for('static', filename='js/jspdf.umd.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/html2canvas.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/purify.min.js') }}"></script>
-
     {% endif %}
   <script>
 
@@ -217,10 +212,6 @@
       const { jsPDF } = window.jspdf
       {% include 'attend/info/info.js' %}  
       {% include 'attend/attend.js' %}
-    {% elif 'fin' in roles %}
-      const { jsPDF } = window.jspdf
-      {% include 'attend/info/info.js' %} 
-      {% include 'attend/attend.js' %} 
     {% elif 'itm' in roles %}
       {% include 'attend/info/info.js' %}
     {% elif 'settings' in roles %}

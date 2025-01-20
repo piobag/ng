@@ -27,6 +27,7 @@ from .import_xls import import_xls
 
 tz = pytz.timezone('America/Sao_Paulo')
 
+
 ### Import XLSX
 @bp.get('/import')
 @login_required
@@ -224,66 +225,93 @@ def prot_info():
 
 @bp.get('/list') # Get Documents
 @login_required
-@check_roles(['ri', 'fin', 'itm', 'settings'])
+@check_roles(['ri', 'adm'])
 @get_datatable
 def list(dt):
+    attends = Service.objects(s_print__ne=True)
+    return jsonify([attend.to_list() for attend in attends])
+
+    # list = attends.order_by('-timestamp').skip(dt['start'])
     # fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
     # enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
     # if enddate and not fromdate:
     #     return {'error': 'Selecione a data inicial.'}, 400
     
     # attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
-    attends = Service.objects(s_print__ne=True)
     # total_filtered = attends.count()
     # list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
 
-    list = attends.order_by('-timestamp').skip(dt['start'])
 
     # return {
     #     'result': [x.to_info() for x in list],
     #     'total': total_filtered,
     # }
-    return jsonify([attend.to_list() for attend in attends])
+
+@bp.get('/chart') # Get Chart
+@login_required
+@check_roles(['ri', 'adm'])
+@get_datatable
+def chart(dt):
+    if dt['filter']:
+        match dt['filter']:
+            case 'Importado':
+                # total_filtered = Service.objects(s_print__ne=False).count()
+                list = Service.objects(s_print__ne=True).order_by('-timestamp').skip(dt['start']).limit(dt['length'])
+                total_filtered = list.count()
+                return {
+                    'result': [x.to_list() for x in list],
+                    'total': total_filtered,
+                }
+            case 'Impresso':
+                attend = Service.objects.filter(s_print=True,  s_take__ne=True,  s_paid__ne=True)
+                result = [x.to_list() for x in attend.order_by('-timestamp').skip(dt['start']).limit(dt['length'])]
+                total = attend.count()
+                return {
+                    'result': result,
+                    'total': total,
+                }
+            case 'Entregue':
+                attend = Service.objects.filter(s_take=True, s_paid__ne=True)
+                result = [x.to_list() for x in attend.order_by('-timestamp').skip(dt['start']).limit(dt['length'])]
+                total = attend.count()
+                return {
+                    'result': result,
+                    'total': total,
+                }
+            case 'Pago':
+                attend = Service.objects.filter(s_paid=True, s_take=True)
+                result = [x.to_list() for x in attend.order_by('-timestamp').skip(dt['start']).limit(dt['length'])]
+                total = attend.count()
+                return {
+                    'result': result,
+                    'total': total,
+                }
+            case _:
+                abort(400)
+
+    # total_filtered = Service.objects().count()
+    # list = Service.objects().order_by('name').skip(dt['start']).limit(dt['length'])
+    return {
+        'result': [x.to_info() for x in list],
+        'total': total_filtered,
+    }
 
 
+@bp.get('/status') # Get Graph
+@login_required
+@check_roles(['ri'])
+def get_status():
+    impor = Service.objects(s_print__ne=True).count()
+    printed = Service.objects(s_print=True,  s_take__ne=True,  s_paid__ne=True).count()
+    take = Service.objects(s_take=True, s_paid__ne=True).count()
+    paid = Service.objects(s_paid=True, s_take=True).count()
 
-# @bp.get('/list') # Get Documents
-# @login_required
-# @check_roles(['ri', 'fin', 'itm', 'settings'])
-# @get_datatable
-# def list(dt):
-#     fromdate = tz.localize(datetime.strptime(f'{request.args.get("from", str(datetime.now(tz).date()))} 00', '%Y-%m-%d %H')).astimezone(pytz.utc).timestamp()
-#     enddate = tz.localize(datetime.strptime(f'{request.args.get("end", str(datetime.now(tz).date()))} 23:59:59', '%Y-%m-%d %H:%M:%S')).astimezone(pytz.utc).timestamp()
-#     if enddate and not fromdate:
-#         return {'error': 'Selecione a data inicial.'}, 400
-    
-#     attends = Attend.objects(func=current_user.id, end__gt=fromdate, end__lt=enddate)
-#     # attends = Service.objects(s_print=True)
-#     total_filtered = attends.count()
-#     list = attends.order_by('-timestamp').skip(dt['start']).limit(dt['length'])
-
-#     # list = attends.order_by('-timestamp').skip(dt['start'])
-
-#     return {
-#         'result': [x.to_info() for x in list],
-#         'total': total_filtered,
-#     }
-#     # return jsonify([attend.to_info() for attend in attends])
-
-#     if dt['search']:
-#         total_filtered = Attend.objects.search_text(dt['search']).count()
-#         list = Attend.objects.search_text(dt['search']).skip(dt['start']).limit(dt['length'])
-#         return {
-#             'result': [x.to_list() for x in list],
-#             'total': total_filtered,
-#         }
-#     total_filtered = Attend.objects().count()
-#     list = Attend.objects().order_by('-timestamp').skip(dt['start']).limit(dt['length'])
-#     return {
-#         'result': [x.to_list() for x in list],
-#         'total': total_filtered,
-#     }
-
+    return {'result': [
+        ('Importado', impor),
+        ('Impresso', printed),
+        ('Entregue', take),
+        ('Pago', paid),
+    ]}
 
 
 
@@ -371,7 +399,6 @@ def new(data):
     if user:
         save = False
         if user.name != name:
-            print(f'Mudando nome de {user.name} para {name}')
             user.name = name
             save = True
         if save:
@@ -685,7 +712,6 @@ def post_exig(data):
         case '401':
             return {'error': 'Erro'}, 400
         case _:
-            print('abora')
             abort(400)
 
     return {'result': 'ok'}
@@ -1012,15 +1038,38 @@ def put_prot(roles, data):
                 'details': str(e),
             }
     if data['action'] == 'print':
-         svc = Service.objects.get_or_404(id=data['id'])
-    try:
-        svc.s_print = True
-        svc.save()
-        return {'result': 'ok'}
+        svc = Service.objects.get_or_404(id=data['id'])
+        try:
+            svc.s_print = True
+            svc.save()
+            return {'result': 'ok'}
 
-    except Exception as e:
-        notify('Erro alterando serviço', e)
-        abort(400)
+        except Exception as e:
+            notify('Erro alterando serviço', e)
+            abort(400)
+
+    if data['action'] == 'paid':
+        svc = Service.objects.get_or_404(id=data['id'])
+        try:
+            svc.s_paid = True
+            svc.save()
+            return {'result': 'ok'}
+
+        except Exception as e:
+            notify('Erro alterando serviço', e)
+            abort(400)
+
+    if data['action'] == 'take':
+        svc = Service.objects.get_or_404(id=data['id'])
+        try:
+            svc.s_take = True
+            svc.save()
+            return {'result': 'ok'}
+
+        except Exception as e:
+            notify('Erro alterando serviço', e)
+            abort(400)
+
 
     # except Exception as e:
     #     msg = f"{_('Error saving to database')} | {status}"
@@ -1065,7 +1114,6 @@ def put_docs(data):
                 timestamp = datetime.utcnow().timestamp(),
             ).save()
 
-            print(f'Novo doc {str(new_doc.id)} com service {str(svc.id)}')
 
             # Apagar doc igual não entregue
             if d['name'] in doc_list.keys():

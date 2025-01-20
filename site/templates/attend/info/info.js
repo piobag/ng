@@ -1,6 +1,6 @@
 window.addEventListener("load", (event) => {
     {% if config.DEBUG %}
-        // open_attend_info('6786ce2569baa7e297e66c6b')
+        // open_attend_info('678aad62ec11f9f0e149665a')
     {% endif %}
 })
 
@@ -16,6 +16,7 @@ function open_attend_info(id) {
         let result = data['result']
         if (result) {
             attend = result
+            // console.log(result)
             // History
             attend_comments = ''
             for (e of result['history']) {
@@ -121,9 +122,10 @@ function info_attend_cpfcnpj(that) {
 
 
 function info_attend_print(that) {
-    info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'));
+    info_save_attend(attend_info_body.querySelector('#info_save_btn_attend'), 'edit');
     
     if (info_valid_form_erro) {
+        console.warn('Formulario com um problema.');
         return;
     } else {
         let btn_html = that.innerHTML;
@@ -175,52 +177,70 @@ function info_attend_print(that) {
             });
         }, 1000);
     }
+
+
 }
 
 
 
-function info_save_attend(that) {
-    
-    info_valid_form_erro = false
-    let attend_info_form = document.forms.info_attend
+function info_save_attend(that, action) {
     let btn_html = that.innerHTML
     that.innerHTML = spinner_w
 
     let to_send = {
         'id': s.id,
-        'action': 'edit',
+        'action': action,
     }
-    attend_info_form.querySelectorAll('input').forEach(elem => {
-        if(elem.value){
-            if(elem.name === 'prot_val' || elem.name === 'prot_tot_c' || elem.name === 'prot_tot_p'){
-                to_send[elem.name] = parseFloat(elem.value.replace(/[^\d.,]/g, '').replace('.', '').replace(',', '.'))
-            } else if (elem.name === 'prot_emi' || elem.name === 'prot_date' || elem.name === 'prot_ven') {
-                // Criar um objeto ajustado para Brasília
-                let date = new Date(`${elem.value}T00:00:00-03:00`);
-                to_send[elem.name] = date.getTime() / 1000
-                // Obter o timestamp (em milissegundos desde 1970)
-            } else if (elem.name === 'prot_cod') {
-                to_send[elem.name] = parseFloat(elem.value)
-            } else if (elem.name === 'end_cep' || elem.name === 'prot_num') {
-                to_send[elem.name] = parseFloat(elem.value.replace(/[\D]+/g,''))
-            } else if (elem.name === 'prot_sac_doc') {
-                to_send[elem.name] = elem.value.replace(/[\D]+/g,'')
-            } else if (elem.name === 'id') {
-                to_send['attend'] = elem.value
-            } else {
-                to_send[elem.name] = elem.value
-            }
-        } else {
-            if(elem.name !== 'prot_ven') {
-                info_valid_form_erro = true
-                that.innerHTML = btn_html;
+    if (action === 'edit') {
+        if (confirm("Deseja realmente SALVAR alterações?")) {
+            info_valid_form_erro = false
+            let attend_info_form = document.forms.info_attend
+            attend_info_form.querySelectorAll('input').forEach(elem => {
+                if(elem.value){
+                    if(elem.name === 'prot_val' || elem.name === 'prot_tot_c' || elem.name === 'prot_tot_p'){
+                        to_send[elem.name] = parseFloat(elem.value.replace(/[^\d.,]/g, '').replace('.', '').replace(',', '.'))
+                    } else if (elem.name === 'prot_emi' || elem.name === 'prot_date' || elem.name === 'prot_ven') {
+                        // Criar um objeto ajustado para Brasília
+                        let date = new Date(`${elem.value}T00:00:00-03:00`);
+                        to_send[elem.name] = date.getTime() / 1000
+                        // Obter o timestamp (em milissegundos desde 1970)
+                    } else if (elem.name === 'prot_cod') {
+                        to_send[elem.name] = parseFloat(elem.value)
+                    } else if (elem.name === 'end_cep' || elem.name === 'prot_num') {
+                        to_send[elem.name] = parseFloat(elem.value.replace(/[\D]+/g,''))
+                    } else if (elem.name === 'prot_sac_doc') {
+                        to_send[elem.name] = elem.value.replace(/[\D]+/g,'')
+                    } else if (elem.name === 'id') {
+                        to_send['attend'] = elem.value
+                    } else {
+                        to_send[elem.name] = elem.value
+                    }
+                } else {
+                    if(elem.name !== 'prot_ven') {
+                        info_valid_form_erro = true
+                        that.innerHTML = btn_html;
+                        return
+                    }
+                }
+            })
+            if (info_valid_form_erro) {
+                alert('Preencha todos os campos do formulário')
                 return
             }
+        } else {
+            that.innerHTML = btn_html
+            return
         }
-    })
-    if (info_valid_form_erro) {
-        alert('Preencha todos os campos do formulário')
-        return
+    } else if (action === 'take') {
+        if (! confirm("Deseja realmente MARCAR serviço como ENTREGUE?")) {
+            that.innerHTML = btn_html
+            return
+        }
+    } else if (action === 'paid') {
+        if (! confirm("Deseja realmente MARCAR serviço como PAGO?")) {
+            that.innerHTML = btn_html
+            return
+        }
     }
     let api_url = "{{ url_for('attend.put_prot') }}"
     fetch(api_url, {
@@ -240,3 +260,6 @@ function info_save_attend(that) {
         that.innerHTML = btn_html
     })
 }
+
+
+

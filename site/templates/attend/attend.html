@@ -1,7 +1,25 @@
+<h2>Protesto</h2>
+
+<div id="chart_attend" class="chart_attend" style="margin: 0 auto;">
+</div>
+
+<div class="content_attend">
+  <div class="list_attend">
+    <div class="content_attend_list">
+      <div id="attend_list_loading"></div>
+      <div id="attend_list_error"></div>
+      <div id="attend_list_pagination"></div>
+      <div class="attend_list">
+        <table id="attend_list_chart" class="table table-sm table-hover table-responsive"></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <form id="new_attend" class="attend_home">
 
-  <h2>{{ _('Attendance') }}</h2>
-  <div class="new_attend row g-1">
+  <!-- <div class="new_attend row g-1">
     <div class="form-floating col-md-3">
       <input maxlength="18" type="text" onkeyup="attend_start_enter(event)" class="form-control" id="attend_cpf" name="attend_cpf" placeholder="" required>
       <label for="attend_cpf">{{ _('CPF / CNPJ') }}</label>
@@ -15,19 +33,23 @@
         <i class="fas fa-sm fa-play-circle"></i>
       </button>
     </div>
-  </div>
+  </div> -->
 
+  
+  
   <div class="filter_list_attend">
     
   </div>
   <div style="width: 400px;margin: 0 auto;">
     <table id="attend_list_table" class="table table-sm table-hover table-responsive">
-
-          <tbody></tbody>
-      </table>
+      
+      <tbody></tbody>
+    </table>
   </div>
- 
+  
 </form>
 
 <form id="cur_attend" hidden>
 </form>
+
+

@@ -1,4 +1,4 @@
-<h3><b>{{ _('Service summary') }}</b></h3>
+<h3><b>Etapa Atual - <span style="color: var(--first-color)">${ ! s.s_print ? 'Importado' :  s.s_print && ! s.s_take  && ! s.s_paid ? 'Impresso' : s.s_take  && ! s.s_paid ? 'Entregue' : s.s_take && s.s_paid ? 'Pago' : 'Indefinida' }</span> </b></h3>
 
 <div class="attend_modal_hearder">
     <div>
@@ -8,12 +8,6 @@
         ${result['tel'] ? `<div>{{ _('Phone') }} | <b>${mtel(result['tel'])}</b></div>`  : ''}
     </div>
 </div>
-<div>
-    <button type="button" name="btn"  id="attend_info_print" class="btn btn-success text-center m-3" onclick="info_attend_print(this)">
-        <i class="fas fa-sm fa-print"> Recibo</i>
-    </button>
-</div>
-
 <div class="attend_modal_content">
     <form id="info_attend" class="info_attend_home">
         <div class="info_attend container">
@@ -105,7 +99,22 @@
                 </div>
             </div>
             <div class="col">
-                <button id="info_save_btn_attend" name="btn" type="button" class="btn btn-sm btn-outline-success m-2" onclick="info_save_attend(this)" role="button">Salvar <i class="far fa-sm fa-check-circle"></i></button>
+                <button id="info_save_btn_attend" name="btn" type="button" class="btn btn-sm btn-outline-success m-2" onclick="info_save_attend(this, 'edit')" role="button">
+                    Salvar <i class="far fa-sm fa-check-circle"></i>
+                </button>
+                <button type="button" name="btn"  id="attend_info_print" class="btn btn-sm btn-outline-dark text-center m-3" onclick="info_attend_print(this)">
+                    Recibo <i class="fas fa-sm fa-print"></i>
+                </button>
+                ${
+                    s.s_print && s.s_take  && ! s.s_paid ? `
+                        <button id="info_save_btn_attend" name="btn" type="button" class="btn btn-sm btn-outline-primary m-2" onclick="info_save_attend(this, 'paid')" role="button">
+                            Pago <i class="far fa-sm fa-check-circle"></i>
+                        </button>
+                    ` : s.s_print && ! s.s_take ? `
+                    <button id="info_save_btn_attend" name="btn" type="button" class="btn btn-sm btn-outline-primary m-2" onclick="info_save_attend(this, 'take')" role="button">
+                        Entregue <i class="far fa-sm fa-check-circle"></i>
+                    </button>
+                    ` : '' }
             </div>
         </div>
     </form>

@@ -554,36 +554,36 @@ def get_file():
 @login_required
 @check_roles(['itm', 'fin'])
 def get_status():
-    edital = Intimacao.objects(s_edital=True).count()
-    nopaid = Intimacao.objects(s_nopaid=True).count()
-    noprot = Intimacao.objects(s_noprot=True).count()
-    protpend = Intimacao.objects(s_protpend=True).count()
-    minuta = Intimacao.objects(s_minuta=True).count()
-    fix = Intimacao.objects(s_fix=True).count()
-    nosign = Intimacao.objects(s_nosign=True).count()
-    noprint = Intimacao.objects(s_noprint=True).count()
-    v1 = Intimacao.objects(s_visit1=True).count()
-    v2 = Intimacao.objects(s_visit2=True).count()
-    v3 = Intimacao.objects(s_visit3=True).count()
-    nodili = Intimacao.objects(s_nodili=True).count()
-    nodecu = Intimacao.objects(s_nodecu=True).count()
-    public = Intimacao.objects(s_public=True).count()
+    start = Service.objects(s_start=True).count()
+    printed = Service.objects(s_print=True).count()
+    # noprot = Intimacao.objects(s_noprot=True).count()
+    # protpend = Intimacao.objects(s_protpend=True).count()
+    # minuta = Intimacao.objects(s_minuta=True).count()
+    # fix = Intimacao.objects(s_fix=True).count()
+    # nosign = Intimacao.objects(s_nosign=True).count()
+    # noprint = Intimacao.objects(s_noprint=True).count()
+    # v1 = Intimacao.objects(s_visit1=True).count()
+    # v2 = Intimacao.objects(s_visit2=True).count()
+    # v3 = Intimacao.objects(s_visit3=True).count()
+    # nodili = Intimacao.objects(s_nodili=True).count()
+    # nodecu = Intimacao.objects(s_nodecu=True).count()
+    # public = Intimacao.objects(s_public=True).count()
 
     return {'result': [
-        ('Orçamento', nopaid),
-        ('Protocolar', noprot),
-        ('Pendente', protpend),
-        ('Minuta', minuta),
-        ('Correção', fix),
-        ('Assinar', nosign),
-        ('Imprimir', noprint),
-        ('Visita-1', v1),
-        ('Visita-2', v2),
-        ('Visita-3', v3),
-        ('Diligência', nodili),
-        ('Edital', edital),
-        ('Publicar', public),
-        ('Decurso', nodecu),
+        ('Importado', start),
+        ('Impresso', printed),
+        # ('Protocolar', noprot),
+        # ('Pendente', protpend),
+        # ('Minuta', minuta),
+        # ('Correção', fix),
+        # ('Assinar', nosign),
+        # ('Imprimir', noprint),
+        # ('Visita-1', v1),
+        # ('Visita-2', v2),
+        # ('Visita-3', v3),
+        # ('Diligência', nodili),
+        # ('Publicar', public),
+        # ('Decurso', nodecu),
     ]}
 
 @bp.get('/search') # Search Itm

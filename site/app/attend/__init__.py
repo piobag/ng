@@ -272,6 +272,7 @@ class Service(db.Document):
 
     # Status do gráfico
     s_ended = db.BooleanField()
+    s_take = db.BooleanField()
     s_print = db.BooleanField()
     s_paid = db.BooleanField()
     s_start = db.BooleanField()
@@ -393,7 +394,11 @@ class Service(db.Document):
             'end_bai':  self.end_bai if self.end_bai else '',
             'end_cid':  self.end_cid if self.end_cid else '',
             'end_uf':  self.end_uf if self.end_uf else '',
-
+            's_ended': self.s_ended,
+            's_print': self.s_print,
+            's_take': self.s_take,
+            's_paid': self.s_paid,
+            's_start': self.s_start,
             'attend': str(self.attend.id) if self.attend else None,
             'user': self.attend.user.to_list() if self.attend else None,
 

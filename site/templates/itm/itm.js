@@ -29,6 +29,7 @@ const itm_rowtemplate = (data) => {
     `;
     return html;
 };
+
 const itm_table = new DataTable({
     name: 'itm',
     apiEndpoint: '{{ url_for('itm.list') }}',
@@ -231,6 +232,7 @@ async function draw_chart_itm() {
                 chart.draw(view, options)
 
                 function selectHandler(e) {
+                    console.log(result[chart.getSelection()[0].row])
                     load_itms(result[chart.getSelection()[0].row][0])
                 }
                 google.visualization.events.addListener(chart, 'select', selectHandler)

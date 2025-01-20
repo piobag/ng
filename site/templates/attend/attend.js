@@ -9,9 +9,63 @@ const sec_attend = $('attend')
 const new_attend = document.forms.new_attend
 const cur_attend = document.forms.cur_attend
 
+google.charts.load('current',{packages:['corechart']})
+
 let attend
-let booking_list_start = 0
-let booking_list_perpage = 1
+
+async function draw_chart_attend() {
+    let chart_id = sec_attend.querySelector('#chart_attend')
+    let api_url = "{{ url_for('attend.get_status') }}"
+
+    await fetch(api_url)
+        .then(response => response.json()).then(data => {
+            let result = data['result']
+            if (result) {
+
+                let dt = [
+                    ['Element', 'Quantidade', { role: 'style' } ],
+                ]
+                let colors = ['green', 'blue', 'silver', 'red']
+                for (i of result) {
+                    dt.push([i[0], i[1], colors.pop()])
+                }
+
+                let data = google.visualization.arrayToDataTable(dt)
+
+                let options = {
+                    'title': 'Resumo das etapas',
+                    'width': 1280,
+                    'height': 360,
+                    'bar': {groupWidth: '56%'},
+                    'legend': { position: 'none' },
+                }
+
+                let view = new google.visualization.DataView(data);
+                view.setColumns([0, 1,
+                                { calc: 'stringify',
+                                sourceColumn: 1,
+                                type: 'string',
+                                role: 'annotation' },
+                                2]);
+
+                let chart = new google.visualization.ColumnChart(chart_id)
+                chart.draw(view, options)
+
+                function selectHandler(e) {
+                    // attend_table.filter = result[chart.getSelection()[0].row][0]
+                    load_attends(result[chart.getSelection()[0].row][0])
+                }
+                google.visualization.events.addListener(chart, 'select', selectHandler)
+
+
+            } else {
+                data['error'] ? alert(data['error']) : console.log('Unknown data:', data)
+            } })
+        .catch(error => { alert(`{{ _('Error in API') }} ${api_url} | ${error}`) })
+        .finally(() => { 
+
+        })
+}
 
 
 // Attend List Datatable
@@ -23,6 +77,46 @@ const attend_rowtemplate = (data) => {
         </tr>
     `
 }
+
+
+const attend_table = new DataTable({
+    name: 'attend',
+    apiEndpoint: '{{ url_for("attend.chart") }}',
+    headers: ['Protocolo', 'Bairro'],
+    rowTemplate: attend_rowtemplate,
+    spinner: true,
+});
+
+{% if 'adm' in roles %}
+    let = attend_table.filter = 'Importado'
+{% else %}
+    let = attend_table.filter = 'Impresso'
+{% endif %}
+attend_table.init('#attend_list_chart', '#attend_list_pagination', '#attend_list_loading', '#attend_list_error', );
+
+google.charts.load('current',{packages:['corechart']})
+
+
+function attend_change_perpage(value) {
+    let cur_item = attend_table.perPage * (attend_table.currentPage - 1) + 1
+    attend_table.perPage = value
+    let new_page = Math.ceil(cur_item / value)
+    attend_table.currentPage = new_page
+    // load_attends()
+}
+
+function load_attends(filter=false) {
+    if (filter && filter !== attend_table.filter) {
+        attend_table.filter = filter
+        attend_table.currentPage = 1
+    }
+    draw_chart_attend()
+    attend_table.loadItems()
+}
+
+
+
+
 
 function groupByNeighborhood(attends) {
     return attends.reduce((grouped, attend) => {
@@ -130,7 +224,8 @@ function load_attend() {
         } else if (data['noresult']) {
             new_attend.hidden = false
             cur_attend.hidden = true
-
+            load_attends()
+            draw_chart_attend()
         } else { data['error'] ? alert(data['error']) : console.error('Unknown data:', data) } })
     .catch(error => { alert(`{{ _('Error in API') }} ${api_url} | ${error}`) })
 }
@@ -148,7 +243,6 @@ function cancel_attend(that) {
         .then(response => response.json()).then(data => {
             result = data['result']
             if (result) {
-                // attend_table.loadItems()
                 load_attend()
             } else {
                 data['error'] ? alert(data['error']) : console.error('Unknown data:', data)
@@ -234,86 +328,53 @@ const save_attend = (that) => {
     });
 }
 
-let filter_attend = function(that, filter) {
-    from = new_attend.date_start.value
-    end = new_attend.date_end.value
-    if (end && ! from) {
-        alert('Selecione a data inicial.')
-        return
-    }
-    if (from && end && from > end) {
-        alert('O dia final não pode ser antes do dia inicial!')
-        return
-    }
 
-    let btn_html = that.innerHTML
-    that.innerHTML = spinner_w
+// new_attend.attend_cpf.addEventListener('keyup', check_attend)
+// function check_attend() {
+//     validate = false
+//     let cpf_cnpj = mask_cpfcnpj(new_attend.attend_cpf.value);
+//     new_attend.attend_cpf.value = cpf_cnpj
+//     cpf_cnpj = cpf_cnpj.replace(/\D/g,"");
+//         if (cpf_cnpj.length === 11) {
+//                 if (check_cpfcnpj(cpf_cnpj)) {
+//                     new_attend.attend_name.disabled = false
+//                     validate = true
+//                 } else {
+//                     new_attend.attend_name.disabled = true
+//                     new_attend.attend_name.value = ''
+//                 }
+//         } else if (cpf_cnpj.length === 14) {
+//                 if (check_cpfcnpj(cpf_cnpj)) {
+//                     new_attend.attend_name.disabled = false
+//                     validate = true
+//                 } else {
+//                     new_attend.attend_name.disabled = true
+//                     new_attend.attend_name.value = ''
+//                 }
+//         } else {
+//         }
 
-    if (filter && attend_table.filter !== filter) {
-        attend_table.filter = filter
-        attend_table.currentPage = 1
-    }
-
-    let args = `${from ? `from=${from}` : ''}${end ? `&end=${end}` : ''}`
-    attend_table.loadItems(args ? args : false)
-
-    that.innerHTML = btn_html
-}
-
-function attend_change_perpage(value) {
-    let cur_item = attend_table.perPage * (attend_table.currentPage - 1) + 1
-    attend_table.perPage = value
-    let new_page = Math.ceil(cur_item / value)
-    attend_table.currentPage = new_page
-    attend_table.loadItems()
-}
-
-new_attend.attend_cpf.addEventListener('keyup', check_attend)
-function check_attend() {
-    validate = false
-    let cpf_cnpj = mask_cpfcnpj(new_attend.attend_cpf.value);
-    new_attend.attend_cpf.value = cpf_cnpj
-    cpf_cnpj = cpf_cnpj.replace(/\D/g,"");
-        if (cpf_cnpj.length === 11) {
-                if (check_cpfcnpj(cpf_cnpj)) {
-                    new_attend.attend_name.disabled = false
-                    validate = true
-                } else {
-                    new_attend.attend_name.disabled = true
-                    new_attend.attend_name.value = ''
-                }
-        } else if (cpf_cnpj.length === 14) {
-                if (check_cpfcnpj(cpf_cnpj)) {
-                    new_attend.attend_name.disabled = false
-                    validate = true
-                } else {
-                    new_attend.attend_name.disabled = true
-                    new_attend.attend_name.value = ''
-                }
-        } else {
-        }
-
-    if (validate) {
-        if (check_cpfcnpj(cpf_cnpj)) {
-            let api_url = `{{ url_for('auth.get_id') }}?id=${cpf_cnpj}`
-            fetch(api_url)
-            .then(response => response.json()).then(data => {
-                if (data['result']) {
-                    // new_attend.attend_name.disabled = true
-                    new_attend.attend_name.value = data['result']['name']
-                    // new_attend.attend_email.disabled = true
-                } else if (data['noresult']) {
-                    // new_attend.attend_name.disabled = false
-                    new_attend.attend_name.value = ''
-                    // new_attend.attend_email.disabled = false
-                } else { data['error'] ? alert(data['error']) : console.error('Unknown data:', data) }
-            }).catch(error => { alert(`{{ _('Error in API') }} ${api_url} | ${error}`) })
-        } else {
-            new_attend.attend_cpf.value = new_attend.attend_cpf.value.slice(0, -1)
-            alert("{{ _('Invalid CPF / CNPJ') }}")
-        }
-    }
-}
+//     if (validate) {
+//         if (check_cpfcnpj(cpf_cnpj)) {
+//             let api_url = `{{ url_for('auth.get_id') }}?id=${cpf_cnpj}`
+//             fetch(api_url)
+//             .then(response => response.json()).then(data => {
+//                 if (data['result']) {
+//                     // new_attend.attend_name.disabled = true
+//                     new_attend.attend_name.value = data['result']['name']
+//                     // new_attend.attend_email.disabled = true
+//                 } else if (data['noresult']) {
+//                     // new_attend.attend_name.disabled = false
+//                     new_attend.attend_name.value = ''
+//                     // new_attend.attend_email.disabled = false
+//                 } else { data['error'] ? alert(data['error']) : console.error('Unknown data:', data) }
+//             }).catch(error => { alert(`{{ _('Error in API') }} ${api_url} | ${error}`) })
+//         } else {
+//             new_attend.attend_cpf.value = new_attend.attend_cpf.value.slice(0, -1)
+//             alert("{{ _('Invalid CPF / CNPJ') }}")
+//         }
+//     }
+// }
 
 function create_attend() {
     if (! check_cpfcnpj(new_attend.attend_cpf.value)) {
