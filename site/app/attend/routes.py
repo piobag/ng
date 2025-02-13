@@ -136,7 +136,7 @@ def calc_value():
         return resultado
 
     # Valor de entrada
-    valor_input = 25030
+    valor_input = 28000
 
     # Códigos a serem considerados
     codigos_a_considerar = [
