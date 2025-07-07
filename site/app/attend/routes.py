@@ -50,7 +50,7 @@ def calc_value():
     # Dados fornecidos
     atos = {
         'correio': 18.05,
-        'taxa': 16.87,
+        'taxa': 17.68,
         'intimacao': 10.67,
         'cancelamento': 53.30,
         'faixa': {
@@ -110,7 +110,7 @@ def calc_value():
         if codigo in ['correio', 'taxa']:
             resultado['fundesp_10'] = 0
             resultado['funemp_3'] = 0
-            resultado['fucomp_3'] = 0
+            resultado['fucomp_6'] = 0
             resultado['fepasaj_2'] = 0
             resultado['funproge_2'] = 0
             resultado['fundepeg_1_25'] = 0
@@ -119,24 +119,24 @@ def calc_value():
         else:
             fundesp_10 = round(valor_base * 0.1, 2)
             funemp_3 = round(valor_base * 0.03, 2)
-            fucomp_3 = round(valor_base * 0.03, 2)
+            fucomp_6 = round(valor_base * 0.06, 2)
             fepasaj_2 = round(valor_base * 0.02, 2)
             funproge_2 = round(valor_base * 0.02, 2)
             fundepeg_1_25 = round(valor_base * 0.0125, 2)
             iss_5 = round(valor_base * 0.05, 2)
             resultado['fundesp_10'] = fundesp_10
             resultado['funemp_3'] = funemp_3
-            resultado['fucomp_3'] = fucomp_3
+            resultado['fucomp_6'] = fucomp_6
             resultado['fepasaj_2'] = fepasaj_2
             resultado['funproge_2'] = funproge_2
             resultado['fundepeg_1_25'] = fundepeg_1_25
             resultado['iss_5'] = iss_5
-            resultado['valor_final'] = round(valor_base + fundesp_10 + funemp_3 + fucomp_3 + fepasaj_2 + funproge_2 + fundepeg_1_25 + iss_5, 2)
+            resultado['valor_final'] = round(valor_base + fundesp_10 + funemp_3 + fucomp_6 + fepasaj_2 + funproge_2 + fundepeg_1_25 + iss_5, 2)
 
         return resultado
 
     # Valor de entrada
-    valor_input = 28000
+    valor_input = 2710.47
 
     # Códigos a serem considerados
     codigos_a_considerar = [

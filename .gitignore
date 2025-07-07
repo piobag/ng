@@ -7,6 +7,7 @@ cert.crt
 
 # MongoDB Data
 db
+db.*
 dump_*.tgz
 bkp
 ssl
