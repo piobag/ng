@@ -296,6 +296,7 @@ class Service(db.Document):
             'id': str(self.id),
             'prot_cod': self.prot_cod,
             'end_bai':  self.end_bai if self.end_bai else '',
+            'prot_date':  self.prot_date if self.prot_date else '',
             'attend': str(self.attend.id) if self.attend else None,
         }
     # def get_history(self):

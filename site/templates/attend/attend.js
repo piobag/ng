@@ -74,6 +74,7 @@ const attend_rowtemplate = (data) => {
         <tr onclick="open_attend_info('${data['attend']}')">
             <td>${data['prot_cod']}</td>
             <td>${data['end_bai']}</td>
+            <td>${new Date(data.prot_date * 1000).toLocaleString('default', {dateStyle: 'short', timeZone: 'America/Sao_Paulo' })}</td>
         </tr>
     `
 }
@@ -82,7 +83,7 @@ const attend_rowtemplate = (data) => {
 const attend_table = new DataTable({
     name: 'attend',
     apiEndpoint: '{{ url_for("attend.chart") }}',
-    headers: ['Protocolo', 'Bairro'],
+    headers: ['Protocolo', 'Bairro', 'Data Protesto'],
     rowTemplate: attend_rowtemplate,
     spinner: true,
 });
@@ -176,6 +177,7 @@ fetch(api_url)
                     <tr>
                         <th>Protocolo</th>
                         <th>Bairro</th>
+                        <th>Data Protesto</th>
                     </tr>
                 `;
                 attendListTable.insertBefore(tableHead, attendListTableBody);
