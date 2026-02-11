@@ -18,7 +18,7 @@ def import_xls():
 
     def calcular_total(val_input):
         """Calcula o total baseado no valor de entrada."""
-        atos = {
+        atos_old = {
             'correio': 18.05,
             'taxa': 17.68,
             'intimacao': 10.67,
@@ -39,6 +39,27 @@ def import_xls():
             },
         }
         
+        atos = {
+            'correio': 18.05,
+            'taxa': 18.43,
+            'intimacao': 11.15,
+            'cancelamento': 55.67,
+            'faixa': {
+                '3132': {65.38: 25.02},
+                '3133': {130.76: 36.20},
+                '3134': {261.52: 66.80},
+                '3135': {392.29: 102.99},
+                '3136': {523.05: 164.22},
+                '3137': {653.80: 186.50},
+                '3138': {1307.62: 253.32},
+                '3139': {2615.24: 342.41},
+                '3140': {6538.10: 453.72},
+                '3141': {13076.18: 687.54},
+                '3142': {26152.37: 907.44},
+                '3143': {float('inf'): 1135.68},
+            },
+        }
+
         # Função para calcular o valor final
         def calcular_valor(val_input, codigo):
             resultado = {}

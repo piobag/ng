@@ -42,29 +42,29 @@ services:
       - 27017:27017
     volumes:
       - ${DIR}./db:/data/db
-  # backup:
-  #   build: bkp/
-  #   restart: unless-stopped
-  #   hostname: bkp.local
-  #   environment:
-  #     - MONGO_HOST=${MONGO_HOST}
-  #     - MONGO_USER=${MONGO_USER}
-  #     - MONGO_PASS=${MONGO_PASS}
-  #     - MONGO_AUTH_DB=${MONGO_AUTH_DB}
-  #     - REMOTE_SERVER=${REMOTE_SERVER}
-  #     - REMOTE_PORT=${REMOTE_PORT}
-  #     - EMAIL=${MAIL_ADMIN}
-  #     - SMTP_SERVER=${BKP_MAIL_SERVER}
-  #     - SMTP_PORT=${BKP_MAIL_PORT}
-  #     - SMTP_USER=${BKP_MAIL_USERNAME}
-  #     - SMTP_PASS=${BKP_MAIL_PASSWORD}
-  #   volumes:
-  #     - ${DIR}./bkp:/dump
-  #     - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
-  #     - ~/.ssh/known_hosts:/root/.ssh/known_hosts
-  #     - /etc/localtime:/etc/localtime:ro
-  #   depends_on:
-  # #     - mongo
+  backup:
+    build: bkp/
+    environment:
+      - MONGO_HOST=${MONGO_HOST}
+      - MONGO_USER=${MONGO_USER}
+      - MONGO_PASS=${MONGO_PASS}
+      - MONGO_AUTH_DB=${MONGO_AUTH_DB}
+      - EMAIL=${MAIL_ADMIN}
+      - SMTP_SERVER=${MAIL_SERVER}
+      - SMTP_PORT=${MAIL_PORT}
+      - SMTP_USER=${MAIL_USERNAME}
+      - SMTP_PASS=${MAIL_PASSWORD}
+      - RCLONE_CONFIG_VULTR_TYPE=s3
+      - RCLONE_CONFIG_VULTR_PROVIDER=Other
+      - RCLONE_CONFIG_VULTR_ACCESS_KEY_ID=${S3_ID}
+      - RCLONE_CONFIG_VULTR_SECRET_ACCESS_KEY=${S3_KEY}
+      - RCLONE_CONFIG_VULTR_ENDPOINT=${S3_HOST}
+      - RCLONE_CONFIG_VULTR_ACL=private
+    volumes:
+      - ./dump:/dump                       # Onde o backup será gerado
+    env_file: .env                         # Suas variáveis de ambiente
+    depends_on:
+      - mongo
   # mongo-express:
   #   image: mongo-express
   #   restart: unless-stopped
@@ -76,7 +76,4 @@ services:
   #     ME_CONFIG_MONGODB_SERVER: mongo
   #     ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_EXPRESS_USER}
   #     ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_EXPRESS_PASS}
-
-
-
 

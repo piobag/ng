@@ -35,7 +35,7 @@
         </span>
         <hr style="margin: 6px 0px;">
         <span style="font-size: 10px;">
-            Data Protesto:&nbsp;&nbsp;<b>${s.prot_date ? new Date(s.prot_date * 1000).toLocaleDateString('pt-BR') : ''}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Número do Protocolo:&nbsp;&nbsp;<b>${s['prot_cod']}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Livro:&nbsp;&nbsp;<b>${s['prot_liv']}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Folha:&nbsp;&nbsp;<b>${s['prot_fls']}</b><br>
+            Data Protesto:&nbsp;&nbsp;<b>${s.prot_date ? new Date(s.prot_date * 1000).toLocaleDateString('pt-BR') : ''}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Número do Protocolo:&nbsp;&nbsp;<b>${s['prot_cod']}</b><br>
             Total Cancelamento:&nbsp;&nbsp;<b>${s['prot_tot_c'].toLocaleString('pt-BR', currency_br)}</b>&nbsp;&nbsp;|&nbsp;&nbsp;Total a Pagar:&nbsp;&nbsp;<b>${s['prot_tot_p'].toLocaleString('pt-BR', currency_br)}</b>
         </span>
         <hr style="margin: 6px 0px;">

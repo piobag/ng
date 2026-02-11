@@ -9,7 +9,6 @@ cert.crt
 db
 db.*
 dump_*.tgz
-bkp
 ssl
 
 cartas.xlsx
